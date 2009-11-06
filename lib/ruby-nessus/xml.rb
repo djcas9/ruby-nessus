@@ -78,10 +78,6 @@ module Nessus
       #list.each { |port| yield port } if block_given?
     end
 
-    def ports
-      @ports = {}
-    end
-
     def plugins
       unless @plugins
         # get elements with attribute:
