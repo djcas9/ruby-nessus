@@ -1,3 +1,5 @@
+require 'ruby-nessus/port'
+
 module Nessus
   class Event
     attr_reader :event
@@ -7,33 +9,16 @@ module Nessus
     end
 
     def port
-      # Example: "ncube-lm (1521/tcp)"
-      @port = @event.at('port').inner_text
+      unless @port
+        # Example: "ncube-lm (1521/tcp)"
+        port_text = @event.at('port').inner_text
+        port_components = port_text.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
 
-      @port.instance_eval do
-        @p = self.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
-        def port_type
-          if @p
-            @p[1].strip unless @p[1].strip.nil?
-          else
-            false
-          end
-        end
-        def port_service
-          if @p
-            @p[2].strip unless @p[2].strip.nil?
-          else
-            false
-          end
-        end
-        def port_proto
-          if @p
-            @p[3].strip unless @p[3].nil?
-          else
-            false
-          end
-        end
-
+        @port = Port.new(
+          port_components[0].strip,
+          port_components[1].strip.to_i,
+          port_components[2].strip
+        )
       end
 
       return @port
