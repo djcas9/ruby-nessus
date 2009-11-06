@@ -1,4 +1,4 @@
-require 'lib/ruby-nessus'
+require '../lib/ruby-nessus'
 require 'pp'
 
 Nessus::XML.new("test.nessus") do |s|

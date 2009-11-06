@@ -1,4 +1,4 @@
 require 'rubygems'
 require 'nokogiri'
-require 'lib/ruby-nessus/nessus'
-require 'lib/ruby-nessus/version'
+require 'ruby-nessus/nessus'
+require 'ruby-nessus/version'
