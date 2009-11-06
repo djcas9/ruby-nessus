@@ -1,6 +1,6 @@
-require 'lib/ruby-nessus/nbe'
-require 'lib/ruby-nessus/nsr'
-require 'lib/ruby-nessus/xml'
+require 'ruby-nessus/nbe'
+require 'ruby-nessus/nsr'
+require 'ruby-nessus/xml'
 
 module Nessus
 
