@@ -16,15 +16,15 @@ module Nessus
     end
 
     def report_name
-      @xml.xpath("//NessusClientData//Report//ReportName").inner_text
+      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text
     end
 
     def start_time
-      @xml.xpath("//NessusClientData//Report//StartTime").inner_text
+      @start_time ||= @xml.xpath("//NessusClientData//Report//StartTime").inner_text
     end
 
     def stop_time
-      @xml.xpath("//NessusClientData//Report//StopTime").inner_text
+      @stop_time ||= @xml.xpath("//NessusClientData//Report//StopTime").inner_text
     end
 
     def run_time
@@ -33,18 +33,22 @@ module Nessus
     end
 
     def policy_name
-      @xml.xpath("//NessusClientData//Report//policyName").inner_text
+      @policy_name ||= @xml.xpath("//NessusClientData//Report//policyName").inner_text
     end
 
     def policy_comments
-      @xml.xpath("//NessusClientData//Report//policyComments").inner_text
+      @policy_comments ||= @xml.xpath("//NessusClientData//Report//policyComments").inner_text
     end
 
     def plugin_ids
-      @plugin_ids = []
-      @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
-        @plugin_ids << id
+      unless @plugin_ids
+        @plugin_ids = []
+
+        @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
+          @plugin_ids << id
+        end
       end
+
       @plugin_ids
     end
 
@@ -79,32 +83,47 @@ module Nessus
     end
 
     def plugins
-      # get elements with attribute:
-      @plugins = []
-      @xml.xpath("//pluginName").each do |x|
-        @plugins << x.text unless x.text == ""
+      unless @plugins
+        # get elements with attribute:
+        @plugins = []
+
+        @xml.xpath("//pluginName").each do |x|
+          @plugins << x.inner_text unless x.inner_text.empty?
+        end
+
+        @plugins.uniq!
+        @plugins.sort!
       end
-      return @plugins.sort.uniq!
+
+      return @plugins
     end
 
     def ports
-      @xml.xpath("//ReportItem//port").inner_text
+      unless @ports
+        @ports = []
+
+        @xml.xpath("//ReportItem//port").each do |port|
+          @ports << Port.parse(port.inner_text)
+        end
+      end
+
+      return @ports
     end
 
     def informational_severity_count
-      return count_severity[:informational].to_i
+      count_severity[:informational].to_i
     end
 
     def high_severity_count
-      return count_severity[:high].to_i
+      count_severity[:high].to_i
     end
 
     def medium_severity_count
-      return count_severity[:medium].to_i
+      count_severity[:medium].to_i
     end
 
     def low_severity_count
-      return count_severity[:low].to_i
+      count_severity[:low].to_i
     end
 
     def event_percentage_for(type, round_percentage=false)

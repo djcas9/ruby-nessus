@@ -7,55 +7,65 @@ module Nessus
     end
 
     def hostname
-      @host.at('HostName').inner_text
+      @hostname ||= @host.at('HostName').inner_text
     end
 
     def start_time
-      @host.at('startTime').inner_text
+      @host ||= @host.at('startTime').inner_text
     end
 
     def stop_time
-      @host.at('stopTime').inner_text
+      @stop_time ||= @host.at('stopTime').inner_text
     end
 
     def netbios_name
-      @host.at('netbios_name').inner_text
+      @netbios_name ||= @host.at('netbios_name').inner_text
     end
 
     def mac_addr
-      @host.at('mac_addr').inner_text
+      @mac_addr ||= @host.at('mac_addr').inner_text
     end
 
     def dns_name
-      @host.at('dns_name').inner_text
+      @dns_name ||= @host.at('dns_name').inner_text
     end
 
     def os_name
-      @host.at('os_name').inner_text
+      @os_name ||= @host.at('os_name').inner_text
     end
 
     def scanned_ports
-      false_if_zero(@host.at('num_ports').inner_text.to_i)
+      @scanned_ports ||= false_if_zero(
+        @host.at('num_ports').inner_text.to_i
+      )
     end
 
     def informational_events
-      @host.at('num_lo').inner_text.to_i
+      @informational_events ||= @informational_events ||= @host.at('num_lo').inner_text.to_i
     end
 
     def low_severity_events
-      @host.at('num_lo').inner_text.to_i
+      @low_severity_events ||= @host.at('num_lo').inner_text.to_i
     end
 
     def medium_severity_events
-      @host.at('num_med').inner_text.to_i
+      @medium_severity_events ||= @host.at('num_med').inner_text.to_i
     end
 
     def high_severity_events(&block)
-      @host.xpath("//ReportItem").each do |event|
-        next if event.at('severity').inner_text.to_i != 3
-        block.call(Event.new(event)) if block
+      unless @high_severity_events
+        @high_severity_events = []
+
+        @host.xpath("//ReportItem").each do |event|
+          next if event.at('severity').inner_text.to_i != 3
+          @high_severity_events << Event.new(event)
+        end
+
+        @high_severity_count = @host.at('num_hi').inner_text.to_i
       end
-      @host.at('num_hi').inner_text.to_i
+
+      @high_severity_events.each(&block)
+      return @high_severity_count
     end
 
     def event_count
