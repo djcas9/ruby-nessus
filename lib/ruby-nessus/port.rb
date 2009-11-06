@@ -13,6 +13,17 @@ module Nessus
       @protocol = protocol
     end
 
+    def Port.parse(str)
+      # Example: "ncube-lm (1521/tcp)"
+      components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
+
+      return Port.new(
+        components[0].strip,
+        components[1].strip.to_i,
+        components[2].strip
+      )
+    end
+
     def tcp?
       @protocol == 'tcp'
     end
