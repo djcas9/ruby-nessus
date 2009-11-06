@@ -5,12 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ruby-nessus"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{A ruby interface for nessus scan data.}
+    gem.description = %Q{A ruby interface for nessus scan data.}
     gem.email = "dustin.webber@gmail.com"
     gem.homepage = "http://github.com/mephux/ruby-nessus"
     gem.authors = ["Dustin Willis Webber"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "nokogiri"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
