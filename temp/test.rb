@@ -27,7 +27,7 @@ Nessus::XML.new("1test.nessus") do |scan|
   
   puts "Hosts:"
   scan.hosts do |host|
-    puts host
+    puts host.hostname
   end
   
   #puts scan.severities

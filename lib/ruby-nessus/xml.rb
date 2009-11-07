@@ -9,28 +9,28 @@ module Nessus
 
       block.call(self) if block
     end
-    
+
     def report_name
       @xml.xpath("//NessusClientData//Report//ReportName").text
     end
-    
+
     def start_time
       @xml.xpath("//NessusClientData//Report//StartTime").text
     end
-    
+
     def stop_time
       @xml.xpath("//NessusClientData//Report//StopTime").text
     end
-    
+
     def run_time
       # Need to fine duration from start and top times
       #DateTime.parse(stop_time)
     end
-    
+
     def policy_name
       @xml.xpath("//NessusClientData//Report//policyName").text
     end
-    
+
     def policy_comments
       @xml.xpath("//NessusClientData//Report//policyComments").text
     end
@@ -41,24 +41,23 @@ module Nessus
     end
 
     def hosts
-      # hosts = []
-      # @xml.xpath('//ReportHost').each do |report|
-      #   hosts << report
-      # end
-      # hosts
       hosts = []
-      @xml.xpath("//ReportHost//HostName").each do |host|
-        hosts << host.text if host.text
-        yield host.text if block_given?
+      @xml.xpath("//ReportHost").each do |host|
+        hosts << host.at('HostName').text if host.at('HostName').text
+        yield host if block_given?
       end
       hosts
     end
-    
-    def number_of_open_ports
+
+    def hostname
+      self.at('HostName').text
+    end
+
+    def self.number_of_open_ports
       #@xml.xpath("//ReportHost//HostName" => host).to_s
       #list.each { |port| yield port } if block_given?
     end
-    
+
     def ports
       @ports = {}
     end
@@ -71,18 +70,18 @@ module Nessus
       end
       return @plugins.sort.uniq!
     end
-    
+
     def ports
       @xml.xpath("//ReportItem//port").text
     end
-    
+
     def high_severity
       @xml.xpath("//ReportItem//severity").text
     end
-    
+
     private
-    
-    
+
+
     def parse_host()
       host_data = {}
       @xml.xpath("//ReportHost//HostName").each do |host|
@@ -91,8 +90,8 @@ module Nessus
       end
       return host_data
     end
-    
-    
+
+
   end
 
 end
