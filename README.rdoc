@@ -12,7 +12,6 @@ The below example illustrates how easy it really is to iterate of result data.
   require 'ruby-nessus'
 
   Nessus::XML.new("blah.nessus") do |scan|
-    
     puts scan.report_name               # The Nessus Report Title.
     puts scan.run_time                  # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
     puts scan.host_count                # Host Count.
@@ -48,6 +47,7 @@ You also have the ability to search for particular hostnames. In the near future
       puts event.port
       puts event.output
     end
+    
   end
 
 
@@ -55,7 +55,7 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 
   Nessus::XML.new("blah.nessus") do |scan|
 
-  puts scan.event_percentage_for('low', true) #=> 8%
+    puts scan.event_percentage_for('low', true) #=> 8%
 
     puts scan.high_severity_count           # High Severity Event Count
     puts scan.medium_severity_count         # Medium Severity Event Count
@@ -63,13 +63,10 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
     puts scan.informational_severity_count  # Informational Event Count
 
     puts scan.total_event_count #=> 3411    # Total Event Count
-  
     puts scan.hosts.count #=> 12
 
     puts scan.policy_name
     puts scan.policy_comments unless scan.policy_comments.empty?
-
-    puts scan.plugin_ids.count
 
   end
   
