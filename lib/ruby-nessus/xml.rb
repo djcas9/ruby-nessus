@@ -50,6 +50,18 @@ module Nessus
       end
       hosts
     end
+    
+    def hosts_with(options={}, &block)
+      @blah = []
+      @xml.xpath("//ReportHost").each do |host|
+        block.call(Host.new(host)) if block && Host.new(host).event_count >= 10
+      end
+      @blah
+    end
+    
+    def host_count
+      hosts.size
+    end
 
     def self.number_of_open_ports
       #@xml.xpath("//ReportHost//HostName" => host).to_s
@@ -200,12 +212,16 @@ module Nessus
       @host.at('num_med').inner_text.to_i
     end
 
-    def high_severity_events
+    def high_severity_events(&block)
+      @host.xpath("//ReportItem").each do |event|
+        next if event.at('severity').inner_text.to_i != 3
+        block.call(Event.new(event)) if block
+      end
       @host.at('num_hi').inner_text.to_i
     end
 
     def event_count
-      (informational_events + low_severity_events + medium_severity_events + high_severity_events)
+      (informational_events + low_severity_events + medium_severity_events + high_severity_events).to_i
     end
 
     def events(&block)
@@ -262,18 +278,6 @@ module Nessus
 
       return @port
     end
-
-    # def port_type
-    #   (@service_type || false)
-    # end
-    #
-    # def port_service
-    #   (@service_port || false)
-    # end
-    #
-    # def port_proto
-    #   (@service_proto || false)
-    # end
 
     def severity
       @event.at('severity').inner_text.to_i
