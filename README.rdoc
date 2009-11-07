@@ -1,6 +1,30 @@
 = ruby-nessus
 
-A ruby interface for nessus scan data.
+Ruby-Nessus is a ruby interface for Nessus result data. Currently Ruby-Nessus only supports the .nessus (XML) file format but support for
+.NBE is planned.
+
+= Code Example:
+
+require 'ruby-nessus'
+
+Nessus::XML.new("blah.nessus") do |scan|
+
+  scan.hosts do |host|
+    next if host.event_count.zero?
+    puts host.hostname
+    puts host.event_count
+
+    host.events do |event|
+      next if !event.severity.low?
+      puts event.name if event.name
+      puts event.port
+      puts event.severity.in_words
+      puts event.plugin_id
+      puts event.data
+    end
+    
+  end
+end
 
 == Note on Patches/Pull Requests
  

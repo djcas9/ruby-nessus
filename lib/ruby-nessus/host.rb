@@ -82,16 +82,9 @@ module Nessus
     end
 
     def events(&block)
-      events = {}
       @host.xpath("//ReportItem").each do |event|
-        events[:port] = event.at('port').inner_text
-        events[:severity] = event.at('severity').inner_text.to_i
-        events[:pluginID] = event.at('pluginID').inner_text.to_i
-        events[:pluginName] = event.at('pluginName').inner_text
-        events[:data] = event.at('data').inner_text unless event.at('data').nil?
         block.call(Event.new(event)) if block
       end
-      events
     end
 
   end

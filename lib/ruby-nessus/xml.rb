@@ -1,8 +1,7 @@
 require 'ruby-nessus/host'
 require 'ruby-nessus/event'
-require 'time'
-
 require 'nokogiri'
+require 'time'
 
 module Nessus
   # File to parse
@@ -122,6 +121,10 @@ module Nessus
 
     def low_severity_count
       count_severity[:low].to_i
+    end
+    
+    def total_event_count
+      count_severity[:all].to_i
     end
 
     def event_percentage_for(type, round_percentage=false)

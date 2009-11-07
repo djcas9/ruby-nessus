@@ -9,7 +9,7 @@ class Fixnum
   end
 
   def in_words
-    case self.to_i
+    case self
     when 0
       return "Informational"
     when 1
@@ -18,6 +18,30 @@ class Fixnum
       return "Medium Severity"
     when 3
       return "High Severity"
+    end
+  end
+  
+  def high?
+    if self == 3
+      true
+    else
+      false
+    end
+  end
+  
+  def medium?
+    if self == 2
+      true
+    else
+      false
+    end
+  end
+  
+  def low?
+    if self >= 1
+      true
+    else
+      false
     end
   end
 

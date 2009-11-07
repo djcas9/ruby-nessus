@@ -15,13 +15,18 @@ module Nessus
 
     def Port.parse(str)
       # Example: "ncube-lm (1521/tcp)"
-      components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
+      begin
+        components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
 
-      return Port.new(
+        return Port.new(
         components[1].strip,
         components[2].strip,
         components[3].strip
-      )
+        )
+
+      rescue
+        return str
+      end
     end
 
     def tcp?
