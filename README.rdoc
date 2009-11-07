@@ -1,9 +1,14 @@
-= ruby-nessus
+= Ruby-Nessus
+* https://github.com/mephux/ruby-nessus
 
 == Description
 
 Ruby-Nessus is a ruby interface for Nessus result data. Currently Ruby-Nessus only supports the .nessus (XML) file format but support for
 .NBE is planned.
+
+== Requirements
+* ruby 1.8 or 1.9
+* Nokogiri http://github.com/tenderlove/nokogiri
 
 == Synopsis:
 
@@ -73,12 +78,7 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 
   end
 
-== Requirements
-* ruby 1.8 or 1.9
-* Nokogiri http://github.com/tenderlove/nokogiri
-
 == Todo
-
 * Add The Ability to parse the scan configuration and plugin options.
 * Add Support For NBE File Formats.
 * Add Complex Searching. 
