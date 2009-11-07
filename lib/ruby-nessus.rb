@@ -1,6 +1,5 @@
 # Dependencies
 require 'rubygems'
-require 'nokogiri'
 require 'chronic'
 # Ruby-Nessus Files
 require 'ruby-nessus/nessus'
