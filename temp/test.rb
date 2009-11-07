@@ -10,18 +10,22 @@ Nessus::XML.new("2test.nessus") do |scan|
 
   #puts scan.event_percentage_for('high', true) #=> 8%
 
-  scan.find_by_hostname("75.28.147.215") do |host|
-    puts host.hostname
-    puts host.dns_name
-    
-    host.events do |event|
-      next if event.severity != 3
-      puts "Severity: #{event.severity.in_words}"
-      puts "Port: #{event.port}"
-      puts "\n"
-      #puts "\tData: " + event.output
-    end
-  end
+  puts scan.start_time
+  puts scan.stop_time
+  puts scan.run_time
+
+  # scan.find_by_hostname("75.28.147.129") do |host|
+  #   puts host.scan_start_time
+  #   puts host.scan_stop_time
+  #   puts host.scan_run_time
+  #   host.events do |event|
+  #     next if event.severity != 3
+  #     puts "Severity: #{event.severity.in_words}"
+  #     puts "Port: #{event.port}"
+  #     puts "\n"
+  #     #puts "\tData: " + event.output
+  #   end
+  # end
 
   #
   # scan.hosts_with do |host|
@@ -56,27 +60,27 @@ Nessus::XML.new("2test.nessus") do |scan|
   # pp scan.plugin_ids.count
 
 
-  # puts "Hosts:"
-  # scan.hosts do |host|
-  # 
-  #   puts host.hostname
-  # 
-  #   puts host.start_time
-  #   puts host.stop_time
-  # 
-  #   puts host.netbios_name
-  # 
-  #   host.events do |event|
-  #     puts event.severity
-  #     puts "\n"
-  #     puts "Port: " + event.port
-  #     puts "Port Service: " + event.port.port_service if event.port.port_service
-  #     puts "Port Proto: " + event.port.port_proto if event.port.port_proto
-  #     puts "Port Type: " + event.port.port_type if event.port.port_type
-  #     puts "\n"
-  #     puts "\tData: " + event.output
-  #   end
-  # 
-  # end
+  puts "Hosts:"
+  scan.hosts do |host|
+  
+    puts host.hostname
+  
+    puts "Start Time: " + host.scan_start_time
+    puts "Stop Time: " + host.scan_stop_time
+  
+    puts "Run Time: " + host.scan_run_time
+  
+    # host.events do |event|
+    #   puts event.severity
+    #   puts "\n"
+    #   puts "Port: " + event.port
+    #   puts "Port Service: " + event.port.port_service if event.port.port_service
+    #   puts "Port Proto: " + event.port.port_proto if event.port.port_proto
+    #   puts "Port Type: " + event.port.port_type if event.port.port_type
+    #   puts "\n"
+    #   puts "\tData: " + event.output
+    # end
+    #
+  end
 
 end

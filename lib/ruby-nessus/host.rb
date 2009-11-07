@@ -10,12 +10,21 @@ module Nessus
       @hostname ||= @host.at('HostName').inner_text
     end
 
-    def start_time
-      @host ||= @host.at('startTime').inner_text
+    def scan_start_time
+      @host_scan_time = @host.at('startTime').inner_text
     end
 
-    def stop_time
-      @stop_time ||= @host.at('stopTime').inner_text
+    def scan_stop_time
+      @host_scan_time = @host.at('stopTime').inner_text
+    end
+    
+    def scan_run_time
+      # Example: Fri Apr  3 23:36:54 2009
+      if scan_start_time.empty? | scan_stop_time.empty?; return "N/A"; end
+      h = ("#{Time.parse(scan_stop_time).strftime('%H').to_i - Time.parse(scan_start_time).strftime('%H').to_i}").gsub('-', '')
+      m = ("#{Time.parse(scan_stop_time).strftime('%M').to_i - Time.parse(scan_start_time).strftime('%M').to_i}").gsub('-', '')
+      s = ("#{Time.parse(scan_stop_time).strftime('%S').to_i - Time.parse(scan_start_time).strftime('%S').to_i}").gsub('-', '')
+      return "#{h} hours #{m} minutes and #{s} seconds"
     end
 
     def netbios_name

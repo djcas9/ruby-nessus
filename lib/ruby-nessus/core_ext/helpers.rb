@@ -1,7 +1,7 @@
 class Fixnum
 
   def blank?
-    if (self == 0)
+    if (self.zero?)
       return true
     else
       return false

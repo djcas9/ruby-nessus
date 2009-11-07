@@ -1,5 +1,6 @@
 require 'ruby-nessus/host'
 require 'ruby-nessus/event'
+require 'time'
 
 require 'nokogiri'
 
@@ -16,15 +17,13 @@ module Nessus
     #
     # @yield [prog] If a block is given, it will be passed the newly
     #               created XML object.
-    # @yieldparam [Program] prog The newly created program object.
-    #
-    # @raise [ProgramNotFound] Specifies the given path was not a valid
-    #                          file.
+    # @yieldparam [XML] prog The newly created XML object.
     #
     # @example
-    #   Program.new('/usr/bin/ls')
+    #   Nessus::XML.new(nessus_scan_file)
     #
     def initialize(file, &block)
+      
       @file = File.open(file)
       @xml = Nokogiri::XML.parse(@file.read)
 
@@ -36,16 +35,19 @@ module Nessus
     end
 
     def start_time
-      @start_time ||= @xml.xpath("//NessusClientData//Report//StartTime").inner_text
+      @start_time = @xml.xpath("//NessusClientData//Report//StartTime").inner_text
     end
 
     def stop_time
-      @stop_time ||= @xml.xpath("//NessusClientData//Report//StopTime").inner_text
+      @stop_time = @xml.xpath("//NessusClientData//Report//StopTime").inner_text
     end
 
     def run_time
-      # Need to fine duration from start and top times
-      #DateTime.parse(stop_time)
+      # Example: Fri Apr  3 23:36:54 2009
+      h = ("#{Time.parse(stop_time).strftime('%H').to_i - Time.parse(start_time).strftime('%H').to_i}").gsub('-', '')
+      m = ("#{Time.parse(stop_time).strftime('%M').to_i - Time.parse(start_time).strftime('%M').to_i}").gsub('-', '')
+      s = ("#{Time.parse(stop_time).strftime('%S').to_i - Time.parse(start_time).strftime('%S').to_i}").gsub('-', '')
+      return "#{h} hours #{m} minutes and #{s} seconds"
     end
 
     def policy_name
@@ -102,7 +104,8 @@ module Nessus
       @xml.xpath("//ReportItem//port").each do |port|
         @ports << port.inner_text
       end
-      @ports.sort.uniq!
+      @ports.uniq!
+      @ports.sort!
     end
 
     def informational_severity_count
