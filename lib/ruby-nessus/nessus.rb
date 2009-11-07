@@ -1,10 +1,18 @@
 require 'ruby-nessus/nbe'
 require 'ruby-nessus/xml'
-require 'ruby-nessus/statistics'
 
 module Nessus
 
-  class Program
+end
+
+class Fixnum
+  
+  def blank?
+    if (self == 0)
+      return true
+    else
+      return false
+    end
   end
   
 end
