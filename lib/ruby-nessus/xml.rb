@@ -11,15 +11,15 @@ module Nessus
     end
 
     def report_name
-      @xml.xpath("//NessusClientData//Report//ReportName").text
+      @xml.xpath("//NessusClientData//Report//ReportName").inner_text
     end
 
     def start_time
-      @xml.xpath("//NessusClientData//Report//StartTime").text
+      @xml.xpath("//NessusClientData//Report//StartTime").inner_text
     end
 
     def stop_time
-      @xml.xpath("//NessusClientData//Report//StopTime").text
+      @xml.xpath("//NessusClientData//Report//StopTime").inner_text
     end
 
     def run_time
@@ -28,11 +28,11 @@ module Nessus
     end
 
     def policy_name
-      @xml.xpath("//NessusClientData//Report//policyName").text
+      @xml.xpath("//NessusClientData//Report//policyName").inner_text
     end
 
     def policy_comments
-      @xml.xpath("//NessusClientData//Report//policyComments").text
+      @xml.xpath("//NessusClientData//Report//policyComments").inner_text
     end
 
     def plugin_selection
@@ -43,14 +43,14 @@ module Nessus
     def hosts
       hosts = []
       @xml.xpath("//ReportHost").each do |host|
-        hosts << host.at('HostName').text if host.at('HostName').text
+        hosts << host.at('HostName').inner_text if host.at('HostName').inner_text
         yield host if block_given?
       end
       hosts
     end
 
     def hostname
-      self.at('HostName').text
+      @xml.at('HostName').inner_text || false
     end
 
     def self.number_of_open_ports
@@ -72,24 +72,14 @@ module Nessus
     end
 
     def ports
-      @xml.xpath("//ReportItem//port").text
+      @xml.xpath("//ReportItem//port").inner_text
     end
 
     def high_severity
-      @xml.xpath("//ReportItem//severity").text
+      @xml.xpath("//ReportItem//severity").inner_text
     end
 
     private
-
-
-    def parse_host()
-      host_data = {}
-      @xml.xpath("//ReportHost//HostName").each do |host|
-        host_data[:start_time] = host.xpath("//ReportHost//startTime").text
-        host_data[:stop_time] = host.xpath("//ReportHost//startTime").text
-      end
-      return host_data
-    end
 
 
   end
