@@ -1,3 +1,6 @@
+require 'ruby-nessus/host'
+require 'ruby-nessus/event'
+
 require 'nokogiri'
 
 module Nessus
@@ -5,7 +8,7 @@ module Nessus
   attr_reader :file
 
   class XML
-    
+
     #
     # Creates a new .Nessus (XML) object to be parser
     #
@@ -29,15 +32,15 @@ module Nessus
     end
 
     def report_name
-      @xml.xpath("//NessusClientData//Report//ReportName").inner_text
+      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text
     end
 
     def start_time
-      @xml.xpath("//NessusClientData//Report//StartTime").inner_text
+      @start_time ||= @xml.xpath("//NessusClientData//Report//StartTime").inner_text
     end
 
     def stop_time
-      @xml.xpath("//NessusClientData//Report//StopTime").inner_text
+      @stop_time ||= @xml.xpath("//NessusClientData//Report//StopTime").inner_text
     end
 
     def run_time
@@ -46,18 +49,22 @@ module Nessus
     end
 
     def policy_name
-      @xml.xpath("//NessusClientData//Report//policyName").inner_text
+      @policy_name ||= @xml.xpath("//NessusClientData//Report//policyName").inner_text
     end
 
     def policy_comments
-      @xml.xpath("//NessusClientData//Report//policyComments").inner_text
+      @policy_comments ||= @xml.xpath("//NessusClientData//Report//policyComments").inner_text
     end
 
     def plugin_ids
-      @plugin_ids = []
-      @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
-        @plugin_ids << id
+      unless @plugin_ids
+        @plugin_ids = []
+
+        @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
+          @plugin_ids << id
+        end
       end
+
       @plugin_ids
     end
 
@@ -75,12 +82,19 @@ module Nessus
     end
 
     def plugins
-      # get elements with attribute:
-      @plugins = []
-      @xml.xpath("//pluginName").each do |x|
-        @plugins << x.text unless x.text == ""
+      unless @plugins
+        # get elements with attribute:
+        @plugins = []
+
+        @xml.xpath("//pluginName").each do |x|
+          @plugins << x.inner_text unless x.inner_text.empty?
+        end
+
+        @plugins.uniq!
+        @plugins.sort!
       end
-      return @plugins.sort.uniq!
+
+      return @plugins
     end
 
     def unique_ports
@@ -92,19 +106,19 @@ module Nessus
     end
 
     def informational_severity_count
-      return count_severity[:informational].to_i
+      count_severity[:informational].to_i
     end
 
     def high_severity_count
-      return count_severity[:high].to_i
+      count_severity[:high].to_i
     end
 
     def medium_severity_count
-      return count_severity[:medium].to_i
+      count_severity[:medium].to_i
     end
 
     def low_severity_count
-      return count_severity[:low].to_i
+      count_severity[:low].to_i
     end
 
     def event_percentage_for(type, round_percentage=false)
@@ -164,149 +178,4 @@ module Nessus
     end
 
   end
-
-  class Host
-    attr_reader :host
-
-    def initialize(host)
-      @host = host
-
-    end
-
-    def hostname
-      @host.at('HostName').inner_text
-    end
-
-    def start_time
-      @host.at('startTime').inner_text
-    end
-
-    def stop_time
-      @host.at('stopTime').inner_text
-    end
-
-    def netbios_name
-      @host.at('netbios_name').inner_text
-    end
-
-    def mac_addr
-      @host.at('mac_addr').inner_text
-    end
-
-    def dns_name
-      @host.at('dns_name').inner_text
-    end
-
-    def os_name
-      @host.at('os_name').inner_text
-    end
-
-    def scanned_ports
-      false_if_zero(@host.at('num_ports').inner_text.to_i)
-    end
-
-    def informational_events
-      @host.at('num_lo').inner_text.to_i
-    end
-
-    def low_severity_events
-      @host.at('num_lo').inner_text.to_i
-    end
-
-    def medium_severity_events
-      @host.at('num_med').inner_text.to_i
-    end
-
-    def high_severity_events(&block)
-      @host.xpath("//ReportItem").each do |event|
-        next if event.at('severity').inner_text.to_i != 3
-        block.call(Event.new(event)) if block
-      end
-      @host.at('num_hi').inner_text.to_i
-    end
-
-    def event_count
-      (informational_events + low_severity_events + medium_severity_events + high_severity_events).to_i
-    end
-
-    def events(&block)
-      events = {}
-      @host.xpath("//ReportItem").each do |event|
-        events[:port] = event.at('port').inner_text
-        events[:severity] = event.at('severity').inner_text.to_i
-        events[:pluginID] = event.at('pluginID').inner_text.to_i
-        events[:pluginName] = event.at('pluginName').inner_text
-        events[:data] = event.at('data').inner_text unless event.at('data').nil?
-        block.call(Event.new(event)) if block
-      end
-      events
-    end
-
-  end
-
-  class Event
-    attr_reader :event
-
-    def initialize(event)
-      @event = event
-    end
-
-    def port
-      # Example: "ncube-lm (1521/tcp)"
-      @port = @event.at('port').inner_text
-
-      @port.instance_eval do
-        @p = self.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
-        def port_type
-          if @p
-            @p[1].strip unless @p[1].strip.nil?
-          else
-            false
-          end
-        end
-        def port_service
-          if @p
-            @p[2].strip unless @p[2].strip.nil?
-          else
-            false
-          end
-        end
-        def port_proto
-          if @p
-            @p[3].strip unless @p[3].nil?
-          else
-            false
-          end
-        end
-
-      end
-
-      return @port
-    end
-
-    def severity
-      @severity = @event.at('severity').inner_text.to_i
-      return @severity
-    end
-
-    def plugin_id
-      @event.at('pluginID').inner_text.to_i
-    end
-
-    def plugin_name
-      i = @event.at('pluginName').inner_text
-      unless (i == "")
-        return @event.at('pluginName').inner_text || "N/A"
-      end
-      false
-    end
-    alias name plugin_name
-
-    def data
-      @event.at('data').inner_text
-    end
-    alias output data
-
-  end
-
 end
