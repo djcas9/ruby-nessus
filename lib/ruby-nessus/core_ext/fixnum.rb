@@ -8,7 +8,7 @@ class Fixnum
     end
   end
   
-  def severity_in_words
+  def in_words
     case self.to_i
     when 0
       return "Informational"

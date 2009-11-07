@@ -2,21 +2,21 @@ $LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
 
 require 'rubygems'
 require 'ruby-nessus'
-require 'pp'
 
 Nessus::XML.new("2test.nessus") do |scan|
 
   #test
   #puts scan.ports
 
-  #puts scan.event_percentage_for('high', true) + "%"
+  #puts scan.event_percentage_for('high', true) #=> 8%
 
-  scan.find_by_hostname(:hostname => '75.28.147.215') do |host|
+  scan.find_by_hostname("75.28.147.215") do |host|
     puts host.hostname
+    puts host.dns_name
     
     host.events do |event|
       next if event.severity != 3
-      puts "Severity: #{event.severity.severity_in_words}"
+      puts "Severity: #{event.severity.in_words}"
       puts "Port: " + event.port
       puts "Port Service: " + event.port.port_service if event.port.port_service
       puts "Port Proto: " + event.port.port_proto if event.port.port_proto

@@ -54,25 +54,8 @@ module Nessus
       hosts
     end
 
-    def hosts_with(options={}, &block)
-      @blah = []
-      @xml.xpath("//ReportHost").each do |host|
-        block.call(Host.new(host)) if block && Host.new(host).event_count >= 10
-      end
-      @blah
-    end
-
     def host_count
       hosts.size
-    end
-
-    def self.number_of_open_ports
-      #@xml.xpath("//ReportHost//HostName" => host).to_s
-      #list.each { |port| yield port } if block_given?
-    end
-
-    def ports
-      @ports = {}
     end
 
     def plugins
@@ -84,8 +67,12 @@ module Nessus
       return @plugins.sort.uniq!
     end
 
-    def ports
-      @xml.xpath("//ReportItem//port").inner_text
+    def unique_ports
+      @ports = []
+      @xml.xpath("//ReportItem//port").each do |port|
+        @ports << port.inner_text
+      end
+      @ports.sort.uniq!
     end
 
     def informational_severity_count
@@ -120,9 +107,9 @@ module Nessus
       end
     end
 
-    def find_by_hostname(options={}, &block)
+    def find_by_hostname(hostname, &block)
       @xml.xpath('//ReportHost[HostName]').each do |host|
-        next unless host.inner_text.match(options[:hostname])
+        next unless host.inner_text.match(hostname)
         block.call(Host.new(host)) if block
       end
     end
@@ -306,24 +293,3 @@ module Nessus
   end
 
 end
-
-# <ReportHost>
-#== HostName
-#== startTime
-#== stopTime
-#== netbios_name
-#== mac_addr
-#== dns_name
-#== os_name
-#== num_ports
-#== num_lo
-#== num_med
-#== num_hi
-## <ReportItem> ## may or may NOT have a reportitem node
-####== port
-####== severity
-####== pluginID
-####== pluginName
-####== data
-## </ReportItem>
-# </ReportHost>

@@ -1,6 +1,6 @@
-require 'ruby-nessus/nbe'
 require 'ruby-nessus/xml'
-require 'ruby-nessus/core_ext/goods'
+require 'ruby-nessus/nbe'
+require 'ruby-nessus/core_ext/fixnum'
 
 module Nessus
 end
