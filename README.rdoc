@@ -51,25 +51,25 @@ You also have the ability to search for particular hostnames. In the near future
 
 There are a bunch of convenient methods added to make reporting a bit easier to produce quickly from a raw scan file.
 
-Nessus::XML.new("blah.nessus") do |scan|
+  Nessus::XML.new("blah.nessus") do |scan|
 
   puts scan.event_percentage_for('low', true) #=> 8%
 
-  puts scan.high_severity_count           # High Severity Event Count
-  puts scan.medium_severity_count         # Medium Severity Event Count
-  puts scan.low_severity_count            # Low Severity Event Count
-  puts scan.informational_severity_count  # Informational Event Count
+    puts scan.high_severity_count           # High Severity Event Count
+    puts scan.medium_severity_count         # Medium Severity Event Count
+    puts scan.low_severity_count            # Low Severity Event Count
+    puts scan.informational_severity_count  # Informational Event Count
 
-  puts scan.total_event_count #=> 3411    # Total Event Count
+    puts scan.total_event_count #=> 3411    # Total Event Count
   
-  puts scan.hosts.count #=> 12
+    puts scan.hosts.count #=> 12
 
-  puts scan.policy_name
-  puts scan.policy_comments unless scan.policy_comments.empty?
+    puts scan.policy_name
+    puts scan.policy_comments unless scan.policy_comments.empty?
 
-  puts scan.plugin_ids.count
+    puts scan.plugin_ids.count
 
-end
+  end
 
 = ToDO
 
