@@ -71,7 +71,7 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 
   end
 
-= ToDO
+= TODO
 
 * Add The Ability to parse the scan configuration and plugin options.
 * Add Support For NBE File Formats.
