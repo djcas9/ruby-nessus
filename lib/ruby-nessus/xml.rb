@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Nessus
   attr_reader :file
 
