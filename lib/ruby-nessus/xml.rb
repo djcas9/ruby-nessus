@@ -22,7 +22,7 @@ module Nessus
     #   Nessus::XML.new(nessus_scan_file)
     #
     def initialize(file, &block)
-      
+
       @file = File.open(file)
       @xml = Nokogiri::XML.parse(@file.read)
 
@@ -99,12 +99,14 @@ module Nessus
     end
 
     def unique_ports
-      @ports = []
-      @xml.xpath("//ReportItem//port").each do |port|
-        @ports << port.inner_text
+      unless @unique_ports
+        @unique_ports = []
+        @xml.xpath("//ReportItem//port").each do |port|
+          @unique_ports << port.inner_text
+        end
+        @unique_ports.uniq!
+        @unique_ports.sort!
       end
-      @ports.uniq!
-      @ports.sort!
     end
 
     def informational_severity_count
@@ -122,7 +124,7 @@ module Nessus
     def low_severity_count
       count_severity[:low].to_i
     end
-    
+
     def total_event_count
       count_severity[:all].to_i
     end
@@ -154,33 +156,35 @@ module Nessus
     private
 
     def count_severity
-      count = {}
-      @informational = 0
-      @low = 0
-      @medium = 0
-      @high = 0
-      @all = 0
+      unless @count
+        @count = {}
+        @informational = 0
+        @low = 0
+        @medium = 0
+        @high = 0
+        @all = 0
 
-      @xml.xpath("//ReportItem//severity").each do |s|
-        case s.inner_text.to_i
-        when 0
-          @informational += 1
-        when 1
-          @low += 1
-        when 2
-          @medium += 1
-        when 3
-          @high += 1
+        @xml.xpath("//ReportItem//severity").each do |s|
+          case s.inner_text.to_i
+          when 0
+            @informational += 1
+          when 1
+            @low += 1
+          when 2
+            @medium += 1
+          when 3
+            @high += 1
+          end
         end
+
+        @count[:informational] = @informational
+        @count[:low] = @low
+        @count[:medium] = @medium
+        @count[:high] = @high
+        @count[:all] = (@informational + @low + @medium + @high)
       end
 
-      count[:informational] = @informational
-      count[:low] = @low
-      count[:medium] = @medium
-      count[:high] = @high
-      count[:all] = (@informational + @low + @medium + @high)
-
-      return count
+      return @count
     end
 
   end
