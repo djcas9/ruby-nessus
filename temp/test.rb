@@ -23,12 +23,12 @@ Nessus::XML.new("1test.nessus") do |scan|
   #
   # puts scan.plugin_selection
 
-  pp scan.hosts
+  pp scan.hosts.join(', ')
   
-  # puts "Hosts:"
-  # scan.hosts do |host|
-  #   puts host
-  # end
+  puts "Hosts:"
+  scan.hosts do |host|
+    puts host
+  end
   
   #puts scan.severities
   
