@@ -8,3 +8,4 @@ tmp/*
 *.swp
 *~
 *.gemspec
+*.gem
