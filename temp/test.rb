@@ -1,32 +1,34 @@
 require '../lib/ruby-nessus'
 require 'pp'
 
-Nessus::XML.new("2test.nessus") do |scan|
+Nessus::XML.new("1test.nessus") do |scan|
 
   #test
   #puts scan.ports
 
-  puts "Report Title: " + scan.report_name
-  puts "Start Time: " + scan.start_time
-  puts "Stop Time: " + scan.stop_time
-  #puts scan.run_time
-  
-  puts "\n"
-  
-  puts "Policy Title: " + scan.policy_name
-  puts "Policy Comments: " + scan.policy_comments unless scan.policy_comments.empty?
-  
-  puts "\n"
+  # puts "Report Title: " + scan.report_name
+  # puts "Start Time: " + scan.start_time
+  # puts "Stop Time: " + scan.stop_time
+  # #puts scan.run_time
+  # 
+  # puts "\n"
+  # 
+  # puts "Policy Title: " + scan.policy_name
+  # puts "Policy Comments: " + scan.policy_comments unless scan.policy_comments.empty?
+  # 
+  # puts "\n"
   
   #
   # Not Working
   #
   # puts scan.plugin_selection
-  puts "Hosts:"
-  scan.hosts do |host|
-    puts host
-    puts "\n"
-  end
+
+  pp scan.hosts
+  
+  # puts "Hosts:"
+  # scan.hosts do |host|
+  #   puts host
+  # end
   
   #puts scan.severities
   

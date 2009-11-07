@@ -5,7 +5,7 @@ module Nessus
 
     def initialize(file, &block)
       @file = File.open(file)
-      @xml = Nokogiri::XML(@file.read)
+      @xml = Nokogiri::XML.parse(@file.read)
 
       block.call(self) if block
     end
@@ -41,6 +41,11 @@ module Nessus
     end
 
     def hosts
+      # hosts = []
+      # @xml.xpath('//ReportHost').each do |report|
+      #   hosts << report
+      # end
+      # hosts
       hosts = []
       @xml.xpath("//ReportHost//HostName").each do |host|
         hosts << host.text if host.text
@@ -52,6 +57,10 @@ module Nessus
     def number_of_open_ports
       #@xml.xpath("//ReportHost//HostName" => host).to_s
       #list.each { |port| yield port } if block_given?
+    end
+    
+    def ports
+      @ports = {}
     end
 
     def plugins
@@ -71,6 +80,19 @@ module Nessus
       @xml.xpath("//ReportItem//severity").text
     end
     
+    private
+    
+    
+    def parse_host()
+      host_data = {}
+      @xml.xpath("//ReportHost//HostName").each do |host|
+        host_data[:start_time] = host.xpath("//ReportHost//startTime").text
+        host_data[:stop_time] = host.xpath("//ReportHost//startTime").text
+      end
+      return host_data
+    end
+    
+    
   end
 
 end
@@ -87,7 +109,7 @@ end
 #== num_lo
 #== num_med
 #== num_hi
-## <ReportItem>
+## <ReportItem> ## may or may NOT have a reportitem node
 ####== port
 ####== severity
 ####== pluginID
