@@ -18,9 +18,9 @@ module Nessus
       components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
 
       return Port.new(
-        components[0].strip,
-        components[1].strip.to_i,
-        components[2].strip
+        components[1].strip,
+        components[2].strip,
+        components[3].strip
       )
     end
 

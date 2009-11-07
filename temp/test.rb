@@ -17,12 +17,9 @@ Nessus::XML.new("2test.nessus") do |scan|
     host.events do |event|
       next if event.severity != 3
       puts "Severity: #{event.severity.in_words}"
-      puts "Port: " + event.port
-      puts "Port Service: " + event.port.port_service if event.port.port_service
-      puts "Port Proto: " + event.port.port_proto if event.port.port_proto
-      puts "Port Type: " + event.port.port_type if event.port.port_type
+      puts "Port: #{event.port}"
       puts "\n"
-      puts "\tData: " + event.output
+      #puts "\tData: " + event.output
     end
   end
 
