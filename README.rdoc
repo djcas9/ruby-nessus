@@ -1,8 +1,6 @@
 = Ruby-Nessus
 * https://github.com/mephux/ruby-nessus
 
-== Description
-
 Ruby-Nessus is a ruby interface for Nessus result data. Currently Ruby-Nessus only supports the .nessus (XML) file format but support for
 .NBE is planned.
 
