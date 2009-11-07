@@ -5,7 +5,9 @@ Ruby-Nessus is a ruby interface for Nessus result data. Currently Ruby-Nessus on
 
 == Code Example:
 
-require 'ruby-nessus'
+The below example illustrates how easy it really is to iterate of result data.
+
+  require 'ruby-nessus'
 
   Nessus::XML.new("blah.nessus") do |scan|
     scan.hosts do |host|
