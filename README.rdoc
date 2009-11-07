@@ -10,18 +10,24 @@ The below example illustrates how easy it really is to iterate of result data.
   require 'ruby-nessus'
 
   Nessus::XML.new("blah.nessus") do |scan|
+    
+    puts scan.report_name               # The Nessus Report Title.
+    puts scan.run_time                  # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
+    puts scan.host_count                # Host Count.
+    puts scan.unique_ports              # All Unique Ports Seen.
+    
     scan.hosts do |host|
-      next if host.event_count.zero?
-      puts host.hostname
-      puts host.event_count
+      next if host.event_count.zero?    # Next Host If Event Count Is Zero.
+      puts host.hostname                # The HostName For The Current Host.
+      puts host.event_count             # The Event Count For The Current Host.
 
       host.events do |event|
-        next if !event.severity.low?
-        puts event.name if event.name
-        puts event.port
-        puts event.severity.in_words
-        puts event.plugin_id
-        puts event.data
+        next if event.severity.low?     # Next Event Is The Event Severity Is Low. (supports high? medium? low?)
+        puts event.name if event.name   # The Event Name If Not Blank.
+        puts event.port                 # The Event Port. (supports .number, .protocol and .service)
+        puts event.severity.in_words    # The Current Event Severity In Words. i.e "High Severity"
+        puts event.plugin_id            # The Nessus Plugin ID.
+        puts event.data                 # Raw Nessus Plugin Output Data.
       end
     end
   end
