@@ -37,9 +37,12 @@ module Nessus
       @xml.xpath("//NessusClientData//Report//policyComments").inner_text
     end
 
-    def plugin_selection
-      ## Not Working
-      @xml.xpath("//PluginSelection").text.split(';')
+    def plugin_ids
+      @plugin_ids = []
+      @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
+        @plugin_ids << id
+      end
+      @plugin_ids
     end
 
     def hosts(&block)
@@ -50,7 +53,7 @@ module Nessus
       end
       hosts
     end
-    
+
     def hosts_with(options={}, &block)
       @blah = []
       @xml.xpath("//ReportHost").each do |host|
@@ -58,7 +61,7 @@ module Nessus
       end
       @blah
     end
-    
+
     def host_count
       hosts.size
     end
@@ -117,12 +120,10 @@ module Nessus
       end
     end
 
-    def find_by_hostname(hostname, &block)
-      @xml.xpath("//ReportHost").each do |host|
-        if host.at('HostName').inner_text == hostname
-          block.call(Host.new(host)) if block
-        end
-        raise "Error: #{hostname} not found."
+    def find_by_hostname(options={}, &block)
+      @xml.xpath('//ReportHost[HostName]').each do |host|
+        next unless host.inner_text.match(options[:hostname])
+        block.call(Host.new(host)) if block
       end
     end
 
@@ -280,7 +281,8 @@ module Nessus
     end
 
     def severity
-      @event.at('severity').inner_text.to_i
+      @severity = @event.at('severity').inner_text.to_i
+      return @severity
     end
 
     def plugin_id

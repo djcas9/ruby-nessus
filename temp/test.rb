@@ -4,16 +4,31 @@ require 'rubygems'
 require 'ruby-nessus'
 require 'pp'
 
-Nessus::XML.new("1test.nessus") do |scan|
+Nessus::XML.new("2test.nessus") do |scan|
 
   #test
   #puts scan.ports
 
-  puts scan.event_percentage_for('informational', true) + "%"
+  #puts scan.event_percentage_for('high', true) + "%"
 
-  # scan.find_by_hostname("74.62.126.80") do |host|
-  #   puts host
-  #   puts host.event_count
+  scan.find_by_hostname(:hostname => '75.28.147.215') do |host|
+    puts host.hostname
+    
+    host.events do |event|
+      next if event.severity != 3
+      puts "Severity: #{severity_in_words(event.severity)}"
+      puts "Port: " + event.port
+      puts "Port Service: " + event.port.port_service if event.port.port_service
+      puts "Port Proto: " + event.port.port_proto if event.port.port_proto
+      puts "Port Type: " + event.port.port_type if event.port.port_type
+      puts "\n"
+      #puts "\tData: " + event.output
+    end
+  end
+
+  #
+  # scan.hosts_with do |host|
+  #   host.event_count
   # end
 
   # puts scan.high_severity_count
@@ -39,46 +54,32 @@ Nessus::XML.new("1test.nessus") do |scan|
   # puts "\n"
 
   #
-  # Not Working
+  # Plugin Ids Used In Scan
   #
-  # puts scan.plugin_selection
-  
-  scan.hosts_with do |host|
-    host.event_count
-  end
-  
-
-  puts "Hosts:"
-  scan.hosts do |host|
+  # pp scan.plugin_ids.count
 
 
-    #   unless host.high_severity_events.blank?
-    #
-    #     puts host.hostname
-    #
-    #     puts host.start_time
-    #     puts host.event_count
-    #     puts host.stop_time
-    #
-    #     puts host.netbios_name
-    #
-    #     puts host.low_severity_events
-    #
-    #     host.events do |event|
-    #       puts event.severity
-    #       puts "\n"
-    #       puts "Port: " + event.port
-    #       puts "Port Service: " + event.port.port_service if event.port.port_service
-    #       puts "Port Proto: " + event.port.port_proto if event.port.port_proto
-    #       puts "Port Type: " + event.port.port_type if event.port.port_type
-    #       puts "\n"
-    #       puts "Port: " + event.port(:proto => true) if event.port(:proto => true)
-    #       puts "Port: " + event.port_service if event.port_service
-    #       puts "\tData: " + event.output
-    #     end
-    #
-    #   end
-    #
-  end
+  # puts "Hosts:"
+  # scan.hosts do |host|
+  # 
+  #   puts host.hostname
+  # 
+  #   puts host.start_time
+  #   puts host.stop_time
+  # 
+  #   puts host.netbios_name
+  # 
+  #   host.events do |event|
+  #     puts event.severity
+  #     puts "\n"
+  #     puts "Port: " + event.port
+  #     puts "Port Service: " + event.port.port_service if event.port.port_service
+  #     puts "Port Proto: " + event.port.port_proto if event.port.port_proto
+  #     puts "Port Type: " + event.port.port_type if event.port.port_type
+  #     puts "\n"
+  #     puts "\tData: " + event.output
+  #   end
+  # 
+  # end
 
 end
