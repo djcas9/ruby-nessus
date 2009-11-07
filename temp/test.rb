@@ -22,7 +22,7 @@ Nessus::XML.new("2test.nessus") do |scan|
       puts "Port Proto: " + event.port.port_proto if event.port.port_proto
       puts "Port Type: " + event.port.port_type if event.port.port_type
       puts "\n"
-      #puts "\tData: " + event.output
+      puts "\tData: " + event.output
     end
   end
 

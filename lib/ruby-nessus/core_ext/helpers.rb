@@ -1,5 +1,5 @@
 class Fixnum
-  
+
   def blank?
     if (self == 0)
       return true
@@ -7,7 +7,7 @@ class Fixnum
       return false
     end
   end
-  
+
   def in_words
     case self.to_i
     when 0
@@ -20,6 +20,13 @@ class Fixnum
       return "High Severity"
     end
   end
-  
+
 end
 
+class String
+
+  def blank?
+    respond_to?(:empty?) ? empty? : !self
+  end
+
+end

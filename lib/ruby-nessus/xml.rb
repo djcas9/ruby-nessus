@@ -1,10 +1,26 @@
 require 'nokogiri'
 
 module Nessus
+  # File to parse
   attr_reader :file
 
   class XML
-
+    
+    #
+    # Creates a new .Nessus (XML) object to be parser
+    #
+    # @param [String] file The Nessus xml results file to parse.
+    #
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created XML object.
+    # @yieldparam [Program] prog The newly created program object.
+    #
+    # @raise [ProgramNotFound] Specifies the given path was not a valid
+    #                          file.
+    #
+    # @example
+    #   Program.new('/usr/bin/ls')
+    #
     def initialize(file, &block)
       @file = File.open(file)
       @xml = Nokogiri::XML.parse(@file.read)
@@ -108,6 +124,7 @@ module Nessus
     end
 
     def find_by_hostname(hostname, &block)
+      raise "Error: hostname can't be blank." if hostname.blank?
       @xml.xpath('//ReportHost[HostName]').each do |host|
         next unless host.inner_text.match(hostname)
         block.call(Host.new(host)) if block
