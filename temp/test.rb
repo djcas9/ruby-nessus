@@ -39,18 +39,18 @@ end
 #   puts scan.stop_time
 #   puts scan.run_time
 # 
-#   # scan.find_by_hostname("75.28.147.129") do |host|
-#   #   puts host.scan_start_time
-#   #   puts host.scan_stop_time
-#   #   puts host.scan_run_time
-#   #   host.events do |event|
-#   #     next if event.severity != 3
-#   #     puts "Severity: #{event.severity.in_words}"
-#   #     puts "Port: #{event.port}"
-#   #     puts "\n"
-#   #     #puts "\tData: " + event.output
-#   #   end
-#   # end
+  # scan.find_by_hostname("75.28.147.129") do |host|
+  #   puts host.scan_start_time
+  #   puts host.scan_stop_time
+  #   puts host.scan_run_time
+  #   host.events do |event|
+  #     next if event.severity != 3
+  #     puts "Severity: #{event.severity.in_words}"
+  #     puts "Port: #{event.port}"
+  #     puts "\n"
+  #     #puts "\tData: " + event.output
+  #   end
+  # end
 # 
 #   #
 #   # scan.hosts_with do |host|

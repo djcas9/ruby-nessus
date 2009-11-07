@@ -32,6 +32,22 @@ The below example illustrates how easy it really is to iterate of result data.
     end
   end
 
+
+You also have the ability to search for particular hostname.
+
+  scan.find_by_hostname("127.0.0.1") do |host|
+    
+    puts host.scan_start_time
+    puts host.scan_stop_time
+    puts host.scan_run_time
+    
+    host.events do |event|
+      puts event.severity.in_words
+      puts event.port
+      puts event.output
+    end
+  end
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
