@@ -87,29 +87,82 @@ module Nessus
       @os_name ||= @host.at('os_name').inner_text
     end
 
-    # Return the Host OS Name.
-    # @return [String]
-    #   Return the Host OS Name
+    # Return the scanned port count for a given host object.
+    # @return [Integer]
+    #   Return the Scanned Port Count For A Given Host Object.
     # @example
-    #   host.dns_name #=> "Microsoft Windows 2000, Microsoft Windows Server 2003"
+    #   host.scanned_ports_count #=> 213
     def scanned_ports_count
       @scanned_ports ||= false_if_zero(
         @host.at('num_ports').inner_text.to_i
       )
     end
+    
+    def informational_severity_events(&block)
+      unless @informational_severity_events
+        @informational_severity_events = []
+        @informational_severity_count = 0
 
-    def informational_events
-      @informational_events ||= @informational_events ||= @host.at('num_lo').inner_text.to_i
+        @host.xpath("//ReportItem").each do |event|
+          next if event.at('severity').inner_text.to_i != 0
+          @informational_severity_events << Event.new(event)
+          @informational_severity_count += 1
+        end
+
+        @informational_severity_count = @host.at('num_lo').inner_text.to_i
+      end
+
+      @informational_severity_events.each(&block)
+      return @informational_severity_count
     end
 
-    def low_severity_events
-      @low_severity_events ||= @host.at('num_lo').inner_text.to_i
+    # Return the low severity event count for a given host object.
+    # @return [Integer]
+    #   Return the low severity event count for a given host object.
+    # @example
+    #   host.low_severity_events_count #=> 53443
+    def low_severity_events(&block)
+      unless @low_severity_events
+        @low_severity_events = []
+
+        @host.xpath("//ReportItem").each do |event|
+          next if event.at('severity').inner_text.to_i != 1
+          @low_severity_events << Event.new(event)
+        end
+
+        @low_severity_count = @host.at('num_lo').inner_text.to_i
+      end
+
+      @low_severity_events.each(&block)
+      return @low_severity_count
     end
 
-    def medium_severity_events
-      @medium_severity_events ||= @host.at('num_med').inner_text.to_i
+    # Return the medium severity event count for a given host object.
+    # @return [Integer]
+    #   Return the low medium event count for a given host object.
+    # @example
+    #   host.medium_severity_events_count #=> 43
+    def medium_severity_events(&block)
+      unless @medium_severity_events
+        @medium_severity_events = []
+
+        @host.xpath("//ReportItem").each do |event|
+          next if event.at('severity').inner_text.to_i != 2
+          @medium_severity_events << Event.new(event)
+        end
+
+        @high_severity_count = @host.at('num_med').inner_text.to_i
+      end
+
+      @medium_severity_events.each(&block)
+      return @high_severity_count
     end
 
+    # Return the medium severity event count for a given host object.
+    # @return [Integer]
+    #   Return the low medium event count for a given host object.
+    # @example
+    #   host.medium_severity_events_count #=> 43
     def high_severity_events(&block)
       unless @high_severity_events
         @high_severity_events = []
@@ -127,7 +180,7 @@ module Nessus
     end
 
     def event_count
-      (informational_events + low_severity_events + medium_severity_events + high_severity_events).to_i
+      (informational_severity_events + low_severity_events + medium_severity_events + high_severity_events).to_i
     end
 
     def events(&block)
