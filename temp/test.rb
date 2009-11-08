@@ -24,8 +24,8 @@ Nessus::XML.new("1.nessus") do |scan|
 
     host.low_severity_events do |high|
       puts high.name if high.name
-      #puts high.port.number
-      puts high.data if high.data
+      puts high.port.number
+      #puts high.data if high.data
     end
 
   end

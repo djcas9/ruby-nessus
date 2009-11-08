@@ -73,9 +73,9 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
         
       # high_severity_events, medium_severity_events, low_severity_events and informational_severity_events
       host.high_severity_events do |high|
-        puts high.name if high.name
         puts high.port
-        puts high.data
+        puts high.name if high.name
+        puts high.data if high.data
       end
       
     end

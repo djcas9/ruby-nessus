@@ -15,7 +15,7 @@ module Nessus
     # Port.new("ssh",22,"tcp")
     def initialize(service,number,protocol)
       @service = service
-      @number = number
+      @number = (number || 0)
       @protocol = protocol
     end
 
@@ -27,6 +27,7 @@ module Nessus
     def Port.parse(str)
       begin
         components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
+        
 
         return Port.new(
         components[1].strip,
@@ -34,10 +35,8 @@ module Nessus
         components[3].strip
         )
 
-      rescue
-        return str
       end
-      
+
     end
 
     # Return true iF port protocol Ii tcp.
