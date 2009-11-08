@@ -71,7 +71,14 @@ module Nessus
     #   event.output        #=> "..."
     #   event.data          #=> "..."
     def data
-      @data ||= @event.at('data').inner_text
+      d = @event.at('data').inner_text
+      
+      @data ||= unless d.empty?
+                         @event.at('data').inner_text || "N/A"
+                       else
+                         false
+                       end
+      return @data
     end
     alias output data
 

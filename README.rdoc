@@ -67,7 +67,19 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 
     puts scan.policy_name
     puts scan.policy_comments unless scan.policy_comments.empty?
-
+    
+    scan.hosts do |host|
+      puts host.hostname
+        
+      # high_severity_events, medium_severity_events, low_severity_events and informational_severity_events
+      host.high_severity_events do |high|
+        puts high.name if high.name
+        puts high.port
+        puts high.data
+      end
+      
+    end
+    
   end
   
 == Requirements
