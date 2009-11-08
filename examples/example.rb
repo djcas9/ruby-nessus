@@ -10,7 +10,7 @@ Nessus::XML.new("example.nessus") do |scan|
   
   puts "Title: #{scan.title}"
   puts "Policy: #{puts scan.policy_name}"
-  puts "Policy Description:\n#{puts scan.policy_name}"
+  puts "Policy Description: #{puts scan.policy_name}"
   puts "Start Time: #{scan.start_time}"
   puts "Stop Time: #{scan.stop_time}"
   puts "Run Time: #{scan.runtime}"
