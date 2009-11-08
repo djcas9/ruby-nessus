@@ -22,7 +22,7 @@ begin
     gem.add_development_dependency "nokogiri"
     gem.add_development_dependency "yard", ">=0.2.3.5"
   end
-  
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
