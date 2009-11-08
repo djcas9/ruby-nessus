@@ -18,7 +18,7 @@ begin
     gem.email = "dustin.webber@gmail.com"
     gem.homepage = "http://github.com/mephux/ruby-nessus"
     gem.authors = ["Dustin Willis Webber"]
-    gem.add_extra_dependency "nokogiri", ">=1.4.0"
+    gem.add_dependency "nokogiri", ">=1.4.0"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "yard", ">=0.2.3.5"
   end
