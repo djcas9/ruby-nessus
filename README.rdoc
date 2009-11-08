@@ -4,7 +4,11 @@
 
 Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations. Please remember to submit bugs and request features if needed.
 
-== Synopsis:
+== Install
+
+  sudo gem install ruby-nessus
+
+== Usage & Examples
 
 The below example illustrates how easy it really is to iterate of result data.
 
