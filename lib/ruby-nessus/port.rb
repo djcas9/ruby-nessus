@@ -1,22 +1,27 @@
 module Nessus
   class Port
+
     # Port Service
     attr_reader :service
     # Port number
     attr_reader :number
     # Port Protocol
     attr_reader :protocol
+    # Raw output string from nessus
+    attr_reader :raw_string
 
     # Creates A New Port Object
     # @param [String] service The Port Service.
     # @param [Integer] number The Port number.
     # @param [String] protocol The Port protocol.
+    # @param [String] raw output string from nessus.
     # @example
     # Port.new("ssh",22,"tcp")
-    def initialize(service,number,protocol)
+    def initialize(service,number,protocol,raw_string)
       @service = service
-      @number = (number || 0)
+      @number = number
       @protocol = protocol
+      @raw_string = raw_string
     end
 
     # Parse A passed port string and return a Port Object.
@@ -26,14 +31,14 @@ module Nessus
     #   Port.parse(port)
     def Port.parse(str)
       begin
+        @full_port = str
         components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
-        
 
-        return Port.new(
-        components[1].strip,
-        components[2].strip,
-        components[3].strip
-        )
+        if components
+          return Port.new(components[1].strip, components[2].strip, components[3].strip, str)
+        else
+          return Port.new(false, false, false, str)
+        end
 
       end
 
@@ -59,7 +64,22 @@ module Nessus
     # @example
     #   port.to_s #=> https (443/tcp)
     def to_s
-      "#{@service} (#{@number}/#{@protocol})"
+      if @service && @number && @protocol
+        "#{@service} (#{@number}/#{@protocol})"
+      else
+        "#{@raw_string}"
+      end
+    end
+
+    # Return false if the port object number is nil
+    # @return [Object, Boolean]
+    #   Return false if the port object number is nil
+    def number
+      if @number
+        return @number
+      else
+        false
+      end
     end
 
   end
