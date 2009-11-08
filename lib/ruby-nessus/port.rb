@@ -27,6 +27,7 @@ module Nessus
       rescue
         return str
       end
+      
     end
 
     def tcp?
