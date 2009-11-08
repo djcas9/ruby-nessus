@@ -8,10 +8,7 @@ require 'ruby-nessus'
 
 Nessus::XML.new("example.nessus") do |scan|
   
-  
-  puts scan.runtime
-  
-  puts "Title: #{scan.report_name}"
+  puts "Title: #{scan.title}"
   puts "Policy: #{puts scan.policy_name}"
   puts "Policy Description:\n#{puts scan.policy_name}"
   puts "Start Time: #{scan.start_time}"
