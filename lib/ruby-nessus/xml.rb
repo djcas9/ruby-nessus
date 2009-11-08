@@ -57,8 +57,8 @@ module Nessus
     # @return [String]
     #   The Nessus Scan Run Time
     # @example
-    #   scan.stop_time #=> '2 hours 5 minutes and 16 seconds'
-    def run_time
+    #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
+    def runtime
       h = ("#{Time.parse(stop_time).strftime('%H').to_i - Time.parse(start_time).strftime('%H').to_i}").gsub('-', '')
       m = ("#{Time.parse(stop_time).strftime('%M').to_i - Time.parse(start_time).strftime('%M').to_i}").gsub('-', '')
       s = ("#{Time.parse(stop_time).strftime('%S').to_i - Time.parse(start_time).strftime('%S').to_i}").gsub('-', '')

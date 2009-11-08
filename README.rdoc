@@ -83,7 +83,7 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
   end
   
 == Requirements
-* ruby 1.8 or 1.9
+* Ruby 1.8 or 1.9
 * Nokogiri http://github.com/tenderlove/nokogiri
 
 == Todo
