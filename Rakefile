@@ -19,7 +19,7 @@ begin
     gem.homepage = "http://github.com/mephux/ruby-nessus"
     gem.authors = ["Dustin Willis Webber"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "nokogiri"
+    gem.add_development_dependency "nokogiri", ">=1.3.3"
     gem.add_development_dependency "yard", ">=0.2.3.5"
   end
   Jeweler::GemcutterTasks.new
