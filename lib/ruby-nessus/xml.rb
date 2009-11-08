@@ -214,13 +214,11 @@ module Nessus
     def event_percentage_for(type, round_percentage=false)
       @sc ||= count_severity
       if %W(high medium low informational all).include?(type)
-        c = @sc[:"#{type}"].to_f
-        t = @sc[:all].to_f
-        c1 = (c / t) * 100
+        calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
         if round_percentage
-          return "#{c1.round}"
+          return "#{calc.round}"
         else
-          return "#{c1}"
+          return "#{calc}"
         end
       else
         raise "Error: #{type} is not an acceptable severity. Possible options include: all, high, medium, low and informational."
@@ -256,7 +254,6 @@ module Nessus
         @low = 0
         @medium = 0
         @high = 0
-        @all = 0
 
         @xml.xpath("//ReportItem//severity").each do |s|
           case s.inner_text.to_i
@@ -270,12 +267,12 @@ module Nessus
             @high += 1
           end
         end
-
-        @count[:informational] = @informational
-        @count[:low] = @low
-        @count[:medium] = @medium
-        @count[:high] = @high
-        @count[:all] = (@informational + @low + @medium + @high)
+        
+        @count = { :informational => @informational, 
+          :low => @low, 
+          :medium => @medium, 
+          :high => @high, 
+          :all => (@informational + @low + @medium + @high) }
       end
 
       return @count
