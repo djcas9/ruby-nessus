@@ -16,7 +16,7 @@ module Nessus
     # @param [String] protocol The Port protocol.
     # @param [String] raw output string from nessus.
     # @example
-    # Port.new("ssh",22,"tcp")
+    # Port.new("ssh",22,"tcp", str)
     def initialize(service,number,protocol,raw_string)
       @service = service
       @number = number
@@ -72,7 +72,7 @@ module Nessus
     end
 
     # Return false if the port object number is nil
-    # @return [Object, Boolean]
+    # @return [Boolean]
     #   Return false if the port object number is nil
     def number
       if @number
