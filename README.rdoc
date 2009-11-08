@@ -100,6 +100,11 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
+== Props
+
+Huge props to postmodern for helping me refactor! Check out his projects:
+* http://github.com/postmodern
+
 == Copyright
 
 Copyright (c) 2009 Dustin Willis Webber. See LICENSE for details.

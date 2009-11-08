@@ -1,7 +1,6 @@
 $LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
 
 #!/usr/bin/env ruby
-require 'rubygems'
 require 'ruby-nessus'
 
 Nessus::XML.new("example.nessus") do |scan|
