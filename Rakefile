@@ -13,8 +13,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ruby-nessus"
-    gem.summary = %Q{A ruby interface for nessus scan data.}
-    gem.description = %Q{A ruby interface for nessus scan data.}
+    gem.summary = %Q{Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner.}
+    gem.description = %Q{Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations.}
     gem.email = "dustin.webber@gmail.com"
     gem.homepage = "http://github.com/mephux/ruby-nessus"
     gem.authors = ["Dustin Willis Webber"]

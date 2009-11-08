@@ -21,7 +21,7 @@ class Fixnum
   def in_words
     case self
     when 0
-      return "Informational"
+      return "Informational Severity"
     when 1
       return "Low Severity"
     when 2

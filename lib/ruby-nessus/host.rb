@@ -93,9 +93,7 @@ module Nessus
     # @example
     #   host.scanned_ports_count #=> 213
     def scanned_ports_count
-      @scanned_ports ||= false_if_zero(
-        @host.at('num_ports').inner_text.to_i
-      )
+      @scanned_ports ||= @host.at('num_ports').inner_text.to_i
     end
     
     # Returns All Informational Event Objects For A Given Host.
