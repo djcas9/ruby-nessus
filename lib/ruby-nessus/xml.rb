@@ -34,6 +34,8 @@ module Nessus
     def report_name
       @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text
     end
+    alias name report_name
+    alias title report_name
     
     # Return the scan start time.
     # @return [DateTime]
@@ -83,7 +85,7 @@ module Nessus
     # @return [Array]
     #   The Nessus Scan Plugin Ids
     # @example
-    #   scan.policy_name #=> [1234,2343,9742,5452,5343,2423,1233]
+    #   scan.plugin_ids #=> [1234,2343,9742,5452,5343,2423,1233]
     def plugin_ids
       unless @plugin_ids
         @plugin_ids = []
@@ -100,7 +102,7 @@ module Nessus
     # @return [Array]
     #   The Nessus Scan Plugin Names
     # @example
-    #   scan.policy_name #=> ["PHP < 5.2.1 Multiple Vulnerabilities", "PHP < 4.4.1 / 5.0.6 Multiple Vulnerabilities"]
+    #   scan.plugins #=> ["PHP < 5.2.1 Multiple Vulnerabilities", "PHP < 4.4.1 / 5.0.6 Multiple Vulnerabilities"]
     def plugins
       unless @plugins
         # get elements with attribute:

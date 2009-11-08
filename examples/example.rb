@@ -8,6 +8,9 @@ require 'ruby-nessus'
 
 Nessus::XML.new("example.nessus") do |scan|
   
+  
+  puts scan.runtime
+  
   puts "Title: #{scan.report_name}"
   puts "Policy: #{puts scan.policy_name}"
   puts "Policy Description:\n#{puts scan.policy_name}"
@@ -16,9 +19,9 @@ Nessus::XML.new("example.nessus") do |scan|
   puts "Run Time: #{scan.runtime}"
   puts "Host Count: #{scan.host_count}"
   puts "Percentage Of Medium Events: #{scan.event_percentage_for('medium', true)}%"
-
+  
+  
   scan.hosts do |host|
-    next if host.event_count.zero?
     puts "Hostname: #{host.hostname}"
     puts "Open Ports: #{host.scanned_ports_count}"
     puts "High Severity Events: #{host.high_severity_events}"
