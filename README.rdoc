@@ -88,6 +88,7 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 
 == Todo
 * Add The Ability to parse the scan configuration and plugin options.
+* Building XML (.nessus) files configurations
 * Add Support For NBE File Formats.
 * Add Complex Searching. 
 
