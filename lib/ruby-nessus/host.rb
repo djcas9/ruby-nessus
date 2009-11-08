@@ -1,25 +1,49 @@
 module Nessus
   class Host
+    # Host
     attr_reader :host
 
+    # Creates A New Host Object
+    # @param [Object] Host Object
+    # @example
+    # Host.new(object)
     def initialize(host)
       @host = host
     end
 
+    # Return the Host Object hostname.
+    # @return [String]
+    #   The Host Object Hostname
+    # @example
+    #   host.hostname #=> "127.0.0.1"
     def hostname
       @hostname ||= @host.at('HostName').inner_text
     end
 
+    # Return the host scan start time.
+    # @return [DateTime]
+    #   The Host Scan Start Time
+    # @example
+    #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_start_time
       @host_scan_time = @host.at('startTime').inner_text
     end
 
+    # Return the host scan stop time.
+    # @return [DateTime]
+    #   The Host Scan Stop Time
+    # @example
+    #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_stop_time
       @host_scan_time = @host.at('stopTime').inner_text
     end
     
+    # Return the host run time.
+    # @return [String]
+    #   The Host Scan Run Time
+    # @example
+    #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
     def scan_run_time
-      # Example: Fri Apr  3 23:36:54 2009
       if scan_start_time.empty? | scan_stop_time.empty?; return "N/A"; end
       h = ("#{Time.parse(scan_stop_time).strftime('%H').to_i - Time.parse(scan_start_time).strftime('%H').to_i}").gsub('-', '')
       m = ("#{Time.parse(scan_stop_time).strftime('%M').to_i - Time.parse(scan_start_time).strftime('%M').to_i}").gsub('-', '')
@@ -27,23 +51,48 @@ module Nessus
       return "#{h} hours #{m} minutes and #{s} seconds"
     end
 
+    # Return the Host Netbios Name.
+    # @return [String]
+    #   The Host Netbios Name
+    # @example
+    #   host.netbios_name #=> "SOMENAME4243"
     def netbios_name
       @netbios_name ||= @host.at('netbios_name').inner_text
     end
 
+    # Return the Host Mac Address.
+    # @return [String]
+    #   Return the Host Mac Address
+    # @example
+    #   host.mac_addr #=> "00:11:22:33:44:55"
     def mac_addr
       @mac_addr ||= @host.at('mac_addr').inner_text
     end
 
+    # Return the Host DNS Name.
+    # @return [String]
+    #   Return the Host DNS Name
+    # @example
+    #   host.dns_name #=> "snorby.org"
     def dns_name
       @dns_name ||= @host.at('dns_name').inner_text
     end
 
+    # Return the Host OS Name.
+    # @return [String]
+    #   Return the Host OS Name
+    # @example
+    #   host.dns_name #=> "Microsoft Windows 2000, Microsoft Windows Server 2003"
     def os_name
       @os_name ||= @host.at('os_name').inner_text
     end
 
-    def scanned_ports
+    # Return the Host OS Name.
+    # @return [String]
+    #   Return the Host OS Name
+    # @example
+    #   host.dns_name #=> "Microsoft Windows 2000, Microsoft Windows Server 2003"
+    def scanned_ports_count
       @scanned_ports ||= false_if_zero(
         @host.at('num_ports').inner_text.to_i
       )

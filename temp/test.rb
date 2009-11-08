@@ -19,6 +19,8 @@ Nessus::XML.new("1.nessus") do |scan|
     next if host.event_count.zero?
     puts host.hostname
     puts host.event_count
+    
+    puts host.os_name
 
     host.events do |event|
       next if !event.severity.high?
