@@ -19,22 +19,13 @@ Nessus::XML.new("1.nessus") do |scan|
     next if host.event_count.zero?
     puts host.hostname
     puts host.event_count
-    
+
     puts "--- #{host.informational_severity_events}"
-    
+
     host.high_severity_events do |high|
       puts high.name if high.name
       puts high.port
     end
-
-    # host.events do |event|
-    #   next if !event.severity.high?
-    #   puts event.name
-    #   # puts event.name if event.name
-    #   # puts event.severity.in_words
-    #   # puts event.plugin_id
-    #   # puts event.data
-    # end
 
   end
 end
