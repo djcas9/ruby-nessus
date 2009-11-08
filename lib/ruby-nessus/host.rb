@@ -98,6 +98,16 @@ module Nessus
       )
     end
     
+    # Returns All Informational Event Objects For A Given Host.
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Event object.
+    # @yieldparam [EVENT] prog The newly created Event object.
+    # @return [Integer]
+    #   Return The Informational Event Count For A Given Host.
+    # @example
+    #   host.informational_severity_events do |info|
+    #     puts info.name if info.name
+    #   end
     def informational_severity_events(&block)
       unless @informational_severity_events
         @informational_severity_events = []
@@ -116,11 +126,16 @@ module Nessus
       return @informational_severity_count
     end
 
-    # Return the low severity event count for a given host object.
+    # Returns All Low Event Objects For A Given Host.
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Event object.
+    # @yieldparam [EVENT] prog The newly created Event object.
     # @return [Integer]
-    #   Return the low severity event count for a given host object.
+    #   Return The Low Event Count For A Given Host.
     # @example
-    #   host.low_severity_events_count #=> 53443
+    #   host.low_severity_events do |low|
+    #     puts low.name if low.name
+    #   end
     def low_severity_events(&block)
       unless @low_severity_events
         @low_severity_events = []
@@ -137,11 +152,16 @@ module Nessus
       return @low_severity_count
     end
 
-    # Return the medium severity event count for a given host object.
+    # Returns All Medium Event Objects For A Given Host.
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Event object.
+    # @yieldparam [EVENT] prog The newly created Event object.
     # @return [Integer]
-    #   Return the low medium event count for a given host object.
+    #   Return The Medium Event Count For A Given Host.
     # @example
-    #   host.medium_severity_events_count #=> 43
+    #   host.medium_severity_events do |medium|
+    #     puts medium.name if medium.name
+    #   end
     def medium_severity_events(&block)
       unless @medium_severity_events
         @medium_severity_events = []
@@ -158,11 +178,16 @@ module Nessus
       return @high_severity_count
     end
 
-    # Return the medium severity event count for a given host object.
+    # Returns All High Event Objects For A Given Host.
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Event object.
+    # @yieldparam [EVENT] prog The newly created Event object.
     # @return [Integer]
-    #   Return the low medium event count for a given host object.
+    #   Return The High Event Count For A Given Host.
     # @example
-    #   host.medium_severity_events_count #=> 43
+    #   host.high_severity_events do |high|
+    #     puts high.name if high.name
+    #   end
     def high_severity_events(&block)
       unless @high_severity_events
         @high_severity_events = []
@@ -179,10 +204,24 @@ module Nessus
       return @high_severity_count
     end
 
+    # Return the total event count for a given host.
+    # @return [Integer]
+    #   Return the total event count for a given host.
+    # @example
+    #   host.event_count #=> 3456
     def event_count
       (informational_severity_events + low_severity_events + medium_severity_events + high_severity_events).to_i
     end
 
+    # Creates a new Event object to be parser
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Event object.
+    # @yieldparam [EVENT] prog The newly created Event object.
+    # @example
+    #   host.events do |event|
+    #     puts event.name if event.name
+    #     puts event.port
+    #   end
     def events(&block)
       @host.xpath("//ReportItem").each do |event|
         block.call(Event.new(event)) if block
