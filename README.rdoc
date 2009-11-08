@@ -6,6 +6,14 @@ Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ru
 
 == Install
 
+Make sure you have gemcutter installed.
+
+  sudo gem update --system
+  sudo gem install gemcutter
+  gem tumble
+
+Then install Ruby-Nessus
+
   sudo gem install ruby-nessus
 
 == Usage & Examples
