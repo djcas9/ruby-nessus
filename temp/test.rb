@@ -21,9 +21,9 @@ Nessus::XML.new("1.nessus") do |scan|
     puts host.event_count
 
     host.events do |event|
-      next if !event.severity.low?
+      next if !event.severity.high?
+      puts event.name
       # puts event.name if event.name
-      puts event.port.protocol
       # puts event.severity.in_words
       # puts event.plugin_id
       # puts event.data

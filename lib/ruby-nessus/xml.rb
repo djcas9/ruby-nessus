@@ -29,27 +29,35 @@ module Nessus
     # Return the nessus report title.
     # @return [String]
     #   The Nessus Report Title
+    # @example
+    #   scan.report_name #=> "My Super Cool Nessus Report"
     def report_name
       @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text
     end
     
-    # Return the scan start time. Example: Fri Apr  3 23:36:54 2009
+    # Return the scan start time.
     # @return [DateTime]
     #   The Nessus Scan Start Time
+    # @example
+    #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
     def start_time
       @start_time = @xml.xpath("//NessusClientData//Report//StartTime").inner_text
     end
 
-    # Return the scan stop time. Example: Fri Apr  3 23:36:54 2009
+    # Return the scan stop time.
     # @return [DateTime]
     #   The Nessus Scan Stop Time
+    # @example
+    #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
     def stop_time
       @stop_time = @xml.xpath("//NessusClientData//Report//StopTime").inner_text
     end
 
-    # Return the scan run time. Example: 2 hours 5 minutes and 16 seconds
+    # Return the scan run time.
     # @return [String]
     #   The Nessus Scan Run Time
+    # @example
+    #   scan.stop_time #=> '2 hours 5 minutes and 16 seconds'
     def run_time
       h = ("#{Time.parse(stop_time).strftime('%H').to_i - Time.parse(start_time).strftime('%H').to_i}").gsub('-', '')
       m = ("#{Time.parse(stop_time).strftime('%M').to_i - Time.parse(start_time).strftime('%M').to_i}").gsub('-', '')
@@ -74,6 +82,8 @@ module Nessus
     # Returns and array of the plugin ids userd for the passed .nessus scan.
     # @return [Array]
     #   The Nessus Scan Plugin Ids
+    # @example
+    #   scan.policy_name #=> [1234,2343,9742,5452,5343,2423,1233]
     def plugin_ids
       unless @plugin_ids
         @plugin_ids = []
@@ -89,6 +99,8 @@ module Nessus
     # Returns and array of the plugin names userd for the passed .nessus scan.
     # @return [Array]
     #   The Nessus Scan Plugin Names
+    # @example
+    #   scan.policy_name #=> ["PHP < 5.2.1 Multiple Vulnerabilities", "PHP < 4.4.1 / 5.0.6 Multiple Vulnerabilities"]
     def plugins
       unless @plugins
         # get elements with attribute:
@@ -125,6 +137,8 @@ module Nessus
     # Return the nessus scan host count.
     # @return [Integer]
     #   The Nessus Scan Host Count
+    # @example
+    #   scan.host_count #=> 23
     def host_count
       hosts.size
     end
@@ -147,6 +161,8 @@ module Nessus
     # Return the informational severity count.
     # @return [Integer]
     #   The Informational Severity Count
+    # @example
+    #   scan.informational_severity_count #=> 1203
     def informational_severity_count
       count_severity[:informational].to_i
     end
@@ -154,6 +170,8 @@ module Nessus
     # Return the High severity count.
     # @return [Integer]
     #   The High Severity Count
+    # @example
+    #   scan.high_severity_count #=> 10
     def high_severity_count
       count_severity[:high].to_i
     end
@@ -161,6 +179,8 @@ module Nessus
     # Return the Medium severity count.
     # @return [Integer]
     #   The Medium Severity Count
+    # @example
+    #   scan.medium_severity_count #=> 234
     def medium_severity_count
       count_severity[:medium].to_i
     end
@@ -168,6 +188,8 @@ module Nessus
     # Return the Low severity count.
     # @return [Integer]
     #   The Low Severity Count
+    # @example
+    #   scan.low_severity_count #=> 114
     def low_severity_count
       count_severity[:low].to_i
     end
@@ -175,6 +197,8 @@ module Nessus
     # Return the Total severity count. [high, medium, low, informational]
     # @return [Integer]
     #   The Total Severity Count
+    # @example
+    #   scan.total_event_count #=> 1561
     def total_event_count
       count_severity[:all].to_i
     end
@@ -202,7 +226,16 @@ module Nessus
         raise "Error: #{type} is not an acceptable severity. Possible options include: all, high, medium, low and informational."
       end
     end
-
+    
+    # Creates a new Host object to be parser from a passed search param.
+    # @param [String] hostname the hostname to build a Host object for.
+    # @yield [prog] If a block is given, it will be passed the newly
+    #               created Host object.
+    # @yieldparam [XML] prog The newly created Host object.
+    # @example
+    #   scan.find_by_hostname('127.0.0.1') do |host|
+    #     puts host.hostname
+    #   end
     def find_by_hostname(hostname, &block)
       raise "Error: hostname can't be blank." if hostname.blank?
       @xml.xpath('//ReportHost[HostName]').each do |host|
@@ -213,6 +246,9 @@ module Nessus
 
     private
 
+    # Calculates an event hash of totals for severity counts.
+    # @return [hash]
+    #   The Event Totals For Severity
     def count_severity
       unless @count
         @count = {}
