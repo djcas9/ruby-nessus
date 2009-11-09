@@ -51,49 +51,49 @@ The below example illustrates how easy it really is to iterate of result data.
 You also have the ability to search for particular hostnames. In the near future I plan to add the ability to pass the hosts block a hash of options for more complex searches.
 
   scan.find_by_hostname("127.0.0.1") do |host|
-    
+
     puts host.scan_start_time
     puts host.scan_stop_time
     puts host.scan_runtime
-    
+
     host.events do |event|
       puts event.severity.in_words
       puts event.port
-      puts event.output
+      puts event.data if event.data
     end
-    
+
   end
 
 
 There are a bunch of convenient methods added to make reporting a bit easier to produce quickly from a raw scan file.
 
-  Nessus::XML.new("blah.nessus") do |scan|
+  Nessus::XML.new("example.nessus") do |scan|
 
     puts scan.event_percentage_for('low', true) #=> 8%
 
     puts scan.high_severity_count           # High Severity Event Count
     puts scan.medium_severity_count         # Medium Severity Event Count
     puts scan.low_severity_count            # Low Severity Event Count
-    puts scan.informational_severity_count  # Informational Event Count
+    puts scan.open_ports_count              # Open Port Count
 
     puts scan.total_event_count #=> 3411    # Total Event Count
     puts scan.hosts.count #=> 12
 
     puts scan.policy_name
     puts scan.policy_comments unless scan.policy_comments.empty?
-    
+  
     scan.hosts do |host|
       puts host.hostname
-        
+      
       # high_severity_events, medium_severity_events and low_severity_events
       host.high_severity_events do |high|
         puts high.port
         puts high.name if high.name
         puts high.data if high.data
       end
-      
-    end
     
+    end
+  
   end
   
 == Requirements
