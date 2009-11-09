@@ -68,6 +68,7 @@ module Nessus
     def mac_addr
       @mac_addr ||= @host.at('mac_addr').inner_text
     end
+    alias mac_address mac_addr
 
     # Return the Host DNS Name.
     # @return [String]
@@ -86,43 +87,43 @@ module Nessus
     def os_name
       @os_name ||= @host.at('os_name').inner_text
     end
+    alias operating_system os_name
 
-    # Return the scanned port count for a given host object.
+    # Return the open ports for a given host object.
     # @return [Integer]
-    #   Return the Scanned Port Count For A Given Host Object.
+    #   Return the open ports for a given host object.
     # @example
-    #   host.scanned_port_count #=> 213
-    def scanned_port_count
+    #   host.open_ports #=> 213
+    def open_ports
       @scanned_ports ||= @host.at('num_ports').inner_text.to_i
     end
     
-    # Returns All Open Port Event Objects For A Given Host.
+    # Returns All Informational Event Objects For A Given Host.
     # @yield [prog] If a block is given, it will be passed the newly
     #               created Event object.
     # @yieldparam [EVENT] prog The newly created Event object.
     # @return [Integer]
-    #   Return The Open Port Count For A Given Host.
+    #   Return The Informational Event Count For A Given Host.
     # @example
-    #   host.open_ports do |open|
-    #     puts open.name if open.name
-    #     puts open.port
-    #     puts open.data if open.data
+    #   host.informational_events do |info|
+    #     puts info.port
+    #     puts info.data if info.data
     #   end
-    def open_ports(&block)
-      unless @open_ports
-        @open_ports = []
-        @open_ports_count = 0
+    def informational_events(&block)
+      unless @informational_events
+        @informational_events = []
+        @informational_event_count = 0
 
         @host.xpath("//ReportItem").each do |event|
           next if event.at('severity').inner_text.to_i != 0
-          @open_ports << Event.new(event)
-          @open_ports_count += 1
+          @informational_events << Event.new(event)
+          @informational_event_count += 1
         end
         
       end
 
-      @open_ports.each(&block)
-      return @open_ports_count
+      @informational_events.each(&block)
+      return @informational_event_count
     end
 
     # Returns All Low Event Objects For A Given Host.
@@ -136,6 +137,9 @@ module Nessus
     #     puts low.name if low.name
     #   end
     def low_severity_events(&block)
+      
+      @low_severity_count = @host.at('num_lo').inner_text.to_i
+      
       unless @low_severity_events
         @low_severity_events = []
 
@@ -144,7 +148,6 @@ module Nessus
           @low_severity_events << Event.new(event)
         end
 
-        @low_severity_count = @host.at('num_lo').inner_text.to_i
       end
 
       @low_severity_events.each(&block)
@@ -162,6 +165,9 @@ module Nessus
     #     puts medium.name if medium.name
     #   end
     def medium_severity_events(&block)
+      
+      @high_severity_count = @host.at('num_med').inner_text.to_i
+      
       unless @medium_severity_events
         @medium_severity_events = []
 
@@ -170,7 +176,6 @@ module Nessus
           @medium_severity_events << Event.new(event)
         end
 
-        @high_severity_count = @host.at('num_med').inner_text.to_i
       end
 
       @medium_severity_events.each(&block)
@@ -188,6 +193,9 @@ module Nessus
     #     puts high.name if high.name
     #   end
     def high_severity_events(&block)
+      
+      @high_severity_count = @host.at('num_hi').inner_text.to_i
+      
       unless @high_severity_events
         @high_severity_events = []
 
@@ -195,8 +203,7 @@ module Nessus
           next if event.at('severity').inner_text.to_i != 3
           @high_severity_events << Event.new(event)
         end
-
-        @high_severity_count = @host.at('num_hi').inner_text.to_i
+        
       end
 
       @high_severity_events.each(&block)
@@ -209,7 +216,7 @@ module Nessus
     # @example
     #   host.event_count #=> 3456
     def event_count
-      (low_severity_events + medium_severity_events + high_severity_events).to_i
+      ((low_severity_events.to_i) + (medium_severity_events.to_i) + (high_severity_events.to_i)).to_i
     end
 
     # Creates a new Event object to be parser

@@ -20,7 +20,7 @@ Nessus::XML.new("example.nessus") do |scan|
   
   scan.hosts do |host|
     puts "Hostname: #{host.hostname}"
-    puts "Open Ports: #{host.scanned_ports_count}"
+    puts "Open Ports: #{host.open_ports}"
     puts "High Severity Events: #{host.high_severity_events}"
     puts "Medium Severity Events: #{host.medium_severity_events}"
     puts "Low Severity Events: #{host.low_severity_events}"
