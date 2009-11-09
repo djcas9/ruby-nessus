@@ -25,7 +25,7 @@ module Nessus
 
       block.call(self) if block
     end
-    
+
     # Return the nessus report title.
     # @return [String]
     #   The Nessus Report Title
@@ -36,7 +36,7 @@ module Nessus
     end
     alias name report_name
     alias title report_name
-    
+
     # Return the nessus report time.
     # @return [String]
     #   The Nessus Report Time
@@ -47,7 +47,7 @@ module Nessus
     end
     alias time report_time
     alias date report_time
-    
+
     # Return the scan start time.
     # @return [DateTime]
     #   The Nessus Scan Start Time
@@ -108,7 +108,7 @@ module Nessus
 
       @plugin_ids
     end
-    
+
     # Returns and array of the plugin names userd for the passed .nessus scan.
     # @return [Array]
     #   The Nessus Scan Plugin Names
@@ -156,7 +156,7 @@ module Nessus
       hosts.size
     end
 
-    # Retunrs an array of all unique ports. 
+    # Retunrs an array of all unique ports.
     # @return [Array]
     # @example
     #   scan.unique_ports #=> 234
@@ -237,7 +237,7 @@ module Nessus
         raise "Error: #{type} is not an acceptable severity. Possible options include: all, high, medium, low and informational."
       end
     end
-    
+
     # Creates a new Host object to be parser from a passed search param.
     # @param [String] hostname the hostname to build a Host object for.
     # @yield [prog] If a block is given, it will be passed the newly
@@ -268,24 +268,18 @@ module Nessus
         @medium = 0
         @high = 0
 
-        @xml.xpath("//ReportItem//severity").each do |s|
-          case s.inner_text.to_i
-          when 0
-            @open_ports += 1
-          when 1
-            @low += 1
-          when 2
-            @medium += 1
-          when 3
-            @high += 1
-          end
+        @xml.xpath("//ReportHost").each do |s|
+          @open_ports += s.at('num_ports').inner_text.to_i
+          @low += s.at('num_lo').inner_text.to_i
+          @medium += s.at('num_med').inner_text.to_i
+          @high += s.at('num_hi').inner_text.to_i
         end
-        
-        @count = { :open_ports => @open_ports, 
-          :low => @low, 
-          :medium => @medium, 
-          :high => @high, 
-          :all => (@low + @medium + @high) }
+
+        @count = { :open_ports => @open_ports,
+          :low => @low,
+          :medium => @medium,
+          :high => @high,
+        :all => (@low + @medium + @high) }
       end
 
       return @count

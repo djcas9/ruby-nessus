@@ -8,6 +8,8 @@ require 'ruby-nessus'
 
 Nessus::XML.new("example.nessus") do |scan|
   
+  puts "== SCAN ====================\n"
+  
   puts "Title: #{scan.report_time}"
   puts "Policy: #{scan.policy_name}"
   puts "Policy Description: #{scan.policy_name}"
@@ -17,10 +19,16 @@ Nessus::XML.new("example.nessus") do |scan|
   puts "Host Count: #{scan.host_count}"
   puts "Percentage Of Medium Events: #{scan.event_percentage_for('medium', true)}%"
   
+  puts "Low: #{scan.low_severity_count}"
+  puts "Medium: #{scan.medium_severity_count}"
+  puts "High: #{scan.high_severity_count}"
+  puts "Total: #{scan.total_event_count}"
+  
+  puts "\n"
+  puts "== HOSTS ====================\n"
   
   scan.hosts do |host|
     next if host.event_count.zero?
-    puts "\n"
     puts "Hostname: #{host.hostname}"
     puts "Open Ports: #{host.open_ports}"
     puts "High Severity Events: #{host.high_severity_events}"
@@ -28,13 +36,13 @@ Nessus::XML.new("example.nessus") do |scan|
     puts "Low Severity Events: #{host.low_severity_events}"
     puts "Total Event Count: #{host.event_count}"
     puts "\n"
-    
+    puts "== EVENTS FOR #{host.hostname} ====================\n"
     host.events do |event|
       next unless event.name
       puts "Name: #{event.name}"
       puts "Port: #{event.port}"
       puts "Severity: #{event.severity.in_words}"
     end
-  
+    puts "== END #{host.hostname} ====================\n"
   end
 end
