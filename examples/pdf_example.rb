@@ -19,7 +19,7 @@ Nessus::XML.new("example.nessus") do |scan|
     end
   end
 
-  @pdf.text("#{scan.title.split(' - ')[1]}", :size => 20)
+  @pdf.text("#{scan.title}", :size => 20)
 
   @pdf.move_down 2
 
