@@ -43,7 +43,7 @@ module Nessus
     #   The Host Scan Run Time
     # @example
     #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
-    def scan_run_time
+    def scan_runtime
       if scan_start_time.empty? | scan_stop_time.empty?; return "N/A"; end
       h = ("#{Time.parse(scan_stop_time).strftime('%H').to_i - Time.parse(scan_start_time).strftime('%H').to_i}").gsub('-', '')
       m = ("#{Time.parse(scan_stop_time).strftime('%M').to_i - Time.parse(scan_start_time).strftime('%M').to_i}").gsub('-', '')
@@ -91,37 +91,38 @@ module Nessus
     # @return [Integer]
     #   Return the Scanned Port Count For A Given Host Object.
     # @example
-    #   host.scanned_ports_count #=> 213
-    def scanned_ports_count
+    #   host.scanned_port_count #=> 213
+    def scanned_port_count
       @scanned_ports ||= @host.at('num_ports').inner_text.to_i
     end
     
-    # Returns All Informational Event Objects For A Given Host.
+    # Returns All Open Port Event Objects For A Given Host.
     # @yield [prog] If a block is given, it will be passed the newly
     #               created Event object.
     # @yieldparam [EVENT] prog The newly created Event object.
     # @return [Integer]
-    #   Return The Informational Event Count For A Given Host.
+    #   Return The Open Port Count For A Given Host.
     # @example
-    #   host.informational_severity_events do |info|
-    #     puts info.name if info.name
+    #   host.open_ports do |open|
+    #     puts open.name if open.name
+    #     puts open.port
+    #     puts open.data if open.data
     #   end
-    def informational_severity_events(&block)
-      unless @informational_severity_events
-        @informational_severity_events = []
-        @informational_severity_count = 0
+    def open_ports(&block)
+      unless @open_ports
+        @open_ports = []
+        @open_ports_count = 0
 
         @host.xpath("//ReportItem").each do |event|
           next if event.at('severity').inner_text.to_i != 0
-          @informational_severity_events << Event.new(event)
-          @informational_severity_count += 1
+          @open_ports << Event.new(event)
+          @open_ports_count += 1
         end
-
-        @informational_severity_count = @host.at('num_lo').inner_text.to_i
+        
       end
 
-      @informational_severity_events.each(&block)
-      return @informational_severity_count
+      @open_ports.each(&block)
+      return @open_ports_count
     end
 
     # Returns All Low Event Objects For A Given Host.
@@ -208,7 +209,7 @@ module Nessus
     # @example
     #   host.event_count #=> 3456
     def event_count
-      (informational_severity_events + low_severity_events + medium_severity_events + high_severity_events).to_i
+      (low_severity_events + medium_severity_events + high_severity_events).to_i
     end
 
     # Creates a new Event object to be parser

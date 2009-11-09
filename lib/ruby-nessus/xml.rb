@@ -165,8 +165,8 @@ module Nessus
     #   The Informational Severity Count
     # @example
     #   scan.informational_severity_count #=> 1203
-    def informational_severity_count
-      count_severity[:informational].to_i
+    def open_ports_count
+      count_severity[:open_ports].to_i
     end
 
     # Return the High severity count.
@@ -215,7 +215,7 @@ module Nessus
     #   scan.event_percentage_for("low", true) #=> 11%
     def event_percentage_for(type, round_percentage=false)
       @sc ||= count_severity
-      if %W(high medium low informational all).include?(type)
+      if %W(high medium low all).include?(type)
         calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
         if round_percentage
           return "#{calc.round}"
@@ -252,7 +252,7 @@ module Nessus
     def count_severity
       unless @count
         @count = {}
-        @informational = 0
+        @open_ports = 0
         @low = 0
         @medium = 0
         @high = 0
@@ -260,7 +260,7 @@ module Nessus
         @xml.xpath("//ReportItem//severity").each do |s|
           case s.inner_text.to_i
           when 0
-            @informational += 1
+            @open_ports += 1
           when 1
             @low += 1
           when 2
@@ -270,11 +270,11 @@ module Nessus
           end
         end
         
-        @count = { :informational => @informational, 
+        @count = { :open_ports => @open_ports, 
           :low => @low, 
           :medium => @medium, 
           :high => @high, 
-          :all => (@informational + @low + @medium + @high) }
+          :all => (@low + @medium + @high) }
       end
 
       return @count
