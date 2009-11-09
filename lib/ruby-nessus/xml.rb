@@ -32,10 +32,21 @@ module Nessus
     # @example
     #   scan.report_name #=> "My Super Cool Nessus Report"
     def report_name
-      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text
+      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ')[1]
     end
     alias name report_name
     alias title report_name
+    
+    # Return the nessus report time.
+    # @return [String]
+    #   The Nessus Report Time
+    # @example
+    #   scan.report_time #=> "09/11/08 02:21:22 AM"
+    def report_time
+      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ')[0]
+    end
+    alias time report_time
+    alias date report_time
     
     # Return the scan start time.
     # @return [DateTime]

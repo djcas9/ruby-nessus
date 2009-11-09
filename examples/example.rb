@@ -8,9 +8,9 @@ require 'ruby-nessus'
 
 Nessus::XML.new("example.nessus") do |scan|
   
-  puts "Title: #{scan.title}"
-  puts "Policy: #{puts scan.policy_name}"
-  puts "Policy Description: #{puts scan.policy_name}"
+  puts "Title: #{scan.report_time}"
+  puts "Policy: #{scan.policy_name}"
+  puts "Policy Description: #{scan.policy_name}"
   puts "Start Time: #{scan.start_time}"
   puts "Stop Time: #{scan.stop_time}"
   puts "Run Time: #{scan.runtime}"
@@ -19,6 +19,8 @@ Nessus::XML.new("example.nessus") do |scan|
   
   
   scan.hosts do |host|
+    next if host.event_count.zero?
+    puts "\n"
     puts "Hostname: #{host.hostname}"
     puts "Open Ports: #{host.open_ports}"
     puts "High Severity Events: #{host.high_severity_events}"
