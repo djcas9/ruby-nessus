@@ -23,11 +23,11 @@ Prawn::Document.generate("ruby-nessus-example.pdf") do
     text("Policy Description: #{scan.policy_name}")
     text("Runtime: #{scan.runtime}")
     move_down 10
-    
+
     bounding_box [0,cursor], :width => 490 do
       move_down 10
       data = [["#{scan.host_count}", "#{scan.low_severity_count}", "#{scan.medium_severity_count}", "#{scan.high_severity_count}", "#{scan.open_ports_count}", "#{scan.total_event_count}"]]
-      
+
       table data,
       :position => :left,
       :border_style => :grid,
@@ -48,21 +48,16 @@ Prawn::Document.generate("ruby-nessus-example.pdf") do
     scan.hosts do |host|
       move_down(20)
 
-      bounding_box [0,cursor], :width => 490 do
-        move_down(10)
-        text("#{host.hostname}", :size => 18)
-        text("Scan Time: #{host.scan_runtime}")
-        text("Low: #{host.low_severity_events} Medium: #{host.medium_severity_events} High: #{host.high_severity_events} Total: #{host.event_count}")
-        text("Operating System: #{host.operating_system}")
-        move_down 10
-        stroke do
-          line bounds.bottom_left, bounds.bottom_right
-        end
-      end
-      
+      move_down(10)
+      text("#{host.hostname}", :size => 18)
+      text("Scan Time: #{host.scan_runtime}")
+      text("Low: #{host.low_severity_events} Medium: #{host.medium_severity_events} High: #{host.high_severity_events} Total: #{host.event_count}")
+      text("Operating System: #{host.operating_system}")
+      move_down 10
+
       move_down(10)
       @i = 0
-      
+
       host.events do |event|
         next if event.severity.to_i <= 1
         text("#{@i+=1}. #{event.name}", :size => 11)
