@@ -84,3 +84,11 @@ class String
   end
 
 end
+
+class DateTime
+  
+  def pretty
+    self.strftime('%A %B %d, %Y %I:%M:%S %p')
+  end
+  
+end

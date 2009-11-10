@@ -10,11 +10,11 @@ Nessus::XML.new("example.nessus") do |scan|
 
   puts "== SCAN ====================\n"
 
-  puts "Title: #{scan.report_time}"
+  puts "Title: #{scan.report_time.pretty}"
   puts "Policy: #{scan.policy_name}"
   puts "Policy Description: #{scan.policy_name}"
-  puts "Start Time: #{scan.start_time}"
-  puts "Stop Time: #{scan.stop_time}"
+  puts "Start Time: #{scan.start_time.pretty}"
+  puts "Stop Time: #{scan.stop_time.pretty}"
   puts "Run Time: #{scan.runtime}"
   puts "Host Count: #{scan.host_count}"
   puts "Percentage Of Medium Events: #{scan.event_percentage_for('medium', true)}%"
@@ -30,6 +30,11 @@ Nessus::XML.new("example.nessus") do |scan|
   scan.hosts do |host|
     next if host.event_count.zero?
     puts "Hostname: #{host.hostname}"
+    
+    puts "Start Time: #{host.scan_start_time.pretty}"
+    puts "Stop Time: #{host.scan_stop_time.pretty}"
+    puts "Run Time: #{host.scan_runtime}"
+    
     puts "Open Ports: #{host.open_ports}"
     puts "High Severity Events: #{host.high_severity_events}"
     puts "Medium Severity Events: #{host.medium_severity_events}"

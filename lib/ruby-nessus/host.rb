@@ -26,7 +26,7 @@ module Nessus
     # @example
     #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_start_time
-      @host_scan_time = @host.at('startTime').inner_text
+      @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
     end
 
     # Return the host scan stop time.
@@ -35,7 +35,7 @@ module Nessus
     # @example
     #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_stop_time
-      @host_scan_time = @host.at('stopTime').inner_text
+      @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
     end
     
     # Return the host run time.
@@ -44,10 +44,10 @@ module Nessus
     # @example
     #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
     def scan_runtime
-      if scan_start_time.empty? | scan_stop_time.empty?; return "N/A"; end
-      h = ("#{Time.parse(scan_stop_time).strftime('%H').to_i - Time.parse(scan_start_time).strftime('%H').to_i}").gsub('-', '')
-      m = ("#{Time.parse(scan_stop_time).strftime('%M').to_i - Time.parse(scan_start_time).strftime('%M').to_i}").gsub('-', '')
-      s = ("#{Time.parse(scan_stop_time).strftime('%S').to_i - Time.parse(scan_start_time).strftime('%S').to_i}").gsub('-', '')
+      if scan_start_time.to_s.empty? | scan_stop_time.to_s.empty?; return "N/A"; end
+      h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
+      m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
+      s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
       return "#{h} hours #{m} minutes and #{s} seconds"
     end
 

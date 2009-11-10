@@ -32,7 +32,7 @@ module Nessus
     # @example
     #   scan.report_name #=> "My Super Cool Nessus Report"
     def report_name
-      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ')[1]
+      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').last
     end
     alias name report_name
     alias title report_name
@@ -43,7 +43,9 @@ module Nessus
     # @example
     #   scan.report_time #=> "09/11/08 02:21:22 AM"
     def report_time
-      @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ')[0]
+      #09/11/08 02:21:22 AM
+      datetime = @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').first
+      @report_time ||= DateTime.strptime(datetime, fmt='%y/%m/%d %I:%M:%S %p')
     end
     alias time report_time
     alias date report_time
@@ -54,7 +56,7 @@ module Nessus
     # @example
     #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
     def start_time
-      @start_time = @xml.xpath("//NessusClientData//Report//StartTime").inner_text
+      @start_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StartTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
     end
 
     # Return the scan stop time.
@@ -63,7 +65,7 @@ module Nessus
     # @example
     #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
     def stop_time
-      @stop_time = @xml.xpath("//NessusClientData//Report//StopTime").inner_text
+      @stop_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StopTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
     end
 
     # Return the scan run time.
@@ -72,9 +74,9 @@ module Nessus
     # @example
     #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
     def runtime
-      h = ("#{Time.parse(stop_time).strftime('%H').to_i - Time.parse(start_time).strftime('%H').to_i}").gsub('-', '')
-      m = ("#{Time.parse(stop_time).strftime('%M').to_i - Time.parse(start_time).strftime('%M').to_i}").gsub('-', '')
-      s = ("#{Time.parse(stop_time).strftime('%S').to_i - Time.parse(start_time).strftime('%S').to_i}").gsub('-', '')
+      h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
+      m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
+      s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
       return "#{h} hours #{m} minutes and #{s} seconds"
     end
 
