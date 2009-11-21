@@ -2,15 +2,9 @@ require 'rubygems'
 require 'rake'
 
 require './tasks/spec.rb'
-require './tasks/rdoc.rb'
+require './tasks/yard.rb'
 
 begin
-  
-  require 'yard'
-  YARD::Rake::YardocTask.new do |t|
-    # Build Yardoc
-  end
-  
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ruby-nessus"

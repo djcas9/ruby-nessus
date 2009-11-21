@@ -1,5 +1,8 @@
 module Nessus
   class Host
+    
+    include Enumerable
+    
     # Host
     attr_reader :host
 
@@ -239,6 +242,13 @@ module Nessus
       @host.xpath("ReportItem").each do |event|
         block.call(Event.new(event)) if block
       end
+    end
+
+    # Parses the events of the host.
+    # @return [Array<String>]
+    #   The events of the host.
+    def all_events
+      Enumerator.new(self,:events).to_a
     end
 
   end

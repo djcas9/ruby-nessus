@@ -6,11 +6,10 @@ require 'ruby-nessus'
 
 # Ruby-Nessus Example
 
-Nessus::XML.new("example.nessus") do |scan|
-
+Nessus::XML.new("example.nessus") do |scan|  
   puts "== SCAN ====================\n"
   
-  puts "Title: #{scan.title}"
+  puts "Title: #{scan.title} #{scan.time}"
   puts "Policy: #{scan.policy_title}"
   puts "Policy Description: #{scan.policy_notes}"
   puts "Start Time: #{scan.start_time}"

@@ -2,6 +2,7 @@ require 'ruby-nessus/host'
 require 'ruby-nessus/event'
 
 require 'nokogiri'
+require 'enumerator'
 require 'time'
 
 module Nessus
@@ -9,7 +10,7 @@ module Nessus
   attr_reader :file
 
   class XML
-
+    
     include Enumerable
 
     # Creates a new .Nessus (XML) object to be parser
@@ -146,6 +147,13 @@ module Nessus
         block.call(Host.new(host)) if block
       end
       hosts
+    end
+
+    # Parses the hosts of the scan.
+    # @return [Array<String>]
+    #   The Hosts of the scan.
+    def all_hosts
+      Enumerator.new(self,:hosts).to_a
     end
 
     # Return the nessus scan host count.
