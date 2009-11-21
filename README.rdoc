@@ -6,27 +6,21 @@ Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ru
 
 More Information:
 * Documentation: http://rdoc.info/projects/mephux/ruby-nessus
+* More: http://www.packetport.net
 
 == Install
-
-Make sure you have gemcutter installed.
-
-  sudo gem update --system
-  sudo gem install gemcutter
-  gem tumble
-
-Then install Ruby-Nessus
 
   sudo gem install ruby-nessus
 
 == Usage & Examples
 
 The below example illustrates how easy it really is to iterate of result data.
-
+  
+  require 'rubygems'
   require 'ruby-nessus'
 
   Nessus::XML.new("example.nessus") do |scan|
-    puts scan.report_name               # The Nessus Report Title.
+    puts scan.title                     # The Nessus Report Title.
     puts scan.runtime                   # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
     puts scan.host_count                # Host Count.
     puts scan.unique_ports              # All Unique Ports Seen.
@@ -64,7 +58,6 @@ You also have the ability to search for particular hostnames. In the near future
 
   end
 
-
 There are a bunch of convenient methods added to make reporting a bit easier to produce quickly from a raw scan file.
 
   Nessus::XML.new("example.nessus") do |scan|
@@ -79,21 +72,21 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
     puts scan.total_event_count #=> 3411    # Total Event Count
     puts scan.hosts.count #=> 12
 
-    puts scan.policy_name
-    puts scan.policy_comments unless scan.policy_comments.empty?
-  
+    puts scan.policy_title
+    puts scan.policy_notes unless scan.policy_notes.empty?
+
     scan.hosts do |host|
       puts host.hostname
-      
+    
       # high_severity_events, medium_severity_events and low_severity_events
       host.high_severity_events do |high|
         puts high.port
         puts high.name if high.name
         puts high.data if high.data
       end
-    
-    end
   
+    end
+
   end
   
 == Requirements
@@ -104,7 +97,6 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 * Add The Ability to parse the scan configuration and plugin options.
 * Building XML (.nessus) files configurations
 * Add Support For NBE File Formats.
-* Add Complex Searching. 
 
 == Note on Patches & Pull Requests 
 * Fork the project.
@@ -114,11 +106,6 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
-
-== Props
-
-Huge props to postmodern for helping me refactor! Check out his projects:
-* http://github.com/postmodern
 
 == Copyright
 

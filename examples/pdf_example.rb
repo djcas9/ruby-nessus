@@ -19,8 +19,8 @@ Prawn::Document.generate("ruby-nessus-example.pdf") do
 
     text("#{scan.title}", :size => 20)
     move_down 2
-    text("Policy: #{scan.policy_name}")
-    text("Policy Description: #{scan.policy_name}")
+    text("Policy: #{scan.policy_title}")
+    text("Policy Description: #{scan.policy_notes}")
     text("Runtime: #{scan.runtime}")
     move_down 10
 
