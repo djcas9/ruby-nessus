@@ -1,6 +1,5 @@
 module Nessus
   class Host
-    
     include Enumerable
     
     # Host
