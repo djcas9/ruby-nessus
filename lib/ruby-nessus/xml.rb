@@ -1,5 +1,6 @@
 require 'ruby-nessus/host'
 require 'ruby-nessus/event'
+
 require 'nokogiri'
 require 'time'
 
@@ -8,6 +9,8 @@ module Nessus
   attr_reader :file
 
   class XML
+
+    include Enumerable
 
     # Creates a new .Nessus (XML) object to be parser
     # @param [String] file The Nessus xml results file to parse.
@@ -31,24 +34,20 @@ module Nessus
     #   The Nessus Report Title
     # @example
     #   scan.report_name #=> "My Super Cool Nessus Report"
-    def report_name
+    def title
       @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').last
     end
-    alias name report_name
-    alias title report_name
 
     # Return the nessus report time.
     # @return [String]
     #   The Nessus Report Time
     # @example
     #   scan.report_time #=> "09/11/08 02:21:22 AM"
-    def report_time
+    def time
       #09/11/08 02:21:22 AM
       datetime = @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').first
       @report_time ||= DateTime.strptime(datetime, fmt='%y/%m/%d %I:%M:%S %p')
     end
-    alias time report_time
-    alias date report_time
 
     # Return the scan start time.
     # @return [DateTime]
@@ -83,14 +82,14 @@ module Nessus
     # Return the nessus scan policy name. When creating a nessus policy this is usually the title field.
     # @return [String]
     #   The Nessus Scan Policy Name
-    def policy_name
+    def policy_title
       @policy_name ||= @xml.xpath("//NessusClientData//Report//policyName").inner_text
     end
 
     # Return the nessus scan policy comments. This is the description field when creating a new policy with the Nessus GUI client.
     # @return [String]
     #   The Nessus Scan Policy Comments
-    def policy_comments
+    def policy_notes
       @policy_comments ||= @xml.xpath("//NessusClientData//Report//policyComments").inner_text
     end
 
@@ -259,33 +258,33 @@ module Nessus
 
     private
 
-    # Calculates an event hash of totals for severity counts.
-    # @return [hash]
-    #   The Event Totals For Severity
-    def count_severity
-      unless @count
-        @count = {}
-        @open_ports = 0
-        @low = 0
-        @medium = 0
-        @high = 0
+      # Calculates an event hash of totals for severity counts.
+      # @return [hash]
+      #   The Event Totals For Severity
+      def count_severity
+        unless @count
+          @count = {}
+          @open_ports = 0
+          @low = 0
+          @medium = 0
+          @high = 0
 
-        @xml.xpath("//ReportHost").each do |s|
-          @open_ports += s.at('num_ports').inner_text.to_i
-          @low += s.at('num_lo').inner_text.to_i
-          @medium += s.at('num_med').inner_text.to_i
-          @high += s.at('num_hi').inner_text.to_i
+          @xml.xpath("//ReportHost").each do |s|
+            @open_ports += s.at('num_ports').inner_text.to_i
+            @low += s.at('num_lo').inner_text.to_i
+            @medium += s.at('num_med').inner_text.to_i
+            @high += s.at('num_hi').inner_text.to_i
+          end
+
+          @count = { :open_ports => @open_ports,
+                     :low => @low,
+                     :medium => @medium,
+                     :high => @high,
+                     :all => (@low + @medium + @high) }
         end
 
-        @count = { :open_ports => @open_ports,
-          :low => @low,
-          :medium => @medium,
-          :high => @high,
-        :all => (@low + @medium + @high) }
+        return @count
       end
-
-      return @count
-    end
 
   end
 end

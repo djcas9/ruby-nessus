@@ -26,7 +26,11 @@ module Nessus
     # @example
     #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_start_time
-      @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+      if @host.at('startTime').inner_text.blank?
+        return false
+      else
+        @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+      end
     end
 
     # Return the host scan stop time.
@@ -35,16 +39,19 @@ module Nessus
     # @example
     #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
     def scan_stop_time
-      @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+      if @host.at('stopTime').inner_text.blank?
+        return false
+      else
+        @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+      end
     end
-    
+
     # Return the host run time.
     # @return [String]
     #   The Host Scan Run Time
     # @example
     #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
     def scan_runtime
-      if scan_start_time.to_s.empty? | scan_stop_time.to_s.empty?; return "N/A"; end
       h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
       m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
       s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
@@ -97,7 +104,7 @@ module Nessus
     def open_ports
       @scanned_ports ||= @host.at('num_ports').inner_text.to_i
     end
-    
+
     # Returns All Informational Event Objects For A Given Host.
     # @yield [prog] If a block is given, it will be passed the newly
     #               created Event object.
@@ -119,7 +126,7 @@ module Nessus
           @informational_events << Event.new(event)
           @informational_event_count += 1
         end
-        
+
       end
 
       @informational_events.each(&block)
@@ -137,9 +144,9 @@ module Nessus
     #     puts low.name if low.name
     #   end
     def low_severity_events(&block)
-      
+
       @low_severity_count = @host.at('num_lo').inner_text.to_i
-      
+
       unless @low_severity_events
         @low_severity_events = []
 
@@ -165,9 +172,9 @@ module Nessus
     #     puts medium.name if medium.name
     #   end
     def medium_severity_events(&block)
-      
+
       @high_severity_count = @host.at('num_med').inner_text.to_i
-      
+
       unless @medium_severity_events
         @medium_severity_events = []
 
@@ -193,9 +200,9 @@ module Nessus
     #     puts high.name if high.name
     #   end
     def high_severity_events(&block)
-      
+
       @high_severity_count = @host.at('num_hi').inner_text.to_i
-      
+
       unless @high_severity_events
         @high_severity_events = []
 
@@ -203,7 +210,7 @@ module Nessus
           next if event.at('severity').inner_text.to_i != 3
           @high_severity_events << Event.new(event)
         end
-        
+
       end
 
       @high_severity_events.each(&block)

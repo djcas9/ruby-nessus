@@ -1,8 +1,6 @@
-require 'ruby-nessus'
-
+require 'rubygems'
+gem 'rspec', '>=1.1.12'
 require 'spec'
 require 'spec/autorun'
 
-Spec::Runner.configure do |config|
-  
-end
+require 'ruby-nessus'

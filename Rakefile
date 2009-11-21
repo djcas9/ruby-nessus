@@ -8,6 +8,7 @@ begin
   
   require 'yard'
   YARD::Rake::YardocTask.new do |t|
+    # Build Yardoc
   end
   
   require 'jeweler'

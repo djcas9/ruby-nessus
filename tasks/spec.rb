@@ -1,14 +1,10 @@
 require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
+ 
+desc "Run all specifications"
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.libs += ['lib', 'spec']
+  t.spec_opts = ['--colour', '--format', 'specdoc']
 end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
-
-task :spec => :check_dependencies
+ 
+task :test => :spec
 task :default => :spec
