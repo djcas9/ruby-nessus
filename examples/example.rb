@@ -46,7 +46,7 @@ Nessus::Parse.new('example_v2.nessus', :version => 2) do |scan|
     puts host.ip
     puts host.hostname
     puts host.os_name
-    puts host.event_percentage_for('udp', true)
+    puts host.event_percentage_for('icmp', true)
   
     puts "\n"
     
@@ -56,12 +56,10 @@ Nessus::Parse.new('example_v2.nessus', :version => 2) do |scan|
       
       puts "=> #{event.name}" if event.name
       
-      #puts event.patch_publication_date.pretty if event.patch_publication_date
-      
-      #puts event.see_also unless event.see_also.empty?
-      
-      #puts event.synopsis if event.synopsis
-      #puts event.solution if event.solution
+      # puts event.patch_publication_date.pretty if event.patch_publication_data
+      # puts event.see_also unless event.see_also.empty?
+      # puts event.synopsis if event.synopsis
+      # puts event.solution if event.solution
       
     end
     

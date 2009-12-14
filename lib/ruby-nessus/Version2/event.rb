@@ -1,8 +1,6 @@
 require 'ruby-nessus/Version2/port'
 
 module Nessus
-  
-  # .Nessus Version 2 Schema
   module Version2
 
     class Event

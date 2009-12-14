@@ -1,5 +1,4 @@
 module Nessus
-
   module Version2
 
     class Host

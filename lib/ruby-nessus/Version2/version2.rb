@@ -2,7 +2,8 @@ require 'ruby-nessus/Version2/host'
 require 'ruby-nessus/Version2/event'
 
 module Nessus
-
+  
+  # .Nessus Version 2 Schema
   module Version2
 
     # File to parse

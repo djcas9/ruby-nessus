@@ -1,7 +1,6 @@
 require 'ruby-nessus/Version1/port'
 
 module Nessus
-  
   module Version1
     
     class Event
