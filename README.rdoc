@@ -19,7 +19,7 @@ The below example illustrates how easy it really is to iterate of result data.
   require 'rubygems'
   require 'ruby-nessus'
 
-  Nessus::XML.new("example_v1.nessus", :version => 1) do |scan|
+  Nessus::Parse.new("example_v1.nessus", :version => 1) do |scan|
     puts scan.title                     # The Nessus Report Title.
     puts scan.runtime                   # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
     puts scan.host_count                # Host Count.
@@ -60,7 +60,7 @@ You also have the ability to search for particular hostnames. In the near future
 
 There are a bunch of convenient methods (maybe more then needed) added to make reporting a bit easier to produce quickly from a raw scan file. If you do not pass :version as an option it will default to the 2.0 .nessus schema.
 
-  Nessus::XML.new("example_v2.nessus", :version => 2) do |scan|
+  Nessus::Parse.new("example_v2.nessus", :version => 2) do |scan|
 
     puts scan.event_percentage_for('low', true) #=> 8%
 
