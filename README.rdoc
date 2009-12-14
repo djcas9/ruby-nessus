@@ -2,7 +2,7 @@
 
 == Description
 
-Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations. Please remember to submit bugs and request features if needed.
+Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations. Ruby-Nessus currently supports both version 1.0 and 2.0 of the .nessus file format. Please remember to submit bugs and request features if needed.
 
 More Information:
 * Documentation: http://rdoc.info/projects/mephux/ruby-nessus
@@ -19,7 +19,7 @@ The below example illustrates how easy it really is to iterate of result data.
   require 'rubygems'
   require 'ruby-nessus'
 
-  Nessus::XML.new("example.nessus") do |scan|
+  Nessus::XML.new("example_v1.nessus", :version => 1) do |scan|
     puts scan.title                     # The Nessus Report Title.
     puts scan.runtime                   # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
     puts scan.host_count                # Host Count.
@@ -58,9 +58,9 @@ You also have the ability to search for particular hostnames. In the near future
 
   end
 
-There are a bunch of convenient methods added to make reporting a bit easier to produce quickly from a raw scan file.
+There are a bunch of convenient methods (maybe more then needed) added to make reporting a bit easier to produce quickly from a raw scan file. If you do not pass :version as an option it will default to the 2.0 .nessus schema.
 
-  Nessus::XML.new("example.nessus") do |scan|
+  Nessus::XML.new("example_v2.nessus", :version => 2) do |scan|
 
     puts scan.event_percentage_for('low', true) #=> 8%
 
@@ -72,17 +72,21 @@ There are a bunch of convenient methods added to make reporting a bit easier to 
     puts scan.total_event_count #=> 3411    # Total Event Count
     puts scan.hosts.count #=> 12
 
-    puts scan.policy_title
-    puts scan.policy_notes unless scan.policy_notes.empty?
-
-    scan.hosts do |host|
+    
+    scan.hosts.first do |host|
       puts host.hostname
+      puts host.event_percentage_for('low', true)
+      puts host.tcp_count #=> tcp, icmp, udp supported.
     
       # high_severity_events, medium_severity_events and low_severity_events
       host.high_severity_events do |high|
-        puts high.port
-        puts high.name if high.name
-        puts high.data if high.data
+        
+        puts high.synopsis
+        puts high.description
+        puts high.solution
+        puts high.output
+        puts high.risk
+        
       end
   
     end
