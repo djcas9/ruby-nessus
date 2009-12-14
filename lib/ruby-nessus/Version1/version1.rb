@@ -24,6 +24,7 @@ module Nessus
       def initialize(file)
         @file = File.open(file)
         @xml = Nokogiri::XML.parse(@file.read)
+        raise "Error: Not A Version 1.0 .Nessus file." unless @xml.at('NessusClientData')
       end
 
       # Return the nessus report title.
@@ -136,7 +137,7 @@ module Nessus
       #   scan.hosts do |host|
       #     puts host.hostname
       #   end
-      def hosts(&block)
+      def each_host(&block)
         hosts = []
         @xml.xpath("//ReportHost").each do |host|
           hosts << host.at('HostName').inner_text if host.at('HostName').inner_text
@@ -148,8 +149,8 @@ module Nessus
       # Parses the hosts of the scan.
       # @return [Array<String>]
       #   The Hosts of the scan.
-      def all_hosts
-        Enumerator.new(self,:hosts).to_a
+      def hosts
+        Enumerator.new(self,:each_host).to_a
       end
 
       # Return the nessus scan host count.

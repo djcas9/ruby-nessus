@@ -29,6 +29,7 @@ module Nessus
       def initialize(file)
         @file = File.open(file)
         @xml = Nokogiri::XML.parse(@file.read)
+        raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
       end
 
       #

@@ -24,6 +24,7 @@ module Nessus
       def hostname
         @hostname ||= @host.at('HostName').inner_text
       end
+      alias ip hostname
 
       # Return the host scan start time.
       # @return [DateTime]
@@ -240,7 +241,7 @@ module Nessus
       #     puts event.name if event.name
       #     puts event.port
       #   end
-      def events(&block)
+      def each_event(&block)
         @host.xpath("ReportItem").each do |event|
           block.call(Event.new(event)) if block
         end
@@ -249,8 +250,8 @@ module Nessus
       # Parses the events of the host.
       # @return [Array<String>]
       #   The events of the host.
-      def all_events
-        Enumerator.new(self,:events).to_a
+      def events
+        Enumerator.new(self,:each_event).to_a
       end
 
     end
