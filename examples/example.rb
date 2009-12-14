@@ -6,47 +6,57 @@ require 'ruby-nessus'
 
 # Ruby-Nessus Example
 
-Nessus::XML.new("example.nessus") do |scan|  
-  puts "== SCAN ====================\n"
+Nessus::Parse.new('example_v2.nessus', :version => 2) do |scan|  
   
-  puts "Title: #{scan.title} #{scan.time}"
-  puts "Policy: #{scan.policy_title}"
-  puts "Policy Description: #{scan.policy_notes}"
-  puts "Start Time: #{scan.start_time}"
-  puts "Stop Time: #{scan.stop_time}"
-  puts "Run Time: #{scan.runtime}"
-  puts "Host Count: #{scan.host_count}"
-  puts "Percentage Of Medium Events: #{scan.event_percentage_for('medium', true)}%"
+  #puts scan.title
+  #puts scan.policy_title
+  #puts scan.policy_notes
   
-  puts "Low: #{scan.low_severity_count}"
-  puts "Medium: #{scan.medium_severity_count}"
-  puts "High: #{scan.high_severity_count}"
-  puts "Total: #{scan.total_event_count}"
+  #puts scan.total_event_count(true)
   
-  puts "\n"
-  puts "== HOSTS ====================\n"
+  # puts scan.tcp_count
+  # puts scan.udp_count
+  # puts scan.icmp_count
   
-  scan.hosts do |host|
-    next if host.event_count.zero?
-    puts "Hostname: #{host.hostname}"
+  # puts scan.informational_severity_count
+  # puts scan.high_severity_count
+  # puts scan.medium_severity_count
+  # puts scan.low_severity_count
   
-    puts "Start Time: #{host.scan_start_time}" if host.scan_start_time
-    puts "Stop Time: #{host.scan_stop_time}" if host.scan_stop_time
-    puts "Run Time: #{host.scan_runtime}"
   
-    puts "Open Ports: #{host.open_ports}"
-    puts "High Severity Events: #{host.high_severity_events}"
-    puts "Medium Severity Events: #{host.medium_severity_events}"
-    puts "Low Severity Events: #{host.low_severity_events}"
-    puts "Total Event Count: #{host.event_count}"
+  scan.each_host do |host|
+
+    puts host.ip
+    puts host.hostname
+    puts host.os_name
+
     puts "\n"
-    puts "== EVENTS FOR #{host.hostname} ====================\n"
-    host.events do |event|
-      next unless event.name
-      puts "Name: #{event.name}"
-      puts "Port: #{event.port}"
-      puts "Severity: #{event.severity.in_words}"
+    puts "\n"
+    
+    host.each_event do |event|
+      
+      next if event.informational?
+      
+      puts event.name if event.name
+      
+      puts event.cvss_vector
+      
+      #puts event.patch_publication_date.pretty if event.patch_publication_date
+      
+      #puts event.see_also unless event.see_also.empty?
+      
+      
+      
+      #puts event.synopsis if event.synopsis
+      #puts event.solution if event.solution
+      
     end
-    puts "== END #{host.hostname} ====================\n"
+    
+    puts "\n"
+    puts "\n"
+    
+    
   end
+  
+  
 end
