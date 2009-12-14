@@ -5,9 +5,9 @@ describe "Nessus Version 1: Event" do
   
   before(:all) do
     @xml = Nessus::Version1::XML.new(Helpers::DOT_NESSUS_V1)
-    @host = @xml.all_hosts.first
-    @bad_event = @host.all_events.first
-    @good_event = @host.all_events.last
+    @host = @xml.hosts.first
+    @bad_event = @host.events.first
+    @good_event = @host.events.last
   end
   
   it "should parse the event name" do

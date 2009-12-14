@@ -5,7 +5,7 @@ describe "Nessus Version 1: Host" do
   
   before(:all) do
     @xml = Nessus::Version1::XML.new(Helpers::DOT_NESSUS_V1)
-    @host = @xml.all_hosts.first
+    @host = @xml.hosts.first
   end
   
   it "should parse the host hostname" do
