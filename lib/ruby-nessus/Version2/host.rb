@@ -1,7 +1,7 @@
 module Nessus
 
   module Version2
-    
+
     class Host
       include Enumerable
 
@@ -24,6 +24,7 @@ module Nessus
       def hostname
         @hostname ||= @host.at('tag[name=host-fqdn]').inner_text
       end
+      alias name hostname
       alias fqdn hostname
       alias dns_name hostname
 
@@ -101,6 +102,7 @@ module Nessus
       def os_name
         @os_name ||= @host.at('tag[name=operating-system]').inner_text
       end
+      alias os os_name
       alias operating_system os_name
 
       # Return the open ports for a given host object.
@@ -109,7 +111,7 @@ module Nessus
       # @example
       #   host.open_ports #=> 213
       def open_ports
-        @scanned_ports ||= @host.at('num_ports').inner_text.to_i
+        @scanned_ports ||= host_stats[:open_ports].to_i
       end
 
       # Returns All Informational Event Objects For A Given Host.
@@ -119,25 +121,22 @@ module Nessus
       # @return [Integer]
       #   Return The Informational Event Count For A Given Host.
       # @example
-      #   host.informational_events do |info|
+      #   host.informational_severity_events do |info|
       #     puts info.port
       #     puts info.data if info.data
       #   end
-      def informational_events(&block)
+      def informational_severity_events(&block)
         unless @informational_events
           @informational_events = []
-          @informational_event_count = 0
 
           @host.xpath("ReportItem").each do |event|
-            next if event.at('severity').inner_text.to_i != 0
+            next if event['severity'].to_i != 0
             @informational_events << Event.new(event)
-            @informational_event_count += 1
           end
 
         end
 
         @informational_events.each(&block)
-        return @informational_event_count
       end
 
       # Returns All Low Event Objects For A Given Host.
@@ -152,20 +151,17 @@ module Nessus
       #   end
       def low_severity_events(&block)
 
-        @low_severity_count = @host.at('num_lo').inner_text.to_i
-
         unless @low_severity_events
           @low_severity_events = []
 
           @host.xpath("ReportItem").each do |event|
-            next if event.at('severity').inner_text.to_i != 1
+            next if event['severity'].to_i != 1
             @low_severity_events << Event.new(event)
           end
 
         end
 
         @low_severity_events.each(&block)
-        return @low_severity_count
       end
 
       # Returns All Medium Event Objects For A Given Host.
@@ -180,20 +176,17 @@ module Nessus
       #   end
       def medium_severity_events(&block)
 
-        @high_severity_count = @host.at('num_med').inner_text.to_i
-
         unless @medium_severity_events
           @medium_severity_events = []
 
           @host.xpath("ReportItem").each do |event|
-            next if event.at('severity').inner_text.to_i != 2
+            next if event['severity'].to_i != 2
             @medium_severity_events << Event.new(event)
           end
 
         end
 
         @medium_severity_events.each(&block)
-        return @high_severity_count
       end
 
       # Returns All High Event Objects For A Given Host.
@@ -208,20 +201,17 @@ module Nessus
       #   end
       def high_severity_events(&block)
 
-        @high_severity_count = @host.at('num_hi').inner_text.to_i
-
         unless @high_severity_events
           @high_severity_events = []
 
           @host.xpath("ReportItem").each do |event|
-            next if event.at('severity').inner_text.to_i != 3
+            next if event['severity'].to_i != 3
             @high_severity_events << Event.new(event)
           end
 
         end
 
         @high_severity_events.each(&block)
-        return @high_severity_count
       end
 
       # Return the total event count for a given host.
@@ -255,8 +245,156 @@ module Nessus
         Enumerator.new(self,:each_event).to_a
       end
 
-    end
-    
-  end
+      # Return the Open Ports count.
+      # @return [Integer]
+      #   The Open Ports Count
+      # @example
+      #   scan.open_ports_count #=> 1203
+      def ports
+        
+      end
 
+      # Return the TCP Event Count.
+      # @return [Integer]
+      #   The TCP Event Count
+      # @example
+      #   scan.tcp_count #=> 3
+      def tcp_count
+        host_stats[:tcp].to_i
+      end
+
+      # Return the UDP Event Count.
+      # @return [Integer]
+      #   The UDP Event Count
+      # @example
+      #   scan.udp_count #=> 3
+      def udp_count
+        host_stats[:udp].to_i
+      end
+
+      # Return the ICMP Event Count.
+      # @return [Integer]
+      #   The ICMP Event Count
+      # @example
+      #   scan.icmp_count #=> 3
+      def icmp_count
+        host_stats[:icmp].to_i
+      end
+
+      # Return the informational severity count.
+      # @return [Integer]
+      #   The Informational Severity Count
+      # @example
+      #   scan.informational_severity_count #=> 1203
+      def informational_severity_count
+        host_stats[:informational].to_i
+      end
+
+      # Return the High severity count.
+      # @return [Integer]
+      #   The High Severity Count
+      # @example
+      #   scan.high_severity_count #=> 10
+      def high_severity_count
+        host_stats[:high].to_i
+      end
+
+      # Return the Medium severity count.
+      # @return [Integer]
+      #   The Medium Severity Count
+      # @example
+      #   scan.medium_severity_count #=> 234
+      def medium_severity_count
+        host_stats[:medium].to_i
+      end
+
+      # Return the Low severity count.
+      # @return [Integer]
+      #   The Low Severity Count
+      # @example
+      #   scan.low_severity_count #=> 114
+      def low_severity_count
+        host_stats[:low].to_i
+      end
+
+      # Return the Total severity count. [high, medium, low, informational]
+      # @return [Integer]
+      #   The Total Severity Count
+      # @example
+      #   scan.total_event_count #=> 1561
+      def total_event_count(count_informational = false)
+        if count_informational
+          host_stats[:all].to_i + informational_severity_count
+        else
+          host_stats[:all].to_i
+        end
+      end
+
+      # Return the Total severity count.
+      # @param [String] severity the severity in which to calculate percentage for.
+      # @param [Boolean] round round the result to the nearest whole number.
+      # @raise [ExceptionClass] One of the following severity options must be passed. [high, medium, low, informational, all]
+      # @return [Integer]
+      #   The Percentage Of Events For A Passed Severity
+      # @example
+      #   scan.event_percentage_for("low", true) #=> 11%
+      def event_percentage_for(type, round_percentage=false)
+        @sc ||= host_stats
+        if %W(high medium low tcp udp icmp all).include?(type)
+          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
+          if round_percentage
+            return "#{calc.round}"
+          else
+            return "#{calc}"
+          end
+        else
+          raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
+        end
+      end
+      
+      private
+
+        def host_stats
+
+          unless @host_stats
+            @host_stats = {}
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high = 0,0,0,0,0,0,0,0
+
+            @host.xpath("ReportItem").each do |s|
+              case s['severity'].to_i
+                when 0
+                  @informational += 1
+                when 1
+                  @low += 1
+                when 2
+                  @medium += 1
+                when 3
+                  @high += 1
+              end
+
+              unless s['severity'].to_i == 0
+                @tcp += 1 if s['protocol'] == 'tcp'
+                @udp += 1 if s['protocol'] == 'udp'
+                @icmp += 1 if s['protocol'] == 'icmp'
+              end
+
+              @open_ports += 1 if s['port'].to_i != 0
+            end
+
+            @host_stats = {:open_ports => @open_ports,
+                      :tcp => @tcp,
+                      :udp => @udp,
+                      :icmp => @icmp,
+                      :informational => @informational,
+                      :low => @low,
+                      :medium => @medium,
+                      :high => @high,
+                      :all => (@low + @medium + @high)}
+
+          end
+          @host_stats
+        end
+
+    end
+  end
 end
