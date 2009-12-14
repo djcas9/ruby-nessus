@@ -244,6 +244,10 @@ module Nessus
 
         @medium_severity_events.each(&block)
       end
+      
+      def medium_severity
+        Enumerator.new(self,:medium_severity_events).to_a
+      end
 
       #
       # Returns All High Event Objects For A Given Host.

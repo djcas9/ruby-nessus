@@ -155,7 +155,7 @@ module Nessus
       #    Return the event description.
       #
       def description
-        @synopsis ||= if @event.at('description')
+        @description ||= if @event.at('description')
           @event.at('description').inner_text
         else
           false
