@@ -50,7 +50,7 @@ You also have the ability to search for particular hostnames. In the near future
     puts host.scan_stop_time
     puts host.scan_runtime
 
-    host.each_event do |event|
+    host.high_severity_events do |event|
       puts event.severity.in_words
       puts event.port
       puts event.data if event.data
@@ -78,7 +78,6 @@ There are a bunch of convenient methods (maybe more then needed) added to make r
       puts host.event_percentage_for('low', true)
       puts host.tcp_count #=> tcp, icmp, udp supported.
     
-      # high_severity_events, medium_severity_events and low_severity_events
       host.each_event do |event|
         next if event.informational?
         
