@@ -27,6 +27,8 @@ Nessus::Parse.new('example_v2.nessus', :version => 2) do |scan|
     
     puts host.hostname
     puts host.ip
+    
+    puts host.ports.inspect
       
     host.medium_severity_events do |event|
       puts event.family

@@ -48,7 +48,7 @@ module Nessus
       #
       # Return true if event is of informational severity.
       #
-      # @return [<true>|<false>]
+      # @return [Boolean]
       #    Return true if the event is informational.
       #
       def informational?
@@ -58,7 +58,7 @@ module Nessus
       #
       # Return ture if the event is of low severity.
       #
-      # @return [true,false]
+      # @return [Boolean]
       #   Return true if the event is low severity.
       # 
       def low?
@@ -68,7 +68,7 @@ module Nessus
       #
       # Return ture if the event is of medium severity.
       #
-      # @return [true,false]
+      # @return [Boolean]
       #   Return true if the event is medium severity.
       #
       def medium?
@@ -78,7 +78,7 @@ module Nessus
       #
       # Return ture if the event is of high severity.
       #
-      # @return [true,false]
+      # @return [Boolean]
       #   Return true if the event is high severity.
       #
       def high?

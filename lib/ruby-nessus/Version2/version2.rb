@@ -12,6 +12,7 @@ module Nessus
 
       include Enumerable
 
+      #
       # Creates a new .Nessus (XML) object to be parser
       #
       # @param [String] file The Nessus xml results file to parse.
@@ -30,6 +31,7 @@ module Nessus
         @xml = Nokogiri::XML.parse(@file.read)
       end
 
+      #
       # Return the nessus report title.
       #
       # @return [String]
@@ -41,36 +43,6 @@ module Nessus
       def title
         @report_name ||= @xml.at('Report/@name').inner_text
       end
-
-      # # Return the scan start time.
-      # # @return [DateTime]
-      # #   The Nessus Scan Start Time
-      # # @example
-      # #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
-      # def start_time
-      #   @start_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StartTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
-      # end
-      # 
-      # # Return the scan stop time.
-      # # @return [DateTime]
-      # #   The Nessus Scan Stop Time
-      # # @example
-      # #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
-      # def stop_time
-      #   @stop_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StopTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
-      # end
-      # 
-      # # Return the scan run time.
-      # # @return [String]
-      # #   The Nessus Scan Run Time
-      # # @example
-      # #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
-      # def runtime
-      #   h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-      #   m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-      #   s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
-      #   return "#{h} hours #{m} minutes and #{s} seconds"
-      # end
 
       #
       # Return the nessus scan policy name. When creating a nessus policy this is usually the title field.
