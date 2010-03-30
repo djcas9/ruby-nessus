@@ -37,20 +37,21 @@ module Nessus
         Log.it
         Log.h2 "Host Count", scan.host_count
         Log.h2 "Open Port Count", scan.open_ports_count
-        
+
         unless scan.version == 1
           Log.h2 "TCP Count", scan.tcp_count
           Log.h2 "UDP Count", scan.udp_count
           Log.h2 "ICMP Count", scan.icmp_count
         end
-        
+
         Log.it
         Log.h1 "EVENT Statistics"
         Log.it
-        
+
         unless scan.version == 1
           Log.informational "Informational Severity Count", scan.informational_severity_count
         end
+
         Log.low "Low Severity Count", scan.low_severity_count
         Log.medium "Medium Severity Count", scan.medium_severity_count
         Log.high "High Severity Count", scan.high_severity_count
@@ -60,19 +61,23 @@ module Nessus
         Log.it! "Medium Event Percentage: #{scan.event_percentage_for('medium', true)}"
         Log.it! "High Event Percentage: #{scan.event_percentage_for('high', true)}"
         Log.it
-        
+
         Log.h1 "HOSTS"
         Log.it
-        
+
         scan.each_host do |host|
           Log.h2 "Hostname", host.hostname
           Log.h5 "IP Address:", host.ip
-          Log.h5 "Informational Count", host.informational_severity_count
+          
+          unless scan.version == 1
+            Log.h5 "Informational Count", host.informational_severity_count
+          end
+          
           Log.h5 "Low Count", host.low_severity_count
           Log.h5 "Medium Count", host.medium_severity_count
           Log.h5 "High Count", host.high_severity_count
           Log.it
-        end 
+        end
 
         Log.end
 
@@ -101,7 +106,7 @@ module Nessus
           Log.it
           exit -1
         end
-        
+
         opts.on('-v','--version','Recess Version.') do |version|
           Log.it Nessus::VERSION
           Log.it
