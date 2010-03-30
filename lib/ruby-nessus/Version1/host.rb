@@ -1,11 +1,8 @@
 module Nessus
   module Version1
-    
+
     class Host
       include Enumerable
-
-      # Host
-      attr_reader :host
 
       # Creates A New Host Object
       # @param [Object] Host Object
@@ -13,6 +10,10 @@ module Nessus
       # Host.new(object)
       def initialize(host)
         @host = host
+      end
+
+      def to_s
+        "#{ip}"
       end
 
       # Return the Host Object hostname.
@@ -57,11 +58,9 @@ module Nessus
       # @example
       #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
       def scan_runtime
-        h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-        m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-        s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
-        return "#{h} hours #{m} minutes and #{s} seconds"
+        get_runtime
       end
+      alias runtime scan_runtime
 
       # Return the Host Netbios Name.
       # @return [String]
@@ -253,8 +252,22 @@ module Nessus
         Enumerator.new(self,:each_event).to_a
       end
 
+
+      private
+
+        def get_runtime
+          if scan_start_time && scan_stop_time
+            h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
+            m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
+            s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+            return "#{h} hours #{m} minutes and #{s} seconds"
+          else
+            false
+          end
+        end
+
     end
-    
+
   end
 
 end

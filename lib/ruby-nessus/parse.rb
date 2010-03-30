@@ -2,6 +2,7 @@ require 'ruby-nessus/Version1/version1'
 require 'ruby-nessus/Version2/version2'
 
 require 'nokogiri'
+require 'date'
 require 'enumerator'
 require 'time'
 
@@ -14,22 +15,16 @@ module Nessus
       @version = attributes[:version] || 2
 
       case @version
-      
-      when 1
-        @file.each do |file|
-          block.call(Version1::XML.new(file)) if block
-        end
-      when 2
-        @file.each do |file|
-          block.call(Version2::XML.new(file)) if block
-        end
-      else
-        raise "Error: Supported .Nessus Version are 1 and 2."
-      end
-      
-    end
 
-    
+        when 1
+          block.call(Version1::XML.new(file)) if block
+        when 2
+          block.call(Version2::XML.new(file)) if block
+        else
+          raise "Error: Supported .Nessus Version are 1 and 2."
+      end
+
+    end
 
   end
 end

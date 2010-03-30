@@ -4,8 +4,6 @@ module Nessus
   module Version2
 
     class Event
-      # Event
-      attr_reader :event
 
       def initialize(event)
         @event = event

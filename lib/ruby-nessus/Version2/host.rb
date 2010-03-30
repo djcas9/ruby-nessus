@@ -4,9 +4,6 @@ module Nessus
     class Host
       include Enumerable
 
-      # Host
-      attr_reader :host
-
       #
       # Creates A New Host Object
       #
@@ -19,6 +16,10 @@ module Nessus
         @host = host
       end
 
+      def to_s
+        "#{ip}"
+      end
+
       #
       # Return the Host Object hostname.
       #
@@ -29,7 +30,9 @@ module Nessus
       #   host.hostname #=> "example.com"
       #
       def hostname
-        @hostname ||= @host.at('tag[name=host-fqdn]').inner_text
+        if (host = @host.at('tag[name=host-fqdn]'))
+          host.inner_text
+        end
       end
       alias name hostname
       alias fqdn hostname
@@ -45,7 +48,9 @@ module Nessus
       #   host.ip #=> "127.0.0.1"
       #
       def ip
-        @ip ||= @host.at('tag[name=host-ip]').inner_text
+        if (ip = @host.at('tag[name=host-ip]'))
+          ip.inner_text
+        end
       end
 
       #
@@ -58,10 +63,10 @@ module Nessus
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       #
       def start_time
-        if @host.at('tag[name=HOST_START]').inner_text.blank?
-          return false
+        if (start_time = @host.at('tag[name=HOST_START]'))
+          DateTime.strptime(start_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
         else
-          @host_scan_start_time = DateTime.strptime(@host.at('tag[name=HOST_START]').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          false
         end
       end
 
@@ -75,10 +80,10 @@ module Nessus
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       #
       def stop_time
-        if @host.at('tag[name=HOST_END]').inner_text.blank?
-          return false
+        if (stop_time = @host.at('tag[name=HOST_END]'))
+          DateTime.strptime(stop_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
         else
-          @host_scan_stop_time = DateTime.strptime(@host.at('tag[name=HOST_END]').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          false
         end
       end
 
@@ -92,11 +97,9 @@ module Nessus
       #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-        m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-        s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
-        return "#{h} hours #{m} minutes and #{s} seconds"
+        get_runtime
       end
+      alias scan_runtime runtime
 
       #
       # Return the Host Netbios Name.
@@ -108,7 +111,9 @@ module Nessus
       #   host.netbios_name #=> "SOMENAME4243"
       #
       def netbios_name
-        @netbios_name ||= @host.at('tag[name=netbios-name]').inner_text
+        if (netbios = @host.at('tag[name=netbios-name]'))
+          netbios.inner_text
+        end
       end
 
       #
@@ -121,7 +126,9 @@ module Nessus
       #   host.mac_addr #=> "00:11:22:33:44:55"
       #
       def mac_addr
-        @mac_addr ||= @host.at('tag[name=mac-addr]').inner_text
+        if (mac_addr = @host.at('tag[name=mac-addr]'))
+          mac_addr.inner_text
+        end
       end
       alias mac_address mac_addr
 
@@ -135,7 +142,9 @@ module Nessus
       #   host.dns_name #=> "Microsoft Windows 2000, Microsoft Windows Server 2003"
       #
       def os_name
-        @os_name ||= @host.at('tag[name=operating-system]').inner_text
+        if (os_name = @host.at('tag[name=operating-system]'))
+          os_name.inner_text
+        end
       end
       alias os os_name
       alias operating_system os_name
@@ -244,7 +253,7 @@ module Nessus
 
         @medium_severity_events.each(&block)
       end
-      
+
       def medium_severity
         Enumerator.new(self,:medium_severity_events).to_a
       end
@@ -479,8 +488,19 @@ module Nessus
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
         end
       end
-      
+
       private
+
+        def get_runtime
+          if stop_time && start_time
+            h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
+            m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
+            s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+            return "#{h} hours #{m} minutes and #{s} seconds"
+          else
+            false
+          end
+        end
 
         def host_stats
 
@@ -510,14 +530,14 @@ module Nessus
             end
 
             @host_stats = {:open_ports => @open_ports,
-                      :tcp => @tcp,
-                      :udp => @udp,
-                      :icmp => @icmp,
-                      :informational => @informational,
-                      :low => @low,
-                      :medium => @medium,
-                      :high => @high,
-                      :all => (@low + @medium + @high)}
+                           :tcp => @tcp,
+                           :udp => @udp,
+                           :icmp => @icmp,
+                           :informational => @informational,
+                           :low => @low,
+                           :medium => @medium,
+                           :high => @high,
+                           :all => (@low + @medium + @high)}
 
           end
           @host_stats

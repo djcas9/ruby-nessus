@@ -4,8 +4,6 @@ module Nessus
   module Version1
     
     class Event
-      # Event
-      attr_reader :event
 
       # Return the total event count for a given host.
       # @return [Integer]
