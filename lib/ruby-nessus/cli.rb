@@ -71,11 +71,10 @@ module Nessus
           
           unless scan.version == 1
             Log.h5 "Informational Count", host.informational_severity_count
+            Log.h5 "Low Count", host.low_severity_count
+            Log.h5 "Medium Count", host.medium_severity_count
+            Log.h5 "High Count", host.high_severity_count
           end
-          
-          Log.h5 "Low Count", host.low_severity_count
-          Log.h5 "Medium Count", host.medium_severity_count
-          Log.h5 "High Count", host.high_severity_count
           Log.it
         end
 
