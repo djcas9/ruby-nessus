@@ -28,10 +28,13 @@ module Nessus
       #     scan.report_name
       #   end
       #
-      def initialize(file)
-        @file = File.open(file)
-        @xml = Nokogiri::XML.parse(@file.read)
+      def initialize(xml)
+        @xml = xml
         raise "Error: Not A Version 1.0 .Nessus file." unless @xml.at('NessusClientData')
+      end
+
+      def version
+        1
       end
 
       #
@@ -297,7 +300,7 @@ module Nessus
       def total_event_count
         count_severity[:all].to_i
       end
-      
+
       #
       # Return the Total severity count.
       #

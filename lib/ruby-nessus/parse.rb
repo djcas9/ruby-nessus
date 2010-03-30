@@ -1,3 +1,4 @@
+require 'ruby-nessus/log'
 require 'ruby-nessus/Version1/version1'
 require 'ruby-nessus/Version2/version2'
 
@@ -10,18 +11,28 @@ module Nessus
 
   class Parse
 
-    def initialize(file, attributes={}, &block)
-      @file = file
-      @version = attributes[:version] || 2
+    def initialize(file, options={}, &block)
+      @file = File.open(file)
+      @version = options[:version]
+      @xml = Nokogiri::XML.parse(@file.read)
 
-      case @version
-
-        when 1
-          block.call(Version1::XML.new(file)) if block
-        when 2
-          block.call(Version2::XML.new(file)) if block
+      if @version
+        case @version
+          when 1
+            block.call(Version1::XML.new(@xml)) if block
+          when 2
+            block.call(Version2::XML.new(@xml)) if block
+          else
+            raise "Error: Supported .Nessus Version are 1 and 2."
+        end
+      else
+        if @xml.at('NessusClientData')
+          block.call(Version1::XML.new(@xml)) if block
+        elsif @xml.at('NessusClientData_v2')
+          block.call(Version2::XML.new(@xml)) if block
         else
           raise "Error: Supported .Nessus Version are 1 and 2."
+        end
       end
 
     end

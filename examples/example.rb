@@ -6,7 +6,7 @@ require 'ruby-nessus'
 
 # Ruby-Nessus Example
 
-Nessus::Parse.new('example_v2.nessus', :version => 2) do |scan|  
+Nessus::Parse.new('example_v1.nessus') do |scan|  
   
   scan.each_host do |host|
     puts host.ip

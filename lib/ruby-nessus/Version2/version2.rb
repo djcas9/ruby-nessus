@@ -27,12 +27,16 @@ module Nessus
       #     scan.report_name
       #   end
       #
-      def initialize(file)
-        @file = File.open(file)
-        @xml = Nokogiri::XML.parse(@file.read)
+      def initialize(xml)
+        @xml = xml
         raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
       end
-
+      
+      
+      def version
+        2
+      end
+      
       #
       # Return the nessus report title.
       #
