@@ -52,7 +52,7 @@ module Nessus
       end
 
       #
-      # Return ture if the event is of low severity.
+      # Return true if the event is of low severity.
       #
       # @return [Boolean]
       #   Return true if the event is low severity.
@@ -62,7 +62,7 @@ module Nessus
       end
 
       #
-      # Return ture if the event is of medium severity.
+      # Return true if the event is of medium severity.
       #
       # @return [Boolean]
       #   Return true if the event is medium severity.
@@ -72,7 +72,7 @@ module Nessus
       end
 
       #
-      # Return ture if the event is of high severity.
+      # Return true if the event is of high severity.
       #
       # @return [Boolean]
       #   Return true if the event is high severity.
@@ -81,6 +81,16 @@ module Nessus
         severity == 3
       end
 
+      #
+      # Return true if the event is of critical severity.
+      #
+      # @return [Boolean]
+      #   Return true if the event is critical severity.
+      #
+      def high?
+        severity == 4
+      end
+      
       #
       # Return the event object nessus plugin id
       #

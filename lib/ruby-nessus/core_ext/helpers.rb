@@ -28,6 +28,8 @@ class Fixnum
       return "Medium Severity"
     when 3
       return "High Severity"
+    when 4
+      return "Critical Severity"
     end
   end
   
@@ -64,6 +66,19 @@ class Fixnum
   #   host.severity.low? #=> true
   def low?
     if self >= 1
+      true
+    else
+      false
+    end
+  end
+    
+  # Return True if the given severity is critical
+  # @return [Boolean]
+  #   Return True if the given severity is critical
+  # @example
+  #   host.severity.critical? #=> true
+  def critical?
+    if self == 4
       true
     else
       false
