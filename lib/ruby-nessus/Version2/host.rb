@@ -299,7 +299,7 @@ module Nessus
       #   host.event_count #=> 3456
       #
       def event_count
-        ((low_severity_events.to_i) + (medium_severity_events.to_i) + (high_severity_events.to_i)).to_i
+        ((low_severity_events.count) + (medium_severity_events.count) + (high_severity_events.count)).to_i
       end
 
       #
