@@ -5,7 +5,7 @@ unless $LOAD_PATH.include?(lib_dir)
   $LOAD_PATH << lib_dir
 end
 
-require 'ruby-nessus/cli'
-require 'ruby-nessus/version'
+require 'nessus/cli'
+require 'nessus/version'
  
 Nessus::CLI.run

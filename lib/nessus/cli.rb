@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'ruby-nessus/nessus'
-require 'ruby-nessus/log'
+require 'nessus/nessus'
+require 'nessus/log'
 require 'optparse'
 
 require 'pp'

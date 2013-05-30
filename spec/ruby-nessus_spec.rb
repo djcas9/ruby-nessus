@@ -1,4 +1,4 @@
-require 'ruby-nessus/version'
+require 'nessus/version'
  
 require 'spec_helper'
  

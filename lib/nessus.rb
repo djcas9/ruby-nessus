@@ -1,3 +1,3 @@
 # Ruby-Nessus Files
-require 'ruby-nessus/nessus'
-require 'ruby-nessus/version'
+require 'nessus/nessus'
+require 'nessus/version'

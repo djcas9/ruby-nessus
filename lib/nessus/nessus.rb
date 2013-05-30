@@ -1,5 +1,5 @@
-require 'ruby-nessus/parse'
-require 'ruby-nessus/core_ext/helpers'
+require 'nessus/parse'
+require 'nessus/core_ext/helpers'
 
 module Nessus
 

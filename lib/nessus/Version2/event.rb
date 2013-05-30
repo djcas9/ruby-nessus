@@ -1,4 +1,4 @@
-require 'ruby-nessus/Version2/port'
+require 'nessus/Version2/port'
 
 module Nessus
   module Version2
