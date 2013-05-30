@@ -6,13 +6,9 @@ Gem::Specification.new do |gem|
   gemspec = YAML.load_file('gemspec.yml')
 
   gem.name    = gemspec.fetch('name')
-  gem.version = gemspec.fetch('version') do
-                  lib_dir = File.join(File.dirname(__FILE__),'lib')
-                  $LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
+  gem.version = gemspec.fetch('version')
 
-                  require 'ore/version'
-                  Ore::VERSION
-                end
+  p gem.version 
 
   gem.summary     = gemspec['summary']
   gem.description = gemspec['description']
