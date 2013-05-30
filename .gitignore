@@ -1,12 +1,2 @@
-doc
-pkg
-tmp/*
-.DS_Store
-.yardoc
-*.db
-*.log
-*.swp
-*~
-*.gemspec
-*.gem
-*.rbc
+doc/
+pkg/

@@ -1,48 +1,40 @@
+# encoding: utf-8
+
 require 'rubygems'
 require 'rake'
 
-require './lib/ruby-nessus/version.rb'
+begin
+  gem 'rubygems-tasks', '~> 0.2'
+  require 'rubygems/tasks'
+
+  Gem::Tasks.new
+rescue LoadError => e
+  warn e.message
+  warn "Run `gem install rubygems-tasks` to install Gem::Tasks."
+end
 
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "ruby-nessus"
-    gem.version = Nessus::VERSION
-    gem.summary = "Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner."
-    gem.description = "Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations."
-    gem.email = "dustin.webber@gmail.com"
-    gem.homepage = "http://github.com/mephux/ruby-nessus"
-    gem.authors = ["Dustin Willis Webber"]
-    gem.add_dependency "nokogiri", ">= 1.4.0"
-    gem.add_dependency "rainbow", ">= 1.0.4"
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "yard", ">=0.2.3.5"
+  gem 'rspec', '~> 2.4'
+  require 'rspec/core/rake_task'
+
+  RSpec::Core::RakeTask.new
+rescue LoadError => e
+  task :spec do
+    abort "Please run `gem install rspec` to install RSpec."
   end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-require 'spec/rake/spectask'
- 
-desc "Run all specifications"
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.libs += ['lib', 'spec']
-  t.spec_opts = ['--colour', '--format', 'specdoc']
-end
- 
-task :test => :spec
+task :test    => :spec
 task :default => :spec
 
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
-unless $LOAD_PATH.include?(lib_dir)
-  $LOAD_PATH.unshift(lib_dir)
-end
- 
-require 'yard'
- 
-YARD::Rake::YardocTask.new do |t|
+begin
+  gem 'yard', '~> 0.8'
+  require 'yard'
 
+  YARD::Rake::YardocTask.new  
+rescue LoadError => e
+  task :yard do
+    abort "Please run `gem install yard` to install YARD."
+  end
 end
- 
-task :docs => :yardoc
+task :doc => :yard

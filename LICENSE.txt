@@ -1,4 +1,4 @@
-Copyright (c) 2009 Dustin Willis Webber
+Copyright (c) 2013 Dustin Willis Webber
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
