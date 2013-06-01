@@ -332,10 +332,10 @@ module Nessus
       end
 
       #
-      # Return the Open Ports count.
+      # Return an Array of open ports. 
       #
       # @return [Array]
-      #   The Open Ports Count
+      #   The open ports
       #
       # @example
       #   scan.ports #=> ['22', '80', '443']
