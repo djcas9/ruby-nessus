@@ -14,10 +14,10 @@ More Information:
 
 ## Usage & Examples
 
-The below example illustrates how easy it really is to iterate of result data.
+The below example illustrates how easy it really is to iterate over result data.
 ```ruby  
   require 'rubygems'
-  require 'ruby-nessus'
+  require 'nessus'
 
   Nessus::Parse.new("example_v1.nessus", :version => 1) do |scan|
   # OR: Nessus::Parse.new("example_v2.nessus") do |scan|   <-- Ruby-Nessus will figured out the correct Nessus file version.
