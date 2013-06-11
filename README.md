@@ -23,7 +23,6 @@ The below example illustrates how easy it really is to iterate over result data.
   # OR: Nessus::Parse.new("example_v2.nessus") do |scan|   <-- Ruby-Nessus will figured out the correct Nessus file version.
   
     puts scan.title                     # The Nessus Report Title.
-    puts scan.runtime                   # The Scan Runtime. #=> 2 hours 23 minutes 12 seconds
     puts scan.host_count                # Host Count.
     puts scan.unique_ports              # All Unique Ports Seen.
 
