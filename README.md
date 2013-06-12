@@ -10,7 +10,7 @@ More Information:
 
 ## Install
 
-  sudo gem install ruby-nessus
+  ```sudo gem install ruby-nessus```
 
 ## Usage & Examples
 
