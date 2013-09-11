@@ -11,10 +11,10 @@ module Nessus
 
   class Parse
 
-    def initialize(file, options={}, &block)
-      @file = File.open(file)
+    def initialize(file = nil, options = {}, &block)
+      doc = file ? File.read(file) : options[:xml]
+      @xml = Nokogiri::XML.parse(doc)
       @version = options[:version]
-      @xml = Nokogiri::XML.parse(@file.read)
 
       if @version
         case @version
