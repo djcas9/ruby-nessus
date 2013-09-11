@@ -7,7 +7,7 @@ require 'nessus'
 # Ruby-Nessus Example
 #
 # This proc is called by scan.each_host in each variation of Nessus::Parse
-print_info = Proc.new do |host|
+def print_info(host)
   puts host.ip
   puts host.hostname
   puts host.os_name
@@ -33,7 +33,7 @@ end
 # From a file:
 puts '+ Using a Nessus XML file:'
 Nessus::Parse.new('example_v1.nessus') do |scan|
-  scan.each_host(&print_info)
+  scan.each_host(&method(:print_info))
 end
 
 puts
@@ -41,5 +41,5 @@ puts
 # From a string:
 puts '+ Using an XML string:'
 Nessus::Parse.new(nil, { :xml => File.read('example_v1.nessus') }) do |scan|
-  scan.each_host(&print_info)
+  scan.each_host(&method(:print_info))
 end
