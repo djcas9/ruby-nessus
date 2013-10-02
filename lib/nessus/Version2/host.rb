@@ -290,6 +290,37 @@ module Nessus
       end
 
       #
+      # Returns All Critical Event Objects For A Given Host.
+      #
+      # @yield [prog] If a block is given, it will be passed the newly
+      #               created Event object.
+      #
+      # @yieldparam [EVENT] prog The newly created Event object.
+      #
+      # @return [Integer]
+      #   Return The Critical Event Count For A Given Host.
+      #
+      # @example
+      #   host.critical_severity_events do |critical|
+      #     puts critical.name if critical.name
+      #   end
+      #
+      def critical_severity_events(&block)
+
+        unless @critical_severity_events
+          @critical_severity_events = []
+
+          @host.xpath("ReportItem").each do |event|
+            next if event['severity'].to_i != 4
+            @critical_severity_events << Event.new(event)
+          end
+
+        end
+
+        @critical_severity_events.each(&block)
+      end
+
+      #
       # Return the total event count for a given host.
       #
       # @return [Integer]
@@ -299,7 +330,7 @@ module Nessus
       #   host.event_count #=> 3456
       #
       def event_count
-        ((low_severity_events.count) + (medium_severity_events.count) + (high_severity_events.count)).to_i
+        ((low_severity_events.count) + (medium_severity_events.count) + (high_severity_events.count) + (critical_severity_events.count)).to_i
       end
 
       #
@@ -405,6 +436,19 @@ module Nessus
       end
 
       #
+      # Return the Critical severity count.
+      #
+      # @return [Integer]
+      #   The Critical Severity Count
+      #
+      # @example
+      #   scan.critical_severity_count #=> 10
+      #
+      def critical_severity_count
+        host_stats[:critical].to_i
+      end
+
+      #
       # Return the High severity count.
       #
       # @return [Integer]
@@ -506,7 +550,7 @@ module Nessus
 
           unless @host_stats
             @host_stats = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high = 0,0,0,0,0,0,0,0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
 
             @host.xpath("ReportItem").each do |s|
               case s['severity'].to_i
@@ -518,6 +562,8 @@ module Nessus
                   @medium += 1
                 when 3
                   @high += 1
+                when 4
+                  @critical += 1
               end
 
               unless s['severity'].to_i == 0
@@ -537,7 +583,8 @@ module Nessus
                            :low => @low,
                            :medium => @medium,
                            :high => @high,
-                           :all => (@low + @medium + @high)}
+                           :critical => @critical,
+                           :all => (@low + @medium + @high + @critical)}
 
           end
           @host_stats
