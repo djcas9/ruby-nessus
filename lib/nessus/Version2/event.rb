@@ -87,7 +87,7 @@ module Nessus
       # @return [Boolean]
       #   Return true if the event is critical severity.
       #
-      def high?
+      def critical?
         severity == 4
       end
       
