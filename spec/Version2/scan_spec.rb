@@ -48,6 +48,10 @@ describe "Nessus Version 2: Scan" do
     @xml.high_severity_count.should == 0
   end
 
+  it "should calculate the critical severity event total" do
+    @xml.critical_severity_count.should == 0
+  end
+
   it "should calculate the total for all severity events excluding informational" do
     @xml.total_event_count.should == 50
   end

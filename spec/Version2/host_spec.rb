@@ -43,6 +43,10 @@ describe "Nessus Version 2: Host" do
   it "should calculate the hosts high severity event count" do
     @host.high_severity_count.should == 0
   end
+
+  it "should calculate the hosts critical severity event count" do
+    @host.critical_severity_count.should == 0
+  end
   
   it "should calculate the hosts total event count" do
     @host.total_event_count.should == 35

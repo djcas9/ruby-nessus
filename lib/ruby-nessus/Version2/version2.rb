@@ -214,6 +214,19 @@ module RubyNessus
       end
 
       #
+      # Return the Critical severity count.
+      #
+      # @return [Integer]
+      #   The Critical Severity Count
+      #
+      # @example
+      #   scan.critical_severity_count #=> 10
+      #
+      def critical_severity_count
+        count_stats[:critical].to_i
+      end
+
+      #
       # Return the High severity count.
       #
       # @return [Integer]
@@ -253,7 +266,7 @@ module RubyNessus
       end
 
       #
-      # Return the Total severity count. [high, medium, low, informational]
+      # Return the Total severity count. [critical, high, medium, low, informational]
       #
       # @param [true, false] argname only true or false
       #
@@ -278,7 +291,7 @@ module RubyNessus
       #
       # @param [Boolean] round round the result to the nearest whole number.
       #
-      # @raise [ExceptionClass] One of the following severity options must be passed. [high, medium, low, informational, all]
+      # @raise [ExceptionClass] One of the following severity options must be passed. [critical, high, medium, low, informational, all]
       #
       # @return [Integer]
       #   The Percentage Of Events For A Passed Severity
@@ -288,7 +301,7 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage=false)
         @sc ||= count_stats
-        if %W(high medium low tcp udp icmp all).include?(type)
+        if %W(critical high medium low tcp udp icmp all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
           if round_percentage
             return "#{calc.round}"
@@ -296,7 +309,7 @@ module RubyNessus
             return "#{calc}"
           end
         else
-          raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
+          raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, critical, high, medium and low."
         end
       end
 
@@ -334,7 +347,7 @@ module RubyNessus
         def count_stats
           unless @count
             @count = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high = 0,0,0,0,0,0,0,0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
 
             @xml.xpath("//ReportItem").each do |s|
               case s['severity'].to_i
@@ -346,6 +359,8 @@ module RubyNessus
                   @medium += 1
                 when 3
                   @high += 1
+                when 4
+                  @critical += 1
               end
               
               unless s['severity'].to_i == 0
@@ -365,7 +380,8 @@ module RubyNessus
                       :low => @low,
                       :medium => @medium,
                       :high => @high,
-                      :all => (@low + @medium + @high)}
+                      :critical => @critical,
+                      :all => (@low + @medium + @high + @critical)}
           end
 
           return @count
