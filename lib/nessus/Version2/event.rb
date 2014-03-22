@@ -283,11 +283,13 @@ module Nessus
       #    Return the event cvss base score.
       #
       def cve
-        @cve ||= if @event.at('cve')
-          @event.at('cve').inner_text
-        else
-          false
+        unless @cve
+          @cve = []
+          @event.xpath("cve").each do |cve|
+            @cve << cve.inner_text
+          end
         end
+        @cve
       end
 
       #
