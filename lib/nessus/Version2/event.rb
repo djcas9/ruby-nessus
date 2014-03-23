@@ -333,6 +333,20 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return event exploit availability on core.
+      #
+      # @return [String, false]
+      #    Return the event exploit availability on core.
+      #
+      def exploit_framework_core
+        @exploit_framework_core ||= if @event.at('exploit_framework_core')
+          @event.at('exploit_framework_core').inner_text
+        else
+          false
+        end
+      end
 
     end
 
