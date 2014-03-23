@@ -333,6 +333,23 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return the event osvdb.
+      #
+      # @return [String, false]
+      #    Return the event osvdb.
+      #
+      
+      def osvdb
+        unless @osvdb
+          @osvdb = []
+          @event.xpath("osvdb").each do |osvdb|
+            @osvdb << osvdb.inner_text
+          end
+        end
+        @osvdb
+      end
 
     end
 
