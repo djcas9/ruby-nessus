@@ -333,6 +333,20 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return event cvss temporal vector.
+      #
+      # @return [String, false]
+      #    Return the event cvss temporal vector.
+      #
+      def cvss_temporal_vector
+        @cvss_temporal_vector ||= if @event.at('cvss_temporal_vector')
+          @event.at('cvss_temporal_vector').inner_text
+        else
+          false
+        end
+      end
 
     end
 
