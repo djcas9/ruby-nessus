@@ -333,6 +333,20 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return the event vulnerability publication date.
+      #
+      # @return [String, false]
+      #    Return the event vulnerability publication date.
+      #
+      def vuln_publication_date
+        @vuln_publication_date ||= if @event.at('vuln_publication_date')
+          DateTime.strptime(@event.at('vuln_publication_date').inner_text, fmt='%Y/%m/%d')
+        else
+          false
+        end
+      end
 
     end
 
