@@ -333,6 +333,21 @@ module Nessus
           false
         end
       end
+      
+            #
+      # Return event exploit availability on metasploit.
+      #
+      # @return [String, false]
+      #    Return the event exploit availability on metasploit.
+      #
+      def exploit_framework_metasploit
+        @exploit_framework_metasploit ||= if @event.at('exploit_framework_metasploit')
+          @event.at('exploit_framework_metasploit').inner_text
+        else
+          false
+        end
+      end
+
 
     end
 
