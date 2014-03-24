@@ -337,6 +337,22 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return the event cpe.
+      #
+      # @return [String, false]
+      #    Return the event cpe.
+      #
+      def cpe
+        unless @cpe
+          @cpe = []
+          @event.xpath("cpe").each do |cpe|
+            @cpe << cpe.inner_text
+          end
+        end
+        @cpe
+      end
 
     end
 
