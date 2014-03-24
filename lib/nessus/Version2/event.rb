@@ -297,11 +297,13 @@ module Nessus
       #    Return the event bid.
       #
       def bid
-        @bid ||= if @event.at('bid')
-          @event.at('bid').inner_text.to_i
-        else
-          false
+        unless @bid
+          @bid = []
+          @event.xpath("bid").each do |bid|
+            @bid << bid.inner_text
+          end
         end
+        @bid
       end
 
       #
