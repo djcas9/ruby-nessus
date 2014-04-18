@@ -277,6 +277,20 @@ module Nessus
       end
       
       #
+      # Return the event cvss temporal score.
+      #
+      # @return [String, false]
+      #    Return the event cvss temporal score.
+      #
+      def cvss_temporal_score
+        @cvss_temporal_score ||= if @event.at('cvss_temporal_score')
+          @event.at('cvss_temporal_score').inner_text.to_f
+        else
+          false
+        end
+      end
+      
+      #
       # Return the event cve.
       #
       # @return [String, false]
