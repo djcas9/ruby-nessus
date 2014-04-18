@@ -395,6 +395,21 @@ module Nessus
           false
         end
       end
+      
+      #
+      # Return event exploit availability on canvas.
+      #
+      # @return [String, false]
+      #    Return the event exploit availability on core.
+      #
+      def exploit_framework_canvas
+        @exploit_framework_canvas ||= if @event.at('exploit_framework_canvas')
+          @event.at('exploit_framework_canvas').inner_text
+        else
+          false
+        end
+      end
+
 
     end
     
