@@ -381,9 +381,23 @@ module Nessus
         end
         @cpe
       end
+      
+       #
+      # Return event exploit availability.
+      #
+      # @return [String, false]
+      #    Return the event exploit availability.
+      #
+      def exploit_available
+        @exploit_available ||= if @event.at('exploit_available')
+          @event.at('exploit_available').inner_text
+        else
+          false
+        end
+      end
 
     end
-
+    
   end
 
 end
