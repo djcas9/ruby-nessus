@@ -74,7 +74,7 @@ There are a bunch of convenient methods (maybe more then needed) added to make r
     puts scan.hosts.count #=> 12
 
     
-    scan.hosts.first do |host|
+    scan.each_host do |host|
       puts host.hostname
       puts host.event_percentage_for('low', true)
       puts host.tcp_count #=> tcp, icmp, udp supported.
