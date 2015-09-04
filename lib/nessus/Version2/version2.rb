@@ -69,6 +69,21 @@ module Nessus
       def policy_notes
         @policy_notes ||= @xml.at("//Policy/policyComments").inner_text
       end
+      
+      #
+      # Return the hosts the were targeted for the initial scan.
+      # These are the hosts that were inputed when creating the scan.
+      #
+      # @return [Array<String>]
+      #   Array of hosts
+      #
+      def target_hosts
+        @xml.xpath('//Preferences/ServerPreferences/preference').each do |element|
+          if element.children[0].inner_text == 'TARGET'
+            return element.children[2].inner_text.split(',')
+          end
+        end
+      end
 
       #
       # Creates a new Host object to be parser

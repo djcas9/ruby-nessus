@@ -127,6 +127,21 @@ module Nessus
       end
 
       #
+      # Return the hosts the were targeted for the initial scan.
+      # These are the hosts that were inputed when creating the scan.
+      #
+      # @return [Array<String>]
+      #   Array of hosts
+      #
+      def target_hosts
+        hosts = []
+        @xml.xpath('//Targets/Target/value').each do |element|
+          hosts << element.inner_text
+        end
+        hosts.sort.uniq!
+      end
+
+      #
       # Returns and array of the plugin ids userd for the passed .nessus scan.
       #
       # @return [Array]
