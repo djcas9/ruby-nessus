@@ -216,7 +216,7 @@ module Nessus
       #   The Hosts of the scan.
       #
       def hosts
-        Enumerator.new(self,:each_host).to_a
+        self.to_enum(:each_host).to_a
       end
 
       #

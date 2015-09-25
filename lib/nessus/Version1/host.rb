@@ -249,7 +249,7 @@ module Nessus
       # @return [Array<String>]
       #   The events of the host.
       def events
-        Enumerator.new(self,:each_event).to_a
+        self.to_enum(:each_event).to_a
       end
 
 
