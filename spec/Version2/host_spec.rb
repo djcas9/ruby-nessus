@@ -4,7 +4,7 @@ require 'helpers/xml'
 describe "Nessus Version 2: Host" do
   
   before(:all) do
-    @xml = Nessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
+    @xml = RubyNessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
     @host = @xml.hosts.first
   end
   

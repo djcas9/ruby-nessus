@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'nessus/nessus'
-require 'nessus/log'
+require 'ruby-nessus/ruby-nessus'
+require 'ruby-nessus/log'
 require 'optparse'
 
 require 'pp'
 
-module Nessus
+module RubyNessus
 
   class CLI
 
@@ -23,10 +23,10 @@ module Nessus
       optparse(*args)
 
       Log.it "Recess - Ruby-Nessus CLI"
-      Log.it "Version: #{Nessus::VERSION}"
+      Log.it "Version: #{RubyNessus::VERSION}"
       Log.it
 
-      Nessus::Parse.new("#{@file}") do |scan|
+      RubyNessus::Parse.new("#{@file}") do |scan|
 
         Log.h1 "SCAN Metadata"
         Log.it
@@ -89,7 +89,7 @@ module Nessus
       def optparse(*args)
         opts = OptionParser.new
         opts.program_name = "recess"
-        opts.banner = "Recess #{Nessus::VERSION}"
+        opts.banner = "Recess #{RubyNessus::VERSION}"
         opts.separator "usage: recess FILE [OPTIONS]"
 
         opts.on('-f','--file FILE','The .nessus file to parse.') do |file|
@@ -107,7 +107,7 @@ module Nessus
         end
 
         opts.on('-v','--version','Recess Version.') do |version|
-          Log.it Nessus::VERSION
+          Log.it RubyNessus::VERSION
           Log.it
           exit -1
         end

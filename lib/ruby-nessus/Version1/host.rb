@@ -1,4 +1,4 @@
-module Nessus
+module RubyNessus
   module Version1
 
     class Host

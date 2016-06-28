@@ -4,7 +4,7 @@ require 'helpers/xml'
 describe "Nessus Version 1: Event" do
   
   before(:all) do
-    @xml = Nessus::Version1::XML.new(Helpers::DOT_NESSUS_V1)
+    @xml = RubyNessus::Version1::XML.new(Helpers::DOT_NESSUS_V1)
     @host = @xml.hosts.first
     @bad_event = @host.events.first
     @good_event = @host.events.last
