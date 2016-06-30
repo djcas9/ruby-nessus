@@ -1,6 +1,6 @@
-require 'nessus/Version1/port'
+require 'ruby-nessus/Version1/port'
 
-module Nessus
+module RubyNessus
   module Version1
     
     class Event

@@ -5,7 +5,7 @@ describe "Nessus Version 2: Scan" do
   include Helpers
 
   before(:all) do
-    @xml = Nessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
+    @xml = RubyNessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
   end
 
   it "should parse the scan title" do

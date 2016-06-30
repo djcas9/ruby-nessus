@@ -17,10 +17,10 @@ More Information:
 The below example illustrates how easy it really is to iterate over result data.
 ```ruby  
   require 'rubygems'
-  require 'nessus'
+  require 'ruby-nessus'
 
-  Nessus::Parse.new("example_v1.nessus", :version => 1) do |scan|
-  # OR: Nessus::Parse.new("example_v2.nessus") do |scan|   <-- Ruby-Nessus will figured out the correct Nessus file version.
+  RubyNessus::Parse.new("example_v1.nessus", :version => 1) do |scan|
+  # OR: RubyNessus::Parse.new("example_v2.nessus") do |scan|   <-- Ruby-Nessus will figured out the correct Nessus file version.
   
     puts scan.title                     # The Nessus Report Title.
     puts scan.host_count                # Host Count.
@@ -61,7 +61,7 @@ You also have the ability to search for particular hostnames. In the near future
 ```
 There are a bunch of convenient methods (maybe more then needed) added to make reporting a bit easier to produce quickly from a raw scan file. If you do not pass :version as an option it will default to the 2.0 .nessus schema.
 ```ruby
-  Nessus::Parse.new("example_v2.nessus") do |scan|
+  RubyNessus::Parse.new("example_v2.nessus") do |scan|
 
     puts scan.event_percentage_for('low', true) #=> 8%
 

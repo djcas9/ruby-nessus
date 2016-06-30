@@ -1,10 +1,10 @@
-require 'nessus/Version1/host'
-require 'nessus/Version1/event'
+require 'ruby-nessus/Version2/host'
+require 'ruby-nessus/Version2/event'
 
-module Nessus
-
+module RubyNessus
+  
   # .Nessus Version 2 Schema
-  module Version1
+  module Version2
 
     # File to parse
     attr_reader :file
@@ -20,23 +20,23 @@ module Nessus
       #
       # @yield [prog] If a block is given, it will be passed the newly
       #               created XML object.
-      #
       # @yieldparam [XML] prog The newly created XML object.
       #
       # @example
-      #   Nessus::XML.new(nessus_scan_file) do |scan|
+      #   RubyNessus::XML.new(nessus_scan_file) do |scan|
       #     scan.report_name
       #   end
       #
       def initialize(xml)
         @xml = xml
-        raise "Error: Not A Version 1.0 .Nessus file." unless @xml.at('NessusClientData')
+        raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
       end
-
+      
+      
       def version
-        1
+        2
       end
-
+      
       #
       # Return the nessus report title.
       #
@@ -47,63 +47,7 @@ module Nessus
       #   scan.report_name #=> "My Super Cool Nessus Report"
       #
       def title
-        @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').last
-      end
-
-      #
-      # Return the nessus report time.
-      #
-      # @return [String]
-      #   The Nessus Report Time
-      #
-      # @example
-      #   scan.report_time #=> "09/11/08 02:21:22 AM"
-      #
-      def time
-        datetime = @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').first
-        @report_time ||= DateTime.strptime(datetime, fmt='%y/%m/%d %I:%M:%S %p')
-      end
-
-      #
-      # Return the scan start time.
-      #
-      # @return [DateTime]
-      #   The Nessus Scan Start Time
-      #
-      # @example
-      #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
-      #
-      def start_time
-        @start_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StartTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
-      end
-
-      #
-      # Return the scan stop time.
-      #
-      # @return [DateTime]
-      #   The Nessus Scan Stop Time
-      #
-      # @example
-      #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
-      #
-      def stop_time
-        @stop_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StopTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
-      end
-
-      #
-      # Return the scan run time.
-      #
-      # @return [String]
-      #   The Nessus Scan Run Time
-      #
-      # @example
-      #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
-      #
-      def runtime
-        h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-        m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-        s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
-        return "#{h} hours #{m} minutes and #{s} seconds"
+        @report_name ||= @xml.at('Report/@name').inner_text
       end
 
       #
@@ -113,7 +57,7 @@ module Nessus
       #   The Nessus Scan Policy Name
       #
       def policy_title
-        @policy_name ||= @xml.xpath("//NessusClientData//Report//policyName").inner_text
+        @policy_name ||= @xml.at("//Policy/policyName").inner_text
       end
 
       #
@@ -123,9 +67,9 @@ module Nessus
       #   The Nessus Scan Policy Comments
       #
       def policy_notes
-        @policy_comments ||= @xml.xpath("//NessusClientData//Report//policyComments").inner_text
+        @policy_notes ||= @xml.at("//Policy/policyComments").inner_text
       end
-
+      
       #
       # Return the hosts the were targeted for the initial scan.
       # These are the hosts that were inputed when creating the scan.
@@ -134,57 +78,11 @@ module Nessus
       #   Array of hosts
       #
       def target_hosts
-        hosts = []
-        @xml.xpath('//Targets/Target/value').each do |element|
-          hosts << element.inner_text
-        end
-        hosts.sort.uniq!
-      end
-
-      #
-      # Returns and array of the plugin ids userd for the passed .nessus scan.
-      #
-      # @return [Array]
-      #   The Nessus Scan Plugin Ids
-      #
-      # @example
-      #   scan.plugin_ids #=> [1234,2343,9742,5452,5343,2423,1233]
-      #
-      def plugin_ids
-        unless @plugin_ids
-          @plugin_ids = []
-
-          @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
-            @plugin_ids << id
+        @xml.xpath('//Preferences/ServerPreferences/preference').each do |element|
+          if element.children[0].inner_text == 'TARGET'
+            return element.children[2].inner_text.split(',')
           end
         end
-
-        @plugin_ids
-      end
-
-      #
-      # Returns and array of the plugin names userd for the passed .nessus scan.
-      #
-      # @return [Array]
-      #   The Nessus Scan Plugin Names
-      #
-      # @example
-      #   scan.plugins #=> ["PHP < 5.2.1 Multiple Vulnerabilities", "PHP < 4.4.1 / 5.0.6 Multiple Vulnerabilities"]
-      #
-      def plugins
-        unless @plugins
-          # get elements with attribute:
-          @plugins = []
-
-          @xml.xpath("//pluginName").each do |x|
-            @plugins << x.inner_text unless x.inner_text.empty?
-          end
-
-          @plugins.uniq!
-          @plugins.sort!
-        end
-
-        return @plugins
       end
 
       #
@@ -192,7 +90,6 @@ module Nessus
       #
       # @yield [prog] If a block is given, it will be passed the newly
       #               created Host object.
-      #
       # @yieldparam [XML] prog The newly created Host object.
       #
       # @example
@@ -203,7 +100,7 @@ module Nessus
       def each_host(&block)
         hosts = []
         @xml.xpath("//ReportHost").each do |host|
-          hosts << host.at('HostName').inner_text if host.at('HostName').inner_text
+          hosts << host['name'] if host['name']
           block.call(Host.new(host)) if block
         end
         hosts
@@ -229,7 +126,7 @@ module Nessus
       #   scan.host_count #=> 23
       #
       def host_count
-        hosts.size
+        each_host.size
       end
 
       #
@@ -243,12 +140,64 @@ module Nessus
       def unique_ports
         unless @unique_ports
           @unique_ports = []
-          @xml.xpath("//ReportItem//port").each do |port|
-            @unique_ports << port.inner_text
+          @xml.xpath("//ReportItem").each do |port|
+            @unique_ports << port['port']
           end
           @unique_ports.uniq!
           @unique_ports.sort!
         end
+      end
+
+      #
+      # Return the Open Ports count.
+      #
+      # @return [Integer]
+      #   The Open Ports Count
+      #
+      # @example
+      #   scan.open_ports_count #=> 1203
+      #
+      def open_ports_count
+        count_stats[:open_ports].to_i
+      end
+
+      #
+      # Return the TCP Event Count.
+      #
+      # @return [Integer]
+      #   The TCP Event Count
+      #
+      # @example
+      #   scan.tcp_count #=> 3
+      #
+      def tcp_count
+        count_stats[:tcp].to_i
+      end
+
+      #
+      # Return the UDP Event Count.
+      #
+      # @return [Integer]
+      #   The UDP Event Count
+      #
+      # @example
+      #   scan.udp_count #=> 3
+      #
+      def udp_count
+        count_stats[:udp].to_i
+      end
+
+      #
+      # Return the ICMP Event Count.
+      #
+      # @return [Integer]
+      #   The ICMP Event Count
+      #
+      # @example
+      #   scan.icmp_count #=> 3
+      #
+      def icmp_count
+        count_stats[:icmp].to_i
       end
 
       #
@@ -260,8 +209,8 @@ module Nessus
       # @example
       #   scan.informational_severity_count #=> 1203
       #
-      def open_ports_count
-        count_severity[:open_ports].to_i
+      def informational_severity_count
+        count_stats[:informational].to_i
       end
 
       #
@@ -274,7 +223,7 @@ module Nessus
       #   scan.high_severity_count #=> 10
       #
       def high_severity_count
-        count_severity[:high].to_i
+        count_stats[:high].to_i
       end
 
       #
@@ -287,7 +236,7 @@ module Nessus
       #   scan.medium_severity_count #=> 234
       #
       def medium_severity_count
-        count_severity[:medium].to_i
+        count_stats[:medium].to_i
       end
 
       #
@@ -300,11 +249,13 @@ module Nessus
       #   scan.low_severity_count #=> 114
       #
       def low_severity_count
-        count_severity[:low].to_i
+        count_stats[:low].to_i
       end
 
       #
       # Return the Total severity count. [high, medium, low, informational]
+      #
+      # @param [true, false] argname only true or false
       #
       # @return [Integer]
       #   The Total Severity Count
@@ -312,8 +263,12 @@ module Nessus
       # @example
       #   scan.total_event_count #=> 1561
       #
-      def total_event_count
-        count_severity[:all].to_i
+      def total_event_count(count_informational = false)
+        if count_informational
+          count_stats[:all].to_i + informational_severity_count
+        else
+          count_stats[:all].to_i
+        end
       end
 
       #
@@ -332,16 +287,16 @@ module Nessus
       #   scan.event_percentage_for("low", true) #=> 11%
       #
       def event_percentage_for(type, round_percentage=false)
-        @sc ||= count_severity
-        if %W(high medium low all).include?(type)
-          calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
+        @sc ||= count_stats
+        if %W(high medium low tcp udp icmp all).include?(type)
+          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
           if round_percentage
             return "#{calc.round}"
           else
             return "#{calc}"
           end
         else
-          raise "Error: #{type} is not an acceptable severity. Possible options include: all, high, medium, low and informational."
+          raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
         end
       end
 
@@ -362,8 +317,8 @@ module Nessus
       #
       def find_by_hostname(hostname, &block)
         raise "Error: hostname can't be blank." if hostname.blank?
-        @xml.xpath('//ReportHost[HostName]').each do |host|
-          next unless host.inner_text.match(hostname)
+        @xml.xpath('//ReportHost').each do |host|
+          next unless host['name'].match(hostname)
           block.call(Host.new(host)) if block
         end
       end
@@ -373,29 +328,44 @@ module Nessus
         #
         # Calculates an event hash of totals for severity counts.
         #
-        # @return [hash]
+        # @return [Hash]
         #   The Event Totals For Severity
         #
-        def count_severity
+        def count_stats
           unless @count
             @count = {}
-            @open_ports = 0
-            @low = 0
-            @medium = 0
-            @high = 0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high = 0,0,0,0,0,0,0,0
 
-            @xml.xpath("//ReportHost").each do |s|
-              @open_ports += s.at('num_ports').inner_text.to_i
-              @low += s.at('num_lo').inner_text.to_i
-              @medium += s.at('num_med').inner_text.to_i
-              @high += s.at('num_hi').inner_text.to_i
+            @xml.xpath("//ReportItem").each do |s|
+              case s['severity'].to_i
+                when 0
+                  @informational += 1
+                when 1
+                  @low += 1
+                when 2
+                  @medium += 1
+                when 3
+                  @high += 1
+              end
+              
+              unless s['severity'].to_i == 0
+                @tcp += 1 if s['protocol'] == 'tcp'
+                @udp += 1 if s['protocol'] == 'udp'
+                @icmp += 1 if s['protocol'] == 'icmp'
+              end
+              
+              @open_ports += 1 if s['port'].to_i != 0
             end
 
-            @count = { :open_ports => @open_ports,
-                       :low => @low,
-                       :medium => @medium,
-                       :high => @high,
-                       :all => (@low + @medium + @high) }
+            @count = {:open_ports => @open_ports,
+                      :tcp => @tcp,
+                      :udp => @udp,
+                      :icmp => @icmp,
+                      :informational => @informational,
+                      :low => @low,
+                      :medium => @medium,
+                      :high => @high,
+                      :all => (@low + @medium + @high)}
           end
 
           return @count
@@ -405,5 +375,4 @@ module Nessus
 
 
   end
-
 end

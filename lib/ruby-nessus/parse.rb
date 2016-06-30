@@ -1,13 +1,13 @@
-require 'nessus/log'
-require 'nessus/Version1/version1'
-require 'nessus/Version2/version2'
+require 'ruby-nessus/log'
+require 'ruby-nessus/Version1/version1'
+require 'ruby-nessus/Version2/version2'
 
 require 'nokogiri'
 require 'date'
 require 'enumerator'
 require 'time'
 
-module Nessus
+module RubyNessus
 
   class Parse
 

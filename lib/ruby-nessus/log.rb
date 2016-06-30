@@ -1,5 +1,5 @@
 require 'rainbow'
-module Nessus
+module RubyNessus
   
   class Log
     
