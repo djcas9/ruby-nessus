@@ -65,6 +65,7 @@ There are a bunch of convenient methods (maybe more then needed) added to make r
 
     puts scan.event_percentage_for('low', true) #=> 8%
 
+    puts scan.critical_severity_count       # Critical Severity Event Count
     puts scan.high_severity_count           # High Severity Event Count
     puts scan.medium_severity_count         # Medium Severity Event Count
     puts scan.low_severity_count            # Low Severity Event Count
