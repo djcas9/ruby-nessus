@@ -126,7 +126,7 @@ module RubyNessus
       #   host.mac_addr #=> "00:11:22:33:44:55"
       #
       def mac_addr
-        if (mac_addr = @host.at('tag[name=mac-addr]'))
+        if (mac_addr = @host.at('tag[name=mac-address]'))
           mac_addr.inner_text
         end
       end
