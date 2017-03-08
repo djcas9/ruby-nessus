@@ -288,6 +288,7 @@ module RubyNessus
           @event.xpath("cve").each do |cve|
             @cve << cve.inner_text
           end
+          @cve = false if @cve.empty?
         end
         @cve
       end
@@ -304,6 +305,7 @@ module RubyNessus
           @event.xpath("bid").each do |bid|
             @bid << bid.inner_text
           end
+          @bid = false if @bid.empty?
         end
         @bid
       end
