@@ -8,34 +8,40 @@ require 'enumerator'
 require 'time'
 
 module RubyNessus
-
   class Parse
-
     def initialize(file = nil, options = {}, &block)
       doc = file ? File.read(file) : options[:xml]
       @xml = Nokogiri::XML.parse(doc)
-      @version = options[:version]
+      @version = options[:version] || detect_version
 
-      if @version
-        case @version
-          when 1
-            block.call(Version1::XML.new(@xml)) if block
-          when 2
-            block.call(Version2::XML.new(@xml)) if block
-          else
-            raise "Error: Supported .Nessus Version are 1 and 2."
-        end
-      else
-        if @xml.at('NessusClientData')
-          block.call(Version1::XML.new(@xml)) if block
-        elsif @xml.at('NessusClientData_v2')
-          block.call(Version2::XML.new(@xml)) if block
-        else
-          raise "Error: Supported .Nessus Version are 1 and 2."
-        end
+      @xml_parser = case @version
+                    when 1
+                      Version1::XML.new(@xml)
+                    when 2
+                      Version2::XML.new(@xml)
+                    else
+                      raise "Error: Supported .Nessus Version are 1 and 2."
+                    end
+
+      if block
+        block.call(@xml_parser)
       end
-
     end
 
+    # Retrive scan from file
+    def scan
+      @xml_parser
+    end
+
+    # Try to detection version with the XML given
+    def detect_version
+      if @xml.at('NessusClientData')
+        1
+      elsif @xml.at('NessusClientData_v2')
+        2
+      else
+        raise "Error: Supported .Nessus Version are 1 and 2."
+      end
+    end
   end
 end
