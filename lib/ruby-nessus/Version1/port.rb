@@ -30,15 +30,13 @@ module RubyNessus
       # @example
       #   Port.parse(port)
       def Port.parse(str)
-        begin
-          @full_port = str
-          components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
+        @full_port = str
+        components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
 
-          if components
-            return Port.new(components[1].strip, components[2].strip, components[3].strip, str)
-          else
-            return Port.new(false, false, false, str)
-          end
+        if components
+          return Port.new(components[1].strip, components[2].strip, components[3].strip, str)
+        else
+          return Port.new(false, false, false, str)
         end
       end
 
@@ -65,7 +63,7 @@ module RubyNessus
         if @service && @number && @protocol
           "#{@service} (#{@number}/#{@protocol})"
         else
-          "#{@raw_string}"
+          @raw_string.to_s
         end
       end
 
@@ -74,7 +72,7 @@ module RubyNessus
       #   Return false if the port object number is nil
       def number
         if @number
-          return @number
+          @number
         else
           false
         end
