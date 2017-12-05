@@ -530,59 +530,59 @@ module RubyNessus
 
       private
 
-        def get_runtime
-          if stop_time && start_time
-            h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-            m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-            s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
-            return "#{h} hours #{m} minutes and #{s} seconds"
-          else
-            false
-          end
+      def get_runtime
+        if stop_time && start_time
+          h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+          m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+          s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
+          return "#{h} hours #{m} minutes and #{s} seconds"
+        else
+          false
         end
+      end
 
-        def host_stats
-          unless @host_stats
-            @host_stats = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
+      def host_stats
+        unless @host_stats
+          @host_stats = {}
+          @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-            @host.xpath('ReportItem').each do |s|
-              case s['severity'].to_i
-                when 0
-                  @informational += 1
-                when 1
-                  @low += 1
-                when 2
-                  @medium += 1
-                when 3
-                  @high += 1
-                when 4
-                  @critical += 1
-              end
-
-              unless s['severity'].to_i == 0
-                @tcp += 1 if s['protocol'] == 'tcp'
-                @udp += 1 if s['protocol'] == 'udp'
-                @icmp += 1 if s['protocol'] == 'icmp'
-              end
-
-              @open_ports += 1 if s['port'].to_i != 0
+          @host.xpath('ReportItem').each do |s|
+            case s['severity'].to_i
+            when 0
+              @informational += 1
+            when 1
+              @low += 1
+            when 2
+              @medium += 1
+            when 3
+              @high += 1
+            when 4
+              @critical += 1
             end
 
-            @host_stats = { :open_ports => @open_ports,
-                            :tcp => @tcp,
-                            :udp => @udp,
-                            :icmp => @icmp,
-                            :informational => @informational,
-                            :low => @low,
-                            :medium => @medium,
-                            :high => @high,
-                            :critical => @critical,
-                            :all => (@low + @medium + @high + @critical) }
+            unless s['severity'].to_i == 0
+              @tcp += 1 if s['protocol'] == 'tcp'
+              @udp += 1 if s['protocol'] == 'udp'
+              @icmp += 1 if s['protocol'] == 'icmp'
+            end
 
+            @open_ports += 1 if s['port'].to_i != 0
           end
-          @host_stats
+
+          @host_stats = { :open_ports => @open_ports,
+                          :tcp => @tcp,
+                          :udp => @udp,
+                          :icmp => @icmp,
+                          :informational => @informational,
+                          :low => @low,
+                          :medium => @medium,
+                          :high => @high,
+                          :critical => @critical,
+                          :all => (@low + @medium + @high + @critical) }
+
         end
+        @host_stats
+      end
     end
   end
 end

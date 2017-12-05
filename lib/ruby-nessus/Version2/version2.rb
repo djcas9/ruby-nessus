@@ -334,54 +334,54 @@ module RubyNessus
 
       private
 
-        #
-        # Calculates an event hash of totals for severity counts.
-        #
-        # @return [Hash]
-        #   The Event Totals For Severity
-        #
-        def count_stats
-          unless @count
-            @count = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
+      #
+      # Calculates an event hash of totals for severity counts.
+      #
+      # @return [Hash]
+      #   The Event Totals For Severity
+      #
+      def count_stats
+        unless @count
+          @count = {}
+          @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-            @xml.xpath('//ReportItem').each do |s|
-              case s['severity'].to_i
-                when 0
-                  @informational += 1
-                when 1
-                  @low += 1
-                when 2
-                  @medium += 1
-                when 3
-                  @high += 1
-                when 4
-                  @critical += 1
-              end
-
-              unless s['severity'].to_i == 0
-                @tcp += 1 if s['protocol'] == 'tcp'
-                @udp += 1 if s['protocol'] == 'udp'
-                @icmp += 1 if s['protocol'] == 'icmp'
-              end
-
-              @open_ports += 1 if s['port'].to_i != 0
+          @xml.xpath('//ReportItem').each do |s|
+            case s['severity'].to_i
+            when 0
+              @informational += 1
+            when 1
+              @low += 1
+            when 2
+              @medium += 1
+            when 3
+              @high += 1
+            when 4
+              @critical += 1
             end
 
-            @count = { :open_ports => @open_ports,
-                       :tcp => @tcp,
-                       :udp => @udp,
-                       :icmp => @icmp,
-                       :informational => @informational,
-                       :low => @low,
-                       :medium => @medium,
-                       :high => @high,
-                       :critical => @critical,
-                       :all => (@low + @medium + @high + @critical) }
+            unless s['severity'].to_i == 0
+              @tcp += 1 if s['protocol'] == 'tcp'
+              @udp += 1 if s['protocol'] == 'udp'
+              @icmp += 1 if s['protocol'] == 'icmp'
+            end
+
+            @open_ports += 1 if s['port'].to_i != 0
           end
 
-          return @count
+          @count = { :open_ports => @open_ports,
+                     :tcp => @tcp,
+                     :udp => @udp,
+                     :icmp => @icmp,
+                     :informational => @informational,
+                     :low => @low,
+                     :medium => @medium,
+                     :high => @high,
+                     :critical => @critical,
+                     :all => (@low + @medium + @high + @critical) }
         end
+
+        return @count
+      end
     end
   end
 end

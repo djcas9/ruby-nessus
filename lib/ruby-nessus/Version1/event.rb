@@ -73,10 +73,10 @@ module RubyNessus
         d = "#{@event.at('data')}" || ''
 
         @data ||= unless d.empty?
-                           @event.at('data').inner_text || 'N/A'
-                         else
-                           false
-                         end
+                    @event.at('data').inner_text || 'N/A'
+                  else
+                    false
+                  end
         return @data
       end
       alias output data
