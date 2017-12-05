@@ -1,8 +1,6 @@
 module RubyNessus
   module Version1
-    
     class Port
-
       # Port Service
       attr_reader :service
       # Port number
@@ -19,7 +17,7 @@ module RubyNessus
       # @param [String] raw output string from nessus.
       # @example
       # Port.new("ssh",22,"tcp", str)
-      def initialize(service,number,protocol,raw_string)
+      def initialize(service, number, protocol, raw_string)
         @service = service
         @number = number
         @protocol = protocol
@@ -41,9 +39,7 @@ module RubyNessus
           else
             return Port.new(false, false, false, str)
           end
-
         end
-
       end
 
       # Return true iF port protocol Ii tcp.
@@ -83,9 +79,6 @@ module RubyNessus
           false
         end
       end
-
     end
-    
   end
-
 end

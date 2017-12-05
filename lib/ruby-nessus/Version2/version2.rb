@@ -2,15 +2,12 @@ require 'ruby-nessus/Version2/host'
 require 'ruby-nessus/Version2/event'
 
 module RubyNessus
-  
   # .Nessus Version 2 Schema
   module Version2
-
     # File to parse
     attr_reader :file
 
     class XML
-
       include Enumerable
 
       #
@@ -29,14 +26,13 @@ module RubyNessus
       #
       def initialize(xml)
         @xml = xml
-        raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
+        raise 'Error: Not A Version 2.0 .Nessus file.' unless @xml.at('NessusClientData_v2')
       end
-      
-      
+
       def version
         2
       end
-      
+
       #
       # Return the nessus report title.
       #
@@ -57,7 +53,7 @@ module RubyNessus
       #   The Nessus Scan Policy Name
       #
       def policy_title
-        @policy_name ||= @xml.at("//Policy/policyName").inner_text
+        @policy_name ||= @xml.at('//Policy/policyName').inner_text
       end
 
       #
@@ -67,9 +63,9 @@ module RubyNessus
       #   The Nessus Scan Policy Comments
       #
       def policy_notes
-        @policy_notes ||= @xml.at("//Policy/policyComments").inner_text
+        @policy_notes ||= @xml.at('//Policy/policyComments').inner_text
       end
-      
+
       #
       # Return the hosts the were targeted for the initial scan.
       # These are the hosts that were inputed when creating the scan.
@@ -99,7 +95,7 @@ module RubyNessus
       #
       def each_host(&block)
         hosts = []
-        @xml.xpath("//ReportHost").each do |host|
+        @xml.xpath('//ReportHost').each do |host|
           hosts << host['name'] if host['name']
           block.call(Host.new(host)) if block
         end
@@ -140,7 +136,7 @@ module RubyNessus
       def unique_ports
         unless @unique_ports
           @unique_ports = []
-          @xml.xpath("//ReportItem").each do |port|
+          @xml.xpath('//ReportItem').each do |port|
             @unique_ports << port['port']
           end
           @unique_ports.uniq!
@@ -299,10 +295,10 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage=false)
+      def event_percentage_for(type, round_percentage = false)
         @sc ||= count_stats
         if %W(critical high medium low tcp udp icmp all).include?(type)
-          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
+          calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return "#{calc.round}"
           else
@@ -347,9 +343,9 @@ module RubyNessus
         def count_stats
           unless @count
             @count = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-            @xml.xpath("//ReportItem").each do |s|
+            @xml.xpath('//ReportItem').each do |s|
               case s['severity'].to_i
                 when 0
                   @informational += 1
@@ -362,33 +358,30 @@ module RubyNessus
                 when 4
                   @critical += 1
               end
-              
+
               unless s['severity'].to_i == 0
                 @tcp += 1 if s['protocol'] == 'tcp'
                 @udp += 1 if s['protocol'] == 'udp'
                 @icmp += 1 if s['protocol'] == 'icmp'
               end
-              
+
               @open_ports += 1 if s['port'].to_i != 0
             end
 
-            @count = {:open_ports => @open_ports,
-                      :tcp => @tcp,
-                      :udp => @udp,
-                      :icmp => @icmp,
-                      :informational => @informational,
-                      :low => @low,
-                      :medium => @medium,
-                      :high => @high,
-                      :critical => @critical,
-                      :all => (@low + @medium + @high + @critical)}
+            @count = { :open_ports => @open_ports,
+                       :tcp => @tcp,
+                       :udp => @udp,
+                       :icmp => @icmp,
+                       :informational => @informational,
+                       :low => @low,
+                       :medium => @medium,
+                       :high => @high,
+                       :critical => @critical,
+                       :all => (@low + @medium + @high + @critical) }
           end
 
           return @count
         end
-
     end
-
-
   end
 end

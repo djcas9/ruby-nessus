@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
+lib_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 unless $LOAD_PATH.include?(lib_dir)
   $LOAD_PATH << lib_dir
 end
 
 require 'ruby-nessus/cli'
 require 'ruby-nessus/version'
- 
+
 RubyNessus::CLI.run

@@ -1,5 +1,4 @@
 class Integer
-
   # Return a severity integer in words.
   # @return [String]
   #   Return a severity integer in words.
@@ -8,18 +7,18 @@ class Integer
   def in_words
     case self
     when 0
-      return "Informational Severity"
+      return 'Informational Severity'
     when 1
-      return "Low Severity"
+      return 'Low Severity'
     when 2
-      return "Medium Severity"
+      return 'Medium Severity'
     when 3
-      return "High Severity"
+      return 'High Severity'
     when 4
-      return "Critical Severity"
+      return 'Critical Severity'
     end
   end
-  
+
   # Return True if the given severity is high
   # @return [Boolean]
   #   Return True if the given severity is high
@@ -32,7 +31,7 @@ class Integer
       false
     end
   end
-  
+
   # Return True if the given severity is medium
   # @return [Boolean]
   #   Return True if the given severity is medium
@@ -45,7 +44,7 @@ class Integer
       false
     end
   end
-  
+
   # Return True if the given severity is low
   # @return [Boolean]
   #   Return True if the given severity is low
@@ -58,7 +57,7 @@ class Integer
       false
     end
   end
-    
+
   # Return True if the given severity is critical
   # @return [Boolean]
   #   Return True if the given severity is critical
@@ -71,11 +70,9 @@ class Integer
       false
     end
   end
-
 end
 
 class String
-
   # Return True if the given string is blank?
   # @return [Boolean]
   #   Return True if the given string is blank?
@@ -84,13 +81,10 @@ class String
   def blank?
     respond_to?(:empty?) ? empty? : !self
   end
-
 end
 
 class DateTime
-  
   def pretty
     self.strftime('%A %B %d, %Y %I:%M:%S %p')
   end
-  
 end

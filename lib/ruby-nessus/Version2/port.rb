@@ -1,15 +1,13 @@
 module RubyNessus
   module Version2
-    
     class Port
-
       # Port Service
       attr_reader :service
       # Port number
       attr_reader :number
       # Port Protocol
       attr_reader :protocol
-      
+
       #
       # Creates A New Port Object
       #
@@ -47,7 +45,7 @@ module RubyNessus
       def udp?
         @protocol.to_s == 'udp'
       end
-      
+
       #
       # Return true if the port protocol is icmp.
       #
@@ -70,10 +68,6 @@ module RubyNessus
       def to_s
         "#{@service} (#{@number}/#{@protocol})"
       end
-
-
     end
-    
   end
-
 end

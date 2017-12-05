@@ -2,9 +2,7 @@ require 'ruby-nessus/Version1/port'
 
 module RubyNessus
   module Version1
-    
     class Event
-
       # Return the total event count for a given host.
       # @return [Integer]
       #   Return the total event count for a given host.
@@ -56,7 +54,7 @@ module RubyNessus
         s = @event.at('pluginName').inner_text
 
         @plugin_name ||= unless s.empty?
-                           @event.at('pluginName').inner_text || "N/A"
+                           @event.at('pluginName').inner_text || 'N/A'
                          else
                            false
                          end
@@ -72,19 +70,16 @@ module RubyNessus
       #   event.output        #=> "..."
       #   event.data          #=> "..."
       def data
-        d = "#{@event.at('data')}" || ""
+        d = "#{@event.at('data')}" || ''
 
         @data ||= unless d.empty?
-                           @event.at('data').inner_text || "N/A"
+                           @event.at('data').inner_text || 'N/A'
                          else
                            false
                          end
         return @data
       end
       alias output data
-
     end
-    
   end
-  
 end
