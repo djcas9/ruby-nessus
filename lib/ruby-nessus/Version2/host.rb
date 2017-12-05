@@ -63,7 +63,7 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(start_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -80,7 +80,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(stop_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -343,7 +343,7 @@ module RubyNessus
       #
       def each_event(&block)
         @host.xpath('ReportItem').each do |event|
-          block.call(Event.new(event)) if block
+          yield(Event.new(event)) if block
         end
       end
 
@@ -532,9 +532,9 @@ module RubyNessus
 
       def get_runtime
         if stop_time && start_time
-          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
-          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
-          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
+          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.delete('-')
+          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.delete('-')
+          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.delete('-')
           "#{h} hours #{m} minutes and #{s} seconds"
         else
           false

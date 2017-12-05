@@ -58,7 +58,7 @@ module RubyNessus
       #
       def time
         datetime = @xml.xpath('//NessusClientData//Report//ReportName').inner_text.split(' - ').first
-        @report_time ||= DateTime.strptime(datetime, fmt = '%y/%m/%d %I:%M:%S %p')
+        @report_time ||= DateTime.strptime(datetime, '%y/%m/%d %I:%M:%S %p')
       end
 
       #
@@ -71,7 +71,7 @@ module RubyNessus
       #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
       #
       def start_time
-        @start_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StartTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+        @start_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StartTime').inner_text, '%a %b %d %H:%M:%S %Y')
       end
 
       #
@@ -84,7 +84,7 @@ module RubyNessus
       #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
       #
       def stop_time
-        @stop_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+        @stop_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StopTime').inner_text, '%a %b %d %H:%M:%S %Y')
       end
 
       #
@@ -97,9 +97,9 @@ module RubyNessus
       #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
-        m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
-        s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
+        h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.delete('-')
+        m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.delete('-')
+        s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.delete('-')
         "#{h} hours #{m} minutes and #{s} seconds"
       end
 
@@ -201,7 +201,7 @@ module RubyNessus
         hosts = []
         @xml.xpath('//ReportHost').each do |host|
           hosts << host.at('HostName').inner_text if host.at('HostName').inner_text
-          block.call(Host.new(host)) if block
+          yield(Host.new(host)) if block
         end
         hosts
       end
@@ -238,14 +238,14 @@ module RubyNessus
       #   scan.unique_ports #=> 234
       #
       def unique_ports
-        unless @unique_ports
-          @unique_ports = []
-          @xml.xpath('//ReportItem//port').each do |port|
-            @unique_ports << port.inner_text
-          end
-          @unique_ports.uniq!
-          @unique_ports.sort!
+        return if @unique_ports
+
+        @unique_ports = []
+        @xml.xpath('//ReportItem//port').each do |port|
+          @unique_ports << port.inner_text
         end
+        @unique_ports.uniq!
+        @unique_ports.sort!
       end
 
       #
@@ -361,7 +361,7 @@ module RubyNessus
         raise "Error: hostname can't be blank." if hostname.blank?
         @xml.xpath('//ReportHost[HostName]').each do |host|
           next unless host.inner_text.match(hostname)
-          block.call(Host.new(host)) if block
+          yield(Host.new(host)) if block
         end
       end
 

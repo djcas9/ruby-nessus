@@ -34,7 +34,7 @@ module RubyNessus
         if @host.at('startTime').inner_text.blank?
           false
         else
-          @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, '%a %b %d %H:%M:%S %Y')
         end
       end
 
@@ -47,7 +47,7 @@ module RubyNessus
         if @host.at('stopTime').inner_text.blank?
           false
         else
-          @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, '%a %b %d %H:%M:%S %Y')
         end
       end
 
@@ -237,7 +237,7 @@ module RubyNessus
       #   end
       def each_event(&block)
         @host.xpath('ReportItem').each do |event|
-          block.call(Event.new(event)) if block
+          yield(Event.new(event)) if block
         end
       end
 
@@ -252,9 +252,9 @@ module RubyNessus
 
       def get_runtime
         if scan_start_time && scan_stop_time
-          h = (Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
-          m = (Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
-          s = (Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
+          h = (Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i).to_s.delete('-')
+          m = (Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i).to_s.delete('-')
+          s = (Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i).to_s.delete('-')
           "#{h} hours #{m} minutes and #{s} seconds"
         else
           false
