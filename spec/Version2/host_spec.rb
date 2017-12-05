@@ -8,50 +8,78 @@ describe 'Nessus Version 2: Host' do
   end
 
   it 'should parse the host hostname' do
-    @host.hostname.should == 'snorby.org'
+    expect(@host.hostname).to be_eql('snorby.org')
   end
 
   it 'should parse the host start time' do
-    @host.start_time.to_s.should == '2009-12-11T02:57:52+00:00'
+    expect(@host.start_time.to_s).to be_eql('2009-12-11T02:57:52+00:00')
   end
 
   it 'should parse the host stop time' do
-    @host.stop_time.to_s.should == '2009-12-11T03:25:29+00:00'
+    expect(@host.stop_time.to_s).to be_eql('2009-12-11T03:25:29+00:00')
   end
 
   it 'should parse the host runtime' do
-    @host.runtime.should == '1 hours 32 minutes and 23 seconds'
+    expect(@host.runtime).to be_eql('1 hours 32 minutes and 23 seconds')
   end
 
   it 'should parse the hosts open ports' do
-    @host.open_ports.should == 37
+    expect(@host.open_ports).to be_eql(37)
   end
 
   it 'should calculate the hosts informational event count' do
-    @host.informational_severity_count.should == 12
+    expect(@host.informational_severity_count).to be_eql(12)
   end
 
   it 'should calculate the hosts low severity event count' do
-    @host.low_severity_count.should == 34
+    expect(@host.low_severity_count).to be_eql(34)
   end
 
   it 'should calculate the hosts medium severity event count' do
-    @host.medium_severity_count.should == 1
+    expect(@host.medium_severity_count).to be_eql(1)
   end
 
   it 'should calculate the hosts high severity event count' do
-    @host.high_severity_count.should == 0
+    expect(@host.high_severity_count).to be_eql(0)
   end
 
   it 'should calculate the hosts critical severity event count' do
-    @host.critical_severity_count.should == 0
+    expect(@host.critical_severity_count).to be_eql(0)
   end
 
   it 'should calculate the hosts total event count' do
-    @host.total_event_count.should == 35
+    expect(@host.total_event_count).to be_eql(35)
   end
 
   it 'should calculate the hosts total event count with informational events' do
-    @host.total_event_count(true).should == 47
+    expect(@host.total_event_count(true)).to be_eql(47)
+  end
+
+  it 'should to_s return the ip address' do
+    expect(@host.to_s).to be_eql(@host.ip)
+  end
+
+  it 'should ip return the ip address' do
+    expect(@host.ip).to be_eql('173.45.230.150')
+  end
+
+  it 'should mac_addr return the mac address if exist else nil' do
+    expect(@host.mac_addr).to be_nil
+  end
+
+  it 'should os_name return the os name' do
+    expect(@host.os_name).to be_eql('NetBSD 3.0')
+  end
+
+  it 'should tcp_count return the tcp event count' do
+    expect(@host.tcp_count).to be_eql(32)
+  end
+
+  it 'should udp_count return the udp event count' do
+    expect(@host.udp_count).to be_eql(2)
+  end
+
+  it 'should icmp_count return the icmp event count' do
+    expect(@host.icmp_count).to be_eql(1)
   end
 end
