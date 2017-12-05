@@ -24,7 +24,7 @@ module RubyNessus
       Log.it "Version: #{RubyNessus::VERSION}"
       Log.it
 
-      RubyNessus::Parse.new("#{@file}") do |scan|
+      RubyNessus::Parse.new(@file.to_s) do |scan|
         Log.h1 'SCAN Metadata'
         Log.it
         Log.h2 'Scan Title', scan.title

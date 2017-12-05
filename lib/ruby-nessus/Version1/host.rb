@@ -12,7 +12,7 @@ module RubyNessus
       end
 
       def to_s
-        "#{ip}"
+        ip.to_s
       end
 
       # Return the Host Object hostname.
@@ -252,9 +252,9 @@ module RubyNessus
 
       def get_runtime
         if scan_start_time && scan_stop_time
-          h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-          m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-          s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
+          h = (Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
+          m = (Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
+          s = (Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
           return "#{h} hours #{m} minutes and #{s} seconds"
         else
           false
