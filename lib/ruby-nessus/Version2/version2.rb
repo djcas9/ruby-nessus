@@ -376,16 +376,16 @@ module RubyNessus
             @open_ports += 1 if s['port'].to_i != 0
           end
 
-          @count = { :open_ports => @open_ports,
-                     :tcp => @tcp,
-                     :udp => @udp,
-                     :icmp => @icmp,
-                     :informational => @informational,
-                     :low => @low,
-                     :medium => @medium,
-                     :high => @high,
-                     :critical => @critical,
-                     :all => (@low + @medium + @high + @critical) }
+          @count = { open_ports: @open_ports,
+                     tcp: @tcp,
+                     udp: @udp,
+                     icmp: @icmp,
+                     informational: @informational,
+                     low: @low,
+                     medium: @medium,
+                     high: @high,
+                     critical: @critical,
+                     all: (@low + @medium + @high + @critical) }
         end
 
         @count

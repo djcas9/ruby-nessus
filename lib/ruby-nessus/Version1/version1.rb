@@ -388,11 +388,11 @@ module RubyNessus
             @high += s.at('num_hi').inner_text.to_i
           end
 
-          @count = { :open_ports => @open_ports,
-                     :low => @low,
-                     :medium => @medium,
-                     :high => @high,
-                     :all => (@low + @medium + @high) }
+          @count = { open_ports: @open_ports,
+                     low: @low,
+                     medium: @medium,
+                     high: @high,
+                     all: (@low + @medium + @high) }
         end
 
         @count
