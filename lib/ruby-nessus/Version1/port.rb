@@ -65,7 +65,7 @@ module RubyNessus
         if @service && @number && @protocol
           "#{@service} (#{@number}/#{@protocol})"
         else
-          "#{@raw_string}"
+          @raw_string.to_s
         end
       end
 

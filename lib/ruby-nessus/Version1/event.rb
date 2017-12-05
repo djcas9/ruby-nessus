@@ -70,7 +70,7 @@ module RubyNessus
       #   event.output        #=> "..."
       #   event.data          #=> "..."
       def data
-        d = "#{@event.at('data')}" || ''
+        d = @event.at('data').to_s || ''
 
         @data ||= unless d.empty?
                     @event.at('data').inner_text || 'N/A'
