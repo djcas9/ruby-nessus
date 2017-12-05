@@ -143,71 +143,51 @@ module RubyNessus
       #
       # Return the event synopsis.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event synopsis.
       #
       def synopsis
-        @synopsis ||= if @event.at('synopsis')
-                        @event.at('synopsis').inner_text
-                      else
-                        false
-                      end
+        @synopsis ||= @event.at('synopsis') && @event.at('synopsis').inner_text
       end
 
       #
       # Return the event description.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event description.
       #
       def description
-        @description ||= if @event.at('description')
-                           @event.at('description').inner_text
-                         else
-                           false
-                         end
+        @description ||= @event.at('description') && @event.at('description').inner_text
       end
 
       #
       # Return the event solution.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event solution.
       #
       def solution
-        @solution ||= if @event.at('solution')
-                        @event.at('solution').inner_text
-                      else
-                        false
-                      end
+        @solution ||= @event.at('solution') && @event.at('solution').inner_text
       end
 
       #
       # Return the event risk.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event risk.
       #
       def risk
-        @risk_factor ||= if @event.at('risk_factor')
-                           @event.at('risk_factor').inner_text
-                         else
-                           false
-                         end
+        @risk_factor ||= @event.at('risk_factor') && @event.at('risk_factor').inner_text
       end
 
       #
       # Return the event plugin output.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event plugin output.
       #
       def output
-        @plugin_output ||= if @event.at('plugin_output')
-                             @event.at('plugin_output').inner_text
-                           else
-                             false
-                           end
+        @plugin_output ||= @event.at('plugin_output') && @event.at('plugin_output').inner_text
       end
       alias data output
       alias plugin_output output
@@ -215,15 +195,11 @@ module RubyNessus
       #
       # Return the event plugin version.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event plugin version.
       #
       def version
-        @plugin_version ||= if @event.at('plugin_version')
-                              @event.at('plugin_version').inner_text
-                            else
-                              false
-                            end
+        @plugin_version ||= @event.at('plugin_version') && @event.at('plugin_version').inner_text
       end
       alias plugin_version version
 
@@ -249,29 +225,23 @@ module RubyNessus
       #
       # Return the event patch publication date.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event patch publication date.
       #
       def patch_publication_date
         @patch_publication_date ||= if @event.at('patch_publication_date')
                                       DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt = '%Y/%m/%d')
-                                    else
-                                      false
                                     end
       end
 
       #
       # Return the event cvss base score.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event cvss base score.
       #
       def cvss_base_score
-        @cvss_base_score ||= if @event.at('cvss_base_score')
-                               @event.at('cvss_base_score').inner_text.to_f
-                             else
-                               false
-                             end
+        @cvss_base_score ||= @event.at('cvss_base_score') && @event.at('cvss_base_score').inner_text.to_f
       end
 
       #
@@ -327,15 +297,11 @@ module RubyNessus
       #
       # Return other event cvss vector.
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event cvss vector.
       #
       def cvss_vector
-        @cvss_vector ||= if @event.at('cvss_vector')
-                           @event.at('cvss_vector').inner_text
-                         else
-                           false
-                         end
+        @cvss_vector ||= @event.at('cvss_vector') && @event.at('cvss_vector').inner_text
       end
 
       #
