@@ -23,7 +23,7 @@ module RubyNessus
                       raise 'Error: Supported .Nessus Version are 1 and 2.'
                     end
 
-      block.call(@xml_parser) if block
+      yield(@xml_parser) if block
     end
 
     # Retrive scan from file

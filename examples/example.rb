@@ -40,6 +40,6 @@ puts
 
 # From a string:
 puts '+ Using an XML string:'
-Nessus::Parse.new(nil, { xml: File.read('example_v1.nessus') }) do |scan|
+Nessus::Parse.new(nil, xml: File.read('example_v1.nessus')) do |scan|
   scan.each_host(&method(:print_info))
 end
