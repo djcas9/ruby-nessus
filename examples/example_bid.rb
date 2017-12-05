@@ -21,7 +21,7 @@ end
 Nessus::Parse.new("example_v3.nessus", :version => 2) do |scan|
   scan.each_host do |host|
     host.each_event do |event|
-      puts "Bid value: #{event.bid}"                    
+      puts "Bid value: #{event.bid}"
     end
   end
 end

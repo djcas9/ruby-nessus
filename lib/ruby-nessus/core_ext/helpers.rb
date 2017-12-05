@@ -18,7 +18,7 @@ class Integer
       return "Critical Severity"
     end
   end
-  
+
   # Return True if the given severity is high
   # @return [Boolean]
   #   Return True if the given severity is high
@@ -31,7 +31,7 @@ class Integer
       false
     end
   end
-  
+
   # Return True if the given severity is medium
   # @return [Boolean]
   #   Return True if the given severity is medium
@@ -44,7 +44,7 @@ class Integer
       false
     end
   end
-  
+
   # Return True if the given severity is low
   # @return [Boolean]
   #   Return True if the given severity is low
@@ -57,7 +57,7 @@ class Integer
       false
     end
   end
-    
+
   # Return True if the given severity is critical
   # @return [Boolean]
   #   Return True if the given severity is critical
@@ -84,9 +84,7 @@ class String
 end
 
 class DateTime
-  
   def pretty
     self.strftime('%A %B %d, %Y %I:%M:%S %p')
   end
-  
 end

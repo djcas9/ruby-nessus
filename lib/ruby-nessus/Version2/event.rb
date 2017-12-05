@@ -54,7 +54,7 @@ module RubyNessus
       #
       # @return [Boolean]
       #   Return true if the event is low severity.
-      # 
+      #
       def low?
         severity == 1
       end
@@ -88,7 +88,7 @@ module RubyNessus
       def critical?
         severity == 4
       end
-      
+
       #
       # Return the event object nessus plugin id
       #
@@ -273,7 +273,7 @@ module RubyNessus
           false
         end
       end
-      
+
       #
       # Return the event cve.
       #
@@ -337,7 +337,7 @@ module RubyNessus
           false
         end
       end
-      
+
       #
       # Return the event cpe.
       #

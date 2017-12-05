@@ -65,7 +65,7 @@ module RubyNessus
         scan.each_host do |host|
           Log.h2 "Hostname", host.hostname
           Log.h5 "IP Address:", host.ip
-          
+
           unless scan.version == 1
             Log.h5 "Informational Count", host.informational_severity_count
             Log.h5 "Low Count", host.low_severity_count

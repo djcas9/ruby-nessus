@@ -55,7 +55,7 @@ describe "Nessus Version 2: Scan" do
   it "should calculate the total for all severity events excluding informational" do
     @xml.total_event_count.should == 50
   end
-  
+
   it "should calculate the total for all severity events including informational" do
     @xml.total_event_count(true).should == 69
   end
