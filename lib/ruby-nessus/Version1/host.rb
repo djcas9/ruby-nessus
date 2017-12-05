@@ -31,7 +31,7 @@ module RubyNessus
       # @example
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       def scan_start_time
-        if @host.at('startTime').inner_text.blank?
+        if @host.at('startTime').inner_text.empty?
           false
         else
           @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, '%a %b %d %H:%M:%S %Y')
@@ -44,7 +44,7 @@ module RubyNessus
       # @example
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       def scan_stop_time
-        if @host.at('stopTime').inner_text.blank?
+        if @host.at('stopTime').inner_text.empty?
           false
         else
           @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, '%a %b %d %H:%M:%S %Y')

@@ -23,7 +23,7 @@ def print_info(host)
     # puts "\n"
     # puts event.output
     # puts "\n"
-    # puts event.patch_publication_date.pretty if event.patch_publication_data
+    # puts event.patch_publication_date&.strftime('%A %B %d, %Y %I:%M:%S %p')
     # puts event.see_also unless event.see_also.empty?
     # puts event.synopsis if event.synopsis
     # puts event.solution if event.solution
