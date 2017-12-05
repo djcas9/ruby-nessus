@@ -59,4 +59,8 @@ describe 'Nessus Version 2: Scan' do
   it 'should calculate the total for all severity events including informational' do
     @xml.total_event_count(true).should == 69
   end
+
+  it 'should target_hosts list the target' do
+    expect(@xml.target_hosts).to be_eql(['scanme.insecure.org', 'snorby.org'])
+  end
 end
