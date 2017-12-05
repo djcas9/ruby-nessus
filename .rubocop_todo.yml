@@ -90,25 +90,6 @@ Layout/SpaceInsideHashLiteralBraces:
     - 'lib/ruby-nessus/Version2/host.rb'
     - 'lib/ruby-nessus/Version2/version2.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Exclude:
-    - 'examples/example_bid.rb'
-    - 'examples/example_cpe.rb'
-    - 'examples/example_cve.rb'
-    - 'lib/ruby-nessus/log.rb'
-    - 'spec/Version1/event_spec.rb'
-    - 'spec/Version1/host_spec.rb'
-    - 'spec/Version2/event_spec.rb'
-
-# Offense count: 120
-# Cop supports --auto-correct.
-Layout/TrailingWhitespace:
-  Enabled: false
-
 # Offense count: 4
 Lint/AmbiguousOperator:
   Exclude:

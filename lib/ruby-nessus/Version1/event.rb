@@ -2,7 +2,6 @@ require 'ruby-nessus/Version1/port'
 
 module RubyNessus
   module Version1
-    
     class Event
       # Return the total event count for a given host.
       # @return [Integer]
@@ -82,7 +81,5 @@ module RubyNessus
       end
       alias output data
     end
-    
   end
-  
 end
