@@ -3,6 +3,7 @@
 # Ruby-Nessus
 
 [![Build Status](https://travis-ci.org/Cyberwatch/ruby-nessus.svg?branch=master)](https://travis-ci.org/Cyberwatch/ruby-nessus)
+[![Coverage Status](https://coveralls.io/repos/github/Cyberwatch/ruby-nessus/badge.svg?branch=master)](https://coveralls.io/github/Cyberwatch/ruby-nessus?branch=master)
 
 ## Description
 
