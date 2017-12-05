@@ -295,7 +295,7 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage=false)
+      def event_percentage_for(type, round_percentage = false)
         @sc ||= count_stats
         if %W(critical high medium low tcp udp icmp all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
@@ -343,7 +343,7 @@ module RubyNessus
         def count_stats
           unless @count
             @count = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
             @xml.xpath('//ReportItem').each do |s|
               case s['severity'].to_i
@@ -368,16 +368,16 @@ module RubyNessus
               @open_ports += 1 if s['port'].to_i != 0
             end
 
-            @count = {:open_ports => @open_ports,
-                      :tcp => @tcp,
-                      :udp => @udp,
-                      :icmp => @icmp,
-                      :informational => @informational,
-                      :low => @low,
-                      :medium => @medium,
-                      :high => @high,
-                      :critical => @critical,
-                      :all => (@low + @medium + @high + @critical)}
+            @count = { :open_ports => @open_ports,
+                       :tcp => @tcp,
+                       :udp => @udp,
+                       :icmp => @icmp,
+                       :informational => @informational,
+                       :low => @low,
+                       :medium => @medium,
+                       :high => @high,
+                       :critical => @critical,
+                       :all => (@low + @medium + @high + @critical) }
           end
 
           return @count

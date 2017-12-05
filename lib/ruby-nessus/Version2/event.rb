@@ -254,7 +254,7 @@ module RubyNessus
       #
       def patch_publication_date
         @patch_publication_date ||= if @event.at('patch_publication_date')
-          DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt='%Y/%m/%d')
+          DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt = '%Y/%m/%d')
         else
           false
         end

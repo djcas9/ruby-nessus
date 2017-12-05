@@ -40,14 +40,14 @@ Gem::Specification.new do |gem|
   split = lambda { |string| string.split(/,\s*/) }
 
   if gemspec['dependencies']
-    gemspec['dependencies'].each do |name,versions|
-      gem.add_dependency(name,split[versions])
+    gemspec['dependencies'].each do |name, versions|
+      gem.add_dependency(name, split[versions])
     end
   end
 
   if gemspec['development_dependencies']
-    gemspec['development_dependencies'].each do |name,versions|
-      gem.add_development_dependency(name,split[versions])
+    gemspec['development_dependencies'].each do |name, versions|
+      gem.add_development_dependency(name, split[versions])
     end
   end
 end

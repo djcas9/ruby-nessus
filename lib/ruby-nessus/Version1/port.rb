@@ -17,7 +17,7 @@ module RubyNessus
       # @param [String] raw output string from nessus.
       # @example
       # Port.new("ssh",22,"tcp", str)
-      def initialize(service,number,protocol,raw_string)
+      def initialize(service, number, protocol, raw_string)
         @service = service
         @number = number
         @protocol = protocol
