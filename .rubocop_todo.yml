@@ -336,15 +336,6 @@ Style/RedundantConditional:
   Exclude:
     - 'lib/ruby-nessus/core_ext/helpers.rb'
 
-# Offense count: 18
-# Cop supports --auto-correct.
-Style/RedundantParentheses:
-  Exclude:
-    - 'lib/ruby-nessus/Version1/host.rb'
-    - 'lib/ruby-nessus/Version1/version1.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
-    - 'lib/ruby-nessus/Version2/version2.rb'
-
 # Offense count: 21
 # Cop supports --auto-correct.
 # Configuration parameters: AllowMultipleReturnValues.
