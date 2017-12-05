@@ -71,7 +71,7 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return false for the event output' do
-    @medium_event.output.should == false
+    expect(@medium_event.output).to be_falsey
   end
 
   it 'should return false for the event plugin version' do
@@ -83,7 +83,7 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the patch publication date' do
-    @medium_event.patch_publication_date.should == false
+    expect(@medium_event.patch_publication_date).to be_falsey
   end
 
   it 'should return the cvss base score' do
