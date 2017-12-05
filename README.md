@@ -1,5 +1,7 @@
 # Ruby-Nessus
 
+[![Build Status](https://travis-ci.org/Cyberwatch/ruby-nessus.svg?branch=master)](https://travis-ci.org/Cyberwatch/ruby-nessus)
+
 ## Description
 
 Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations. Ruby-Nessus currently supports both version 1.0 and 2.0 of the .nessus file format. Please remember to submit bugs and request features if needed.
