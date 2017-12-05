@@ -252,7 +252,7 @@ module RubyNessus
       end
 
       def medium_severity
-        self.to_enum(:medium_severity_events).to_a
+        to_enum(:medium_severity_events).to_a
       end
 
       #
@@ -354,7 +354,7 @@ module RubyNessus
       #   The events of the host.
       #
       def events
-        self.to_enum(:each_event).to_a
+        to_enum(:each_event).to_a
       end
 
       #
@@ -516,7 +516,7 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage = false)
         @sc ||= host_stats
-        if %W(high medium low tcp udp icmp all).include?(type)
+        if %w[high medium low tcp udp icmp all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return calc.round.to_s
@@ -535,7 +535,7 @@ module RubyNessus
           h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
           m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
           s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
-          return "#{h} hours #{m} minutes and #{s} seconds"
+          "#{h} hours #{m} minutes and #{s} seconds"
         else
           false
         end
@@ -544,7 +544,15 @@ module RubyNessus
       def host_stats
         unless @host_stats
           @host_stats = {}
-          @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
+          @open_ports = 0
+          @tcp = 0
+          @udp = 0
+          @icmp = 0
+          @informational = 0
+          @low = 0
+          @medium = 0
+          @high = 0
+          @critical = 0
 
           @host.xpath('ReportItem').each do |s|
             case s['severity'].to_i

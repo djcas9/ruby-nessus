@@ -14,7 +14,7 @@ module RubyNessus
     end
 
     def CLI.run
-      self.new.run(*ARGV)
+      new.run(*ARGV)
     end
 
     def run(*args)

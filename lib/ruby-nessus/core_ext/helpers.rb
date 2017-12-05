@@ -7,15 +7,15 @@ class Integer
   def in_words
     case self
     when 0
-      return 'Informational Severity'
+      'Informational Severity'
     when 1
-      return 'Low Severity'
+      'Low Severity'
     when 2
-      return 'Medium Severity'
+      'Medium Severity'
     when 3
-      return 'High Severity'
+      'High Severity'
     when 4
-      return 'Critical Severity'
+      'Critical Severity'
     end
   end
 
@@ -25,11 +25,7 @@ class Integer
   # @example
   #   host.severity.high? #=> true
   def high?
-    if self == 3
-      true
-    else
-      false
-    end
+    self == 3
   end
 
   # Return True if the given severity is medium
@@ -38,11 +34,7 @@ class Integer
   # @example
   #   host.severity.medium? #=> true
   def medium?
-    if self == 2
-      true
-    else
-      false
-    end
+    self == 2
   end
 
   # Return True if the given severity is low
@@ -51,11 +43,7 @@ class Integer
   # @example
   #   host.severity.low? #=> true
   def low?
-    if self >= 1
-      true
-    else
-      false
-    end
+    self >= 1
   end
 
   # Return True if the given severity is critical
@@ -64,11 +52,7 @@ class Integer
   # @example
   #   host.severity.critical? #=> true
   def critical?
-    if self == 4
-      true
-    else
-      false
-    end
+    self == 4
   end
 end
 
@@ -85,6 +69,6 @@ end
 
 class DateTime
   def pretty
-    self.strftime('%A %B %d, %Y %I:%M:%S %p')
+    strftime('%A %B %d, %Y %I:%M:%S %p')
   end
 end

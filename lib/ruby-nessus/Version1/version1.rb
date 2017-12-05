@@ -100,7 +100,7 @@ module RubyNessus
         h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
         m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
         s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
-        return "#{h} hours #{m} minutes and #{s} seconds"
+        "#{h} hours #{m} minutes and #{s} seconds"
       end
 
       #
@@ -181,7 +181,7 @@ module RubyNessus
           @plugins.sort!
         end
 
-        return @plugins
+        @plugins
       end
 
       #
@@ -213,7 +213,7 @@ module RubyNessus
       #   The Hosts of the scan.
       #
       def hosts
-        self.to_enum(:each_host).to_a
+        to_enum(:each_host).to_a
       end
 
       #
@@ -330,7 +330,7 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage = false)
         @sc ||= count_severity
-        if %W(high medium low all).include?(type)
+        if %w[high medium low all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return calc.round.to_s
@@ -395,7 +395,7 @@ module RubyNessus
                      :all => (@low + @medium + @high) }
         end
 
-        return @count
+        @count
       end
     end
   end

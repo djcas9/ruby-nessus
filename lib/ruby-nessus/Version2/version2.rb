@@ -109,7 +109,7 @@ module RubyNessus
       #   The Hosts of the scan.
       #
       def hosts
-        self.to_enum(:each_host).to_a
+        to_enum(:each_host).to_a
       end
 
       #
@@ -297,7 +297,7 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage = false)
         @sc ||= count_stats
-        if %W(critical high medium low tcp udp icmp all).include?(type)
+        if %w[critical high medium low tcp udp icmp all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return calc.round.to_s
@@ -343,7 +343,15 @@ module RubyNessus
       def count_stats
         unless @count
           @count = {}
-          @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
+          @open_ports = 0
+          @tcp = 0
+          @udp = 0
+          @icmp = 0
+          @informational = 0
+          @low = 0
+          @medium = 0
+          @high = 0
+          @critical = 0
 
           @xml.xpath('//ReportItem').each do |s|
             case s['severity'].to_i
@@ -380,7 +388,7 @@ module RubyNessus
                      :all => (@low + @medium + @high + @critical) }
         end
 
-        return @count
+        @count
       end
     end
   end
