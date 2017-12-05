@@ -147,7 +147,7 @@ module RubyNessus
       #    Return the event synopsis.
       #
       def synopsis
-        @synopsis ||= @event.at('synopsis') && @event.at('synopsis').inner_text
+        @synopsis ||= @event.at('synopsis')&.inner_text
       end
 
       #
@@ -157,7 +157,7 @@ module RubyNessus
       #    Return the event description.
       #
       def description
-        @description ||= @event.at('description') && @event.at('description').inner_text
+        @description ||= @event.at('description')&.inner_text
       end
 
       #
@@ -167,7 +167,7 @@ module RubyNessus
       #    Return the event solution.
       #
       def solution
-        @solution ||= @event.at('solution') && @event.at('solution').inner_text
+        @solution ||= @event.at('solution')&.inner_text
       end
 
       #
@@ -177,7 +177,7 @@ module RubyNessus
       #    Return the event risk.
       #
       def risk
-        @risk_factor ||= @event.at('risk_factor') && @event.at('risk_factor').inner_text
+        @risk_factor ||= @event.at('risk_factor')&.inner_text
       end
 
       #
@@ -187,7 +187,7 @@ module RubyNessus
       #    Return the event plugin output.
       #
       def output
-        @plugin_output ||= @event.at('plugin_output') && @event.at('plugin_output').inner_text
+        @plugin_output ||= @event.at('plugin_output')&.inner_text
       end
       alias data output
       alias plugin_output output
@@ -199,7 +199,7 @@ module RubyNessus
       #    Return the event plugin version.
       #
       def version
-        @plugin_version ||= @event.at('plugin_version') && @event.at('plugin_version').inner_text
+        @plugin_version ||= @event.at('plugin_version')&.inner_text
       end
       alias plugin_version version
 
@@ -241,7 +241,7 @@ module RubyNessus
       #    Return the event cvss base score.
       #
       def cvss_base_score
-        @cvss_base_score ||= @event.at('cvss_base_score') && @event.at('cvss_base_score').inner_text.to_f
+        @cvss_base_score ||= @event.at('cvss_base_score')&.inner_text.to_f
       end
 
       #
@@ -301,7 +301,7 @@ module RubyNessus
       #    Return the event cvss vector.
       #
       def cvss_vector
-        @cvss_vector ||= @event.at('cvss_vector') && @event.at('cvss_vector').inner_text
+        @cvss_vector ||= @event.at('cvss_vector')&.inner_text
       end
 
       #
