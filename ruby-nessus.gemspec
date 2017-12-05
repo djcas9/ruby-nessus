@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.executables      = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   gem.test_files       = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.require_paths = ['lib']
-  gem.required_ruby_version = '>= 2.2'
+  gem.required_ruby_version = '>= 2.3'
 
   gem.add_dependency 'nokogiri', '~> 1.4'
   gem.add_dependency 'rainbow', '~> 2.0'
