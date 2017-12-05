@@ -223,7 +223,7 @@ module RubyNessus
       # @example
       #   host.event_count #=> 3456
       def event_count
-        ((low_severity_events.to_i) + (medium_severity_events.to_i) + (high_severity_events.to_i)).to_i
+        (low_severity_events.to_i + medium_severity_events.to_i + high_severity_events.to_i).to_i
       end
 
       # Creates a new Event object to be parser
@@ -252,9 +252,9 @@ module RubyNessus
 
         def get_runtime
           if scan_start_time && scan_stop_time
-            h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-            m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-            s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+            h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+            m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+            s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
             return "#{h} hours #{m} minutes and #{s} seconds"
           else
             false

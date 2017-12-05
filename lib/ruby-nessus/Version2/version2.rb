@@ -298,7 +298,7 @@ module RubyNessus
       def event_percentage_for(type, round_percentage=false)
         @sc ||= count_stats
         if %W(critical high medium low tcp udp icmp all).include?(type)
-          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
+          calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return "#{calc.round}"
           else

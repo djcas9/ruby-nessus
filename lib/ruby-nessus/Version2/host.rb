@@ -325,7 +325,7 @@ module RubyNessus
       #   host.event_count #=> 3456
       #
       def event_count
-        ((low_severity_events.count) + (medium_severity_events.count) + (high_severity_events.count) + (critical_severity_events.count)).to_i
+        (low_severity_events.count + medium_severity_events.count + high_severity_events.count + critical_severity_events.count).to_i
       end
 
       #
@@ -517,7 +517,7 @@ module RubyNessus
       def event_percentage_for(type, round_percentage=false)
         @sc ||= host_stats
         if %W(high medium low tcp udp icmp all).include?(type)
-          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
+          calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
             return "#{calc.round}"
           else
@@ -532,9 +532,9 @@ module RubyNessus
 
         def get_runtime
           if stop_time && start_time
-            h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-            m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-            s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+            h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+            m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+            s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
             return "#{h} hours #{m} minutes and #{s} seconds"
           else
             false
