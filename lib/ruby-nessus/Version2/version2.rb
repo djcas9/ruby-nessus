@@ -75,10 +75,11 @@ module RubyNessus
       #
       def target_hosts
         @xml.xpath('//Preferences/ServerPreferences/preference').each do |element|
-          if element.children[0].inner_text == 'TARGET'
-            return element.children[2].inner_text.split(',')
+          if element.children[1].inner_text == 'TARGET'
+            return element.children[3].inner_text.split(',')
           end
         end
+        nil
       end
 
       #
