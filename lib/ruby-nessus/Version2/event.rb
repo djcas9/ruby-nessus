@@ -131,12 +131,12 @@ module RubyNessus
         s = @event.at('@pluginName').inner_text
 
         @plugin_name ||= if s.empty?
-          false
-        else
-          @event.at('@pluginName').inner_text
-        end
+                           false
+                         else
+                           @event.at('@pluginName').inner_text
+                         end
 
-        return @plugin_name
+        @plugin_name
       end
       alias name plugin_name
 
@@ -148,10 +148,10 @@ module RubyNessus
       #
       def synopsis
         @synopsis ||= if @event.at('synopsis')
-          @event.at('synopsis').inner_text
-        else
-          false
-        end
+                        @event.at('synopsis').inner_text
+                      else
+                        false
+                      end
       end
 
       #
@@ -162,10 +162,10 @@ module RubyNessus
       #
       def description
         @description ||= if @event.at('description')
-          @event.at('description').inner_text
-        else
-          false
-        end
+                           @event.at('description').inner_text
+                         else
+                           false
+                         end
       end
 
       #
@@ -176,10 +176,10 @@ module RubyNessus
       #
       def solution
         @solution ||= if @event.at('solution')
-          @event.at('solution').inner_text
-        else
-          false
-        end
+                        @event.at('solution').inner_text
+                      else
+                        false
+                      end
       end
 
       #
@@ -190,10 +190,10 @@ module RubyNessus
       #
       def risk
         @risk_factor ||= if @event.at('risk_factor')
-          @event.at('risk_factor').inner_text
-        else
-          false
-        end
+                           @event.at('risk_factor').inner_text
+                         else
+                           false
+                         end
       end
 
       #
@@ -204,10 +204,10 @@ module RubyNessus
       #
       def output
         @plugin_output ||= if @event.at('plugin_output')
-          @event.at('plugin_output').inner_text
-        else
-          false
-        end
+                             @event.at('plugin_output').inner_text
+                           else
+                             false
+                           end
       end
       alias data output
       alias plugin_output output
@@ -220,10 +220,10 @@ module RubyNessus
       #
       def version
         @plugin_version ||= if @event.at('plugin_version')
-          @event.at('plugin_version').inner_text
-        else
-          false
-        end
+                              @event.at('plugin_version').inner_text
+                            else
+                              false
+                            end
       end
       alias plugin_version version
 
@@ -254,10 +254,10 @@ module RubyNessus
       #
       def patch_publication_date
         @patch_publication_date ||= if @event.at('patch_publication_date')
-          DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt = '%Y/%m/%d')
-        else
-          false
-        end
+                                      DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt = '%Y/%m/%d')
+                                    else
+                                      false
+                                    end
       end
 
       #
@@ -268,10 +268,10 @@ module RubyNessus
       #
       def cvss_base_score
         @cvss_base_score ||= if @event.at('cvss_base_score')
-          @event.at('cvss_base_score').inner_text.to_f
-        else
-          false
-        end
+                               @event.at('cvss_base_score').inner_text.to_f
+                             else
+                               false
+                             end
       end
 
       #
@@ -332,10 +332,10 @@ module RubyNessus
       #
       def cvss_vector
         @cvss_vector ||= if @event.at('cvss_vector')
-          @event.at('cvss_vector').inner_text
-        else
-          false
-        end
+                           @event.at('cvss_vector').inner_text
+                         else
+                           false
+                         end
       end
 
       #

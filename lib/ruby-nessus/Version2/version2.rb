@@ -109,7 +109,7 @@ module RubyNessus
       #   The Hosts of the scan.
       #
       def hosts
-        self.to_enum(:each_host).to_a
+        to_enum(:each_host).to_a
       end
 
       #
@@ -297,12 +297,12 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage = false)
         @sc ||= count_stats
-        if %W(critical high medium low tcp udp icmp all).include?(type)
+        if %w[critical high medium low tcp udp icmp all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
-            return "#{calc.round}"
+            return calc.round.to_s
           else
-            return "#{calc}"
+            return calc.to_s
           end
         else
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, critical, high, medium and low."
@@ -334,54 +334,62 @@ module RubyNessus
 
       private
 
-        #
-        # Calculates an event hash of totals for severity counts.
-        #
-        # @return [Hash]
-        #   The Event Totals For Severity
-        #
-        def count_stats
-          unless @count
-            @count = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
+      #
+      # Calculates an event hash of totals for severity counts.
+      #
+      # @return [Hash]
+      #   The Event Totals For Severity
+      #
+      def count_stats
+        unless @count
+          @count = {}
+          @open_ports = 0
+          @tcp = 0
+          @udp = 0
+          @icmp = 0
+          @informational = 0
+          @low = 0
+          @medium = 0
+          @high = 0
+          @critical = 0
 
-            @xml.xpath('//ReportItem').each do |s|
-              case s['severity'].to_i
-                when 0
-                  @informational += 1
-                when 1
-                  @low += 1
-                when 2
-                  @medium += 1
-                when 3
-                  @high += 1
-                when 4
-                  @critical += 1
-              end
-
-              unless s['severity'].to_i == 0
-                @tcp += 1 if s['protocol'] == 'tcp'
-                @udp += 1 if s['protocol'] == 'udp'
-                @icmp += 1 if s['protocol'] == 'icmp'
-              end
-
-              @open_ports += 1 if s['port'].to_i != 0
+          @xml.xpath('//ReportItem').each do |s|
+            case s['severity'].to_i
+            when 0
+              @informational += 1
+            when 1
+              @low += 1
+            when 2
+              @medium += 1
+            when 3
+              @high += 1
+            when 4
+              @critical += 1
             end
 
-            @count = { :open_ports => @open_ports,
-                       :tcp => @tcp,
-                       :udp => @udp,
-                       :icmp => @icmp,
-                       :informational => @informational,
-                       :low => @low,
-                       :medium => @medium,
-                       :high => @high,
-                       :critical => @critical,
-                       :all => (@low + @medium + @high + @critical) }
+            unless s['severity'].to_i == 0
+              @tcp += 1 if s['protocol'] == 'tcp'
+              @udp += 1 if s['protocol'] == 'udp'
+              @icmp += 1 if s['protocol'] == 'icmp'
+            end
+
+            @open_ports += 1 if s['port'].to_i != 0
           end
 
-          return @count
+          @count = { open_ports: @open_ports,
+                     tcp: @tcp,
+                     udp: @udp,
+                     icmp: @icmp,
+                     informational: @informational,
+                     low: @low,
+                     medium: @medium,
+                     high: @high,
+                     critical: @critical,
+                     all: (@low + @medium + @high + @critical) }
         end
+
+        @count
+      end
     end
   end
 end

@@ -97,10 +97,10 @@ module RubyNessus
       #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-        m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-        s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
-        return "#{h} hours #{m} minutes and #{s} seconds"
+        h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
+        m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
+        s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
+        "#{h} hours #{m} minutes and #{s} seconds"
       end
 
       #
@@ -181,7 +181,7 @@ module RubyNessus
           @plugins.sort!
         end
 
-        return @plugins
+        @plugins
       end
 
       #
@@ -213,7 +213,7 @@ module RubyNessus
       #   The Hosts of the scan.
       #
       def hosts
-        self.to_enum(:each_host).to_a
+        to_enum(:each_host).to_a
       end
 
       #
@@ -330,12 +330,12 @@ module RubyNessus
       #
       def event_percentage_for(type, round_percentage = false)
         @sc ||= count_severity
-        if %W(high medium low all).include?(type)
+        if %w[high medium low all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
-            return "#{calc.round}"
+            return calc.round.to_s
           else
-            return "#{calc}"
+            return calc.to_s
           end
         else
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, high, medium, low and informational."
@@ -367,36 +367,36 @@ module RubyNessus
 
       private
 
-        #
-        # Calculates an event hash of totals for severity counts.
-        #
-        # @return [hash]
-        #   The Event Totals For Severity
-        #
-        def count_severity
-          unless @count
-            @count = {}
-            @open_ports = 0
-            @low = 0
-            @medium = 0
-            @high = 0
+      #
+      # Calculates an event hash of totals for severity counts.
+      #
+      # @return [hash]
+      #   The Event Totals For Severity
+      #
+      def count_severity
+        unless @count
+          @count = {}
+          @open_ports = 0
+          @low = 0
+          @medium = 0
+          @high = 0
 
-            @xml.xpath('//ReportHost').each do |s|
-              @open_ports += s.at('num_ports').inner_text.to_i
-              @low += s.at('num_lo').inner_text.to_i
-              @medium += s.at('num_med').inner_text.to_i
-              @high += s.at('num_hi').inner_text.to_i
-            end
-
-            @count = { :open_ports => @open_ports,
-                       :low => @low,
-                       :medium => @medium,
-                       :high => @high,
-                       :all => (@low + @medium + @high) }
+          @xml.xpath('//ReportHost').each do |s|
+            @open_ports += s.at('num_ports').inner_text.to_i
+            @low += s.at('num_lo').inner_text.to_i
+            @medium += s.at('num_med').inner_text.to_i
+            @high += s.at('num_hi').inner_text.to_i
           end
 
-          return @count
+          @count = { open_ports: @open_ports,
+                     low: @low,
+                     medium: @medium,
+                     high: @high,
+                     all: (@low + @medium + @high) }
         end
+
+        @count
+      end
     end
   end
 end

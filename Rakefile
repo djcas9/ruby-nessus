@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'rubygems'
 require 'rake'
 
@@ -24,8 +22,8 @@ rescue LoadError => e
   end
 end
 
-task :test    => :spec
-task :default => :spec
+task test: :spec
+task default: :spec
 
 begin
   gem 'yard', '~> 0.8'
@@ -37,4 +35,4 @@ rescue LoadError => e
     abort 'Please run `gem install yard` to install YARD.'
   end
 end
-task :doc => :yard
+task doc: :yard

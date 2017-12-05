@@ -12,7 +12,7 @@ module RubyNessus
       end
 
       def to_s
-        "#{ip}"
+        ip.to_s
       end
 
       # Return the Host Object hostname.
@@ -32,7 +32,7 @@ module RubyNessus
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       def scan_start_time
         if @host.at('startTime').inner_text.blank?
-          return false
+          false
         else
           @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         end
@@ -45,7 +45,7 @@ module RubyNessus
       #   scan.scan_start_time #=> 'Fri Nov 11 23:36:54 1985'
       def scan_stop_time
         if @host.at('stopTime').inner_text.blank?
-          return false
+          false
         else
           @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         end
@@ -133,7 +133,7 @@ module RubyNessus
         end
 
         @informational_events.each(&block)
-        return @informational_event_count
+        @informational_event_count
       end
 
       # Returns All Low Event Objects For A Given Host.
@@ -160,7 +160,7 @@ module RubyNessus
         end
 
         @low_severity_events.each(&block)
-        return @low_severity_count
+        @low_severity_count
       end
 
       # Returns All Medium Event Objects For A Given Host.
@@ -187,7 +187,7 @@ module RubyNessus
         end
 
         @medium_severity_events.each(&block)
-        return @high_severity_count
+        @high_severity_count
       end
 
       # Returns All High Event Objects For A Given Host.
@@ -214,7 +214,7 @@ module RubyNessus
         end
 
         @high_severity_events.each(&block)
-        return @high_severity_count
+        @high_severity_count
       end
 
       # Return the total event count for a given host.
@@ -245,21 +245,21 @@ module RubyNessus
       # @return [Array<String>]
       #   The events of the host.
       def events
-        self.to_enum(:each_event).to_a
+        to_enum(:each_event).to_a
       end
 
       private
 
-        def get_runtime
-          if scan_start_time && scan_stop_time
-            h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-            m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-            s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
-            return "#{h} hours #{m} minutes and #{s} seconds"
-          else
-            false
-          end
+      def get_runtime
+        if scan_start_time && scan_stop_time
+          h = (Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
+          m = (Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
+          s = (Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
+          "#{h} hours #{m} minutes and #{s} seconds"
+        else
+          false
         end
+      end
     end
   end
 end

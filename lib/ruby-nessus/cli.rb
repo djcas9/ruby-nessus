@@ -14,7 +14,7 @@ module RubyNessus
     end
 
     def CLI.run
-      self.new.run(*ARGV)
+      new.run(*ARGV)
     end
 
     def run(*args)
@@ -24,7 +24,7 @@ module RubyNessus
       Log.it "Version: #{RubyNessus::VERSION}"
       Log.it
 
-      RubyNessus::Parse.new("#{@file}") do |scan|
+      RubyNessus::Parse.new(@file.to_s) do |scan|
         Log.h1 'SCAN Metadata'
         Log.it
         Log.h2 'Scan Title', scan.title
@@ -81,46 +81,46 @@ module RubyNessus
 
     protected
 
-      def optparse(*args)
-        opts = OptionParser.new
-        opts.program_name = 'recess'
-        opts.banner = "Recess #{RubyNessus::VERSION}"
-        opts.separator 'usage: recess FILE [OPTIONS]'
+    def optparse(*args)
+      opts = OptionParser.new
+      opts.program_name = 'recess'
+      opts.banner = "Recess #{RubyNessus::VERSION}"
+      opts.separator 'usage: recess FILE [OPTIONS]'
 
-        opts.on('-f', '--file FILE', 'The .nessus file to parse.') do |file|
-          @file = file
-        end
-
-        opts.on('-f', '--file FILE', 'The .nessus file to parse.') do |file|
-          @file = file
-        end
-
-        opts.on('-h', '--help', 'This help summary page.') do |help|
-          Log.it opts
-          Log.it
-          exit -1
-        end
-
-        opts.on('-v', '--version', 'Recess Version.') do |version|
-          Log.it RubyNessus::VERSION
-          Log.it
-          exit -1
-        end
-
-        begin
-          @args = opts.parse!(args)
-          @file ||= @args[0]
-          if @file.nil?
-            Log.it opts
-            Log.it
-            exit -1
-          end
-        rescue => e
-          Log.error e.message
-          Log.it opts
-          Log.it
-          exit -1
-        end
+      opts.on('-f', '--file FILE', 'The .nessus file to parse.') do |file|
+        @file = file
       end
+
+      opts.on('-f', '--file FILE', 'The .nessus file to parse.') do |file|
+        @file = file
+      end
+
+      opts.on('-h', '--help', 'This help summary page.') do |help|
+        Log.it opts
+        Log.it
+        exit -1
+      end
+
+      opts.on('-v', '--version', 'Recess Version.') do |version|
+        Log.it RubyNessus::VERSION
+        Log.it
+        exit -1
+      end
+
+      begin
+        @args = opts.parse!(args)
+        @file ||= @args[0]
+        if @file.nil?
+          Log.it opts
+          Log.it
+          exit -1
+        end
+      rescue => e
+        Log.error e.message
+        Log.it opts
+        Log.it
+        exit -1
+      end
+    end
   end
 end
