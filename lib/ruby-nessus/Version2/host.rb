@@ -63,7 +63,7 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(start_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -80,7 +80,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(stop_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
