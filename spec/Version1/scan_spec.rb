@@ -67,5 +67,4 @@ describe "Nessus Version 1: Scan" do
   it "should calculate the total for all severity events" do
     @xml.total_event_count.should == 22
   end
-
 end

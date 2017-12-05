@@ -1,6 +1,5 @@
 module RubyNessus
   module Version1
-
     class Host
       include Enumerable
 
@@ -148,7 +147,6 @@ module RubyNessus
       #     puts low.name if low.name
       #   end
       def low_severity_events(&block)
-
         @low_severity_count = @host.at('num_lo').inner_text.to_i
 
         unless @low_severity_events
@@ -176,7 +174,6 @@ module RubyNessus
       #     puts medium.name if medium.name
       #   end
       def medium_severity_events(&block)
-
         @high_severity_count = @host.at('num_med').inner_text.to_i
 
         unless @medium_severity_events
@@ -204,7 +201,6 @@ module RubyNessus
       #     puts high.name if high.name
       #   end
       def high_severity_events(&block)
-
         @high_severity_count = @host.at('num_hi').inner_text.to_i
 
         unless @high_severity_events
@@ -252,7 +248,6 @@ module RubyNessus
         self.to_enum(:each_event).to_a
       end
 
-
       private
 
         def get_runtime
@@ -265,9 +260,6 @@ module RubyNessus
             false
           end
         end
-
     end
-
   end
-
 end

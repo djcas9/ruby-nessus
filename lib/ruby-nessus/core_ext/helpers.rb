@@ -1,5 +1,4 @@
 class Integer
-
   # Return a severity integer in words.
   # @return [String]
   #   Return a severity integer in words.
@@ -71,11 +70,9 @@ class Integer
       false
     end
   end
-
 end
 
 class String
-
   # Return True if the given string is blank?
   # @return [Boolean]
   #   Return True if the given string is blank?
@@ -84,7 +81,6 @@ class String
   def blank?
     respond_to?(:empty?) ? empty? : !self
   end
-
 end
 
 class DateTime
