@@ -58,7 +58,7 @@ module RubyNessus
       #
       def time
         datetime = @xml.xpath('//NessusClientData//Report//ReportName').inner_text.split(' - ').first
-        @report_time ||= DateTime.strptime(datetime, fmt = '%y/%m/%d %I:%M:%S %p')
+        @report_time ||= DateTime.strptime(datetime, '%y/%m/%d %I:%M:%S %p')
       end
 
       #
@@ -71,7 +71,7 @@ module RubyNessus
       #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
       #
       def start_time
-        @start_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StartTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+        @start_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StartTime').inner_text, '%a %b %d %H:%M:%S %Y')
       end
 
       #
@@ -84,7 +84,7 @@ module RubyNessus
       #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
       #
       def stop_time
-        @stop_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
+        @stop_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StopTime').inner_text, '%a %b %d %H:%M:%S %Y')
       end
 
       #
