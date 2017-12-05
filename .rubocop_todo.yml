@@ -6,11 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 4
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'lib/ruby-nessus/cli.rb'
-
 # Offense count: 1
 Lint/DuplicateMethods:
   Exclude:
@@ -20,22 +15,6 @@ Lint/DuplicateMethods:
 Lint/RescueWithoutErrorClass:
   Exclude:
     - 'lib/ruby-nessus/cli.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'lib/ruby-nessus/cli.rb'
-
-# Offense count: 10
-Lint/UselessAssignment:
-  Exclude:
-    - 'Rakefile'
-    - 'lib/ruby-nessus/Version1/host.rb'
-    - 'lib/ruby-nessus/Version1/version1.rb'
-    - 'lib/ruby-nessus/Version2/event.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
 
 # Offense count: 8
 Metrics/AbcSize:
