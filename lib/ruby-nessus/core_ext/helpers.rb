@@ -7,15 +7,15 @@ class Integer
   def in_words
     case self
     when 0
-      return "Informational Severity"
+      return 'Informational Severity'
     when 1
-      return "Low Severity"
+      return 'Low Severity'
     when 2
-      return "Medium Severity"
+      return 'Medium Severity'
     when 3
-      return "High Severity"
+      return 'High Severity'
     when 4
-      return "Critical Severity"
+      return 'Critical Severity'
     end
   end
 
