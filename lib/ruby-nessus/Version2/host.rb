@@ -63,7 +63,7 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(start_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -80,7 +80,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(stop_time.inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -514,7 +514,7 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage=false)
+      def event_percentage_for(type, round_percentage = false)
         @sc ||= host_stats
         if %W(high medium low tcp udp icmp all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
@@ -544,7 +544,7 @@ module RubyNessus
         def host_stats
           unless @host_stats
             @host_stats = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
+            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
             @host.xpath('ReportItem').each do |s|
               case s['severity'].to_i
@@ -569,16 +569,16 @@ module RubyNessus
               @open_ports += 1 if s['port'].to_i != 0
             end
 
-            @host_stats = {:open_ports => @open_ports,
-                           :tcp => @tcp,
-                           :udp => @udp,
-                           :icmp => @icmp,
-                           :informational => @informational,
-                           :low => @low,
-                           :medium => @medium,
-                           :high => @high,
-                           :critical => @critical,
-                           :all => (@low + @medium + @high + @critical)}
+            @host_stats = { :open_ports => @open_ports,
+                            :tcp => @tcp,
+                            :udp => @udp,
+                            :icmp => @icmp,
+                            :informational => @informational,
+                            :low => @low,
+                            :medium => @medium,
+                            :high => @high,
+                            :critical => @critical,
+                            :all => (@low + @medium + @high + @critical) }
 
           end
           @host_stats
