@@ -1,6 +1,5 @@
 module RubyNessus
   module Version2
-
     class Host
       include Enumerable
 
@@ -210,7 +209,6 @@ module RubyNessus
       #   end
       #
       def low_severity_events(&block)
-
         unless @low_severity_events
           @low_severity_events = []
 
@@ -240,7 +238,6 @@ module RubyNessus
       #   end
       #
       def medium_severity_events(&block)
-
         unless @medium_severity_events
           @medium_severity_events = []
 
@@ -275,7 +272,6 @@ module RubyNessus
       #   end
       #
       def high_severity_events(&block)
-
         unless @high_severity_events
           @high_severity_events = []
 
@@ -306,7 +302,6 @@ module RubyNessus
       #   end
       #
       def critical_severity_events(&block)
-
         unless @critical_severity_events
           @critical_severity_events = []
 
@@ -547,7 +542,6 @@ module RubyNessus
         end
 
         def host_stats
-
           unless @host_stats
             @host_stats = {}
             @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
@@ -589,7 +583,6 @@ module RubyNessus
           end
           @host_stats
         end
-
     end
   end
 end

@@ -6,9 +6,7 @@ require 'optparse'
 require 'pp'
 
 module RubyNessus
-
   class CLI
-
     def initialize
       @file = nil
       @nessus_version = nil
@@ -27,7 +25,6 @@ module RubyNessus
       Log.it
 
       RubyNessus::Parse.new("#{@file}") do |scan|
-
         Log.h1 "SCAN Metadata"
         Log.it
         Log.h2 "Scan Title", scan.title
@@ -79,9 +76,7 @@ module RubyNessus
         end
 
         Log.end
-
       end
-
     end
 
     protected
@@ -120,13 +115,12 @@ module RubyNessus
             Log.it
             exit -1
           end
-        rescue  => e
+        rescue => e
           Log.error e.message
           Log.it opts
           Log.it
           exit -1
         end
       end
-
   end
 end

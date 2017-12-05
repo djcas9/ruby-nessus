@@ -2,15 +2,12 @@ require 'ruby-nessus/Version1/host'
 require 'ruby-nessus/Version1/event'
 
 module RubyNessus
-
   # .Nessus Version 2 Schema
   module Version1
-
     # File to parse
     attr_reader :file
 
     class XML
-
       include Enumerable
 
       #
@@ -400,10 +397,6 @@ module RubyNessus
 
           return @count
         end
-
     end
-
-
   end
-
 end

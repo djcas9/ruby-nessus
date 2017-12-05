@@ -4,7 +4,6 @@ module RubyNessus
   module Version1
     
     class Event
-
       # Return the total event count for a given host.
       # @return [Integer]
       #   Return the total event count for a given host.
@@ -82,7 +81,6 @@ module RubyNessus
         return @data
       end
       alias output data
-
     end
     
   end
