@@ -367,36 +367,36 @@ module RubyNessus
 
       private
 
-        #
-        # Calculates an event hash of totals for severity counts.
-        #
-        # @return [hash]
-        #   The Event Totals For Severity
-        #
-        def count_severity
-          unless @count
-            @count = {}
-            @open_ports = 0
-            @low = 0
-            @medium = 0
-            @high = 0
+      #
+      # Calculates an event hash of totals for severity counts.
+      #
+      # @return [hash]
+      #   The Event Totals For Severity
+      #
+      def count_severity
+        unless @count
+          @count = {}
+          @open_ports = 0
+          @low = 0
+          @medium = 0
+          @high = 0
 
-            @xml.xpath('//ReportHost').each do |s|
-              @open_ports += s.at('num_ports').inner_text.to_i
-              @low += s.at('num_lo').inner_text.to_i
-              @medium += s.at('num_med').inner_text.to_i
-              @high += s.at('num_hi').inner_text.to_i
-            end
-
-            @count = { :open_ports => @open_ports,
-                       :low => @low,
-                       :medium => @medium,
-                       :high => @high,
-                       :all => (@low + @medium + @high) }
+          @xml.xpath('//ReportHost').each do |s|
+            @open_ports += s.at('num_ports').inner_text.to_i
+            @low += s.at('num_lo').inner_text.to_i
+            @medium += s.at('num_med').inner_text.to_i
+            @high += s.at('num_hi').inner_text.to_i
           end
 
-          return @count
+          @count = { :open_ports => @open_ports,
+                     :low => @low,
+                     :medium => @medium,
+                     :high => @high,
+                     :all => (@low + @medium + @high) }
         end
+
+        return @count
+      end
     end
   end
 end
