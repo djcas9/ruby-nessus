@@ -300,9 +300,9 @@ module RubyNessus
         if %W(critical high medium low tcp udp icmp all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
-            return "#{calc.round}"
+            return calc.round.to_s
           else
-            return "#{calc}"
+            return calc.to_s
           end
         else
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, critical, high, medium and low."

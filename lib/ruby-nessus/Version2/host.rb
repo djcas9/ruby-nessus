@@ -16,7 +16,7 @@ module RubyNessus
       end
 
       def to_s
-        "#{ip}"
+        ip.to_s
       end
 
       #
@@ -519,9 +519,9 @@ module RubyNessus
         if %W(high medium low tcp udp icmp all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
-            return "#{calc.round}"
+            return calc.round.to_s
           else
-            return "#{calc}"
+            return calc.to_s
           end
         else
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
@@ -532,9 +532,9 @@ module RubyNessus
 
       def get_runtime
         if stop_time && start_time
-          h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-          m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-          s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
+          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.gsub('-', '')
+          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.gsub('-', '')
+          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.gsub('-', '')
           return "#{h} hours #{m} minutes and #{s} seconds"
         else
           false
