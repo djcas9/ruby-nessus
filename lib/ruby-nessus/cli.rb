@@ -13,7 +13,7 @@ module RubyNessus
       @args = []
     end
 
-    def CLI.run
+    def self.run
       new.run(*ARGV)
     end
 

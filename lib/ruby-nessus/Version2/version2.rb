@@ -97,7 +97,7 @@ module RubyNessus
         hosts = []
         @xml.xpath('//ReportHost').each do |host|
           hosts << host['name'] if host['name']
-          block.call(Host.new(host)) if block
+          yield(Host.new(host)) if block
         end
         hosts
       end
@@ -328,7 +328,7 @@ module RubyNessus
         raise "Error: hostname can't be blank." if hostname.blank?
         @xml.xpath('//ReportHost').each do |host|
           next unless host['name'].match(hostname)
-          block.call(Host.new(host)) if block
+          yield(Host.new(host)) if block
         end
       end
 
