@@ -55,20 +55,3 @@ class Integer
     self == 4
   end
 end
-
-class String
-  # Return True if the given string is blank?
-  # @return [Boolean]
-  #   Return True if the given string is blank?
-  # @example
-  #   host.hostname.blank? #=> false
-  def blank?
-    respond_to?(:empty?) ? empty? : !self
-  end
-end
-
-class DateTime
-  def pretty
-    strftime('%A %B %d, %Y %I:%M:%S %p')
-  end
-end
