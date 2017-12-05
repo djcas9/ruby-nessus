@@ -29,7 +29,7 @@ module RubyNessus
       #   New Port Object
       # @example
       #   Port.parse(port)
-      def Port.parse(str)
+      def self.parse(str)
         @full_port = str
         components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
 
