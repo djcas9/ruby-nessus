@@ -7,5 +7,5 @@ end
 
 require 'ruby-nessus/cli'
 require 'ruby-nessus/version'
- 
+
 RubyNessus::CLI.run

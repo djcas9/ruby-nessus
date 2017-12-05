@@ -358,7 +358,7 @@ module RubyNessus
       end
 
       #
-      # Return an Array of open ports. 
+      # Return an Array of open ports.
       #
       # @return [Array]
       #   The open ports

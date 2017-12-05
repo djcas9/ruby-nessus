@@ -1,6 +1,5 @@
 module RubyNessus
   module Version1
-    
     class Port
       # Port Service
       attr_reader :service
@@ -81,6 +80,5 @@ module RubyNessus
         end
       end
     end
-    
   end
 end

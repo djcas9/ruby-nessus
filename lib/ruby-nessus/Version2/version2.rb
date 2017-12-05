@@ -2,7 +2,6 @@ require 'ruby-nessus/Version2/host'
 require 'ruby-nessus/Version2/event'
 
 module RubyNessus
-  
   # .Nessus Version 2 Schema
   module Version2
     # File to parse
@@ -28,12 +27,12 @@ module RubyNessus
       def initialize(xml)
         @xml = xml
         raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
-      end      
-      
+      end
+
       def version
         2
       end
-      
+
       #
       # Return the nessus report title.
       #
@@ -66,7 +65,7 @@ module RubyNessus
       def policy_notes
         @policy_notes ||= @xml.at("//Policy/policyComments").inner_text
       end
-      
+
       #
       # Return the hosts the were targeted for the initial scan.
       # These are the hosts that were inputed when creating the scan.
@@ -359,13 +358,13 @@ module RubyNessus
                 when 4
                   @critical += 1
               end
-              
+
               unless s['severity'].to_i == 0
                 @tcp += 1 if s['protocol'] == 'tcp'
                 @udp += 1 if s['protocol'] == 'udp'
                 @icmp += 1 if s['protocol'] == 'icmp'
               end
-              
+
               @open_ports += 1 if s['port'].to_i != 0
             end
 
