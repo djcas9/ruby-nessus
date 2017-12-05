@@ -11,12 +11,12 @@ describe 'RubyNessus::Parse' do
   end
 
   it 'should parse a valid v1 .nessus string' do
-    options = { :xml => Helpers::DOT_NESSUS_V1_DOC }
+    options = { xml: Helpers::DOT_NESSUS_V1_DOC }
     -> { RubyNessus::Parse.new(nil, options) }.should_not raise_error
   end
 
   it 'should parse a valid v2 .nessus string' do
-    options = { :xml => Helpers::DOT_NESSUS_V2_DOC }
+    options = { xml: Helpers::DOT_NESSUS_V2_DOC }
     -> { RubyNessus::Parse.new(nil, options) }.should_not raise_error
   end
 end
