@@ -2,15 +2,12 @@ require 'ruby-nessus/Version1/host'
 require 'ruby-nessus/Version1/event'
 
 module RubyNessus
-
   # .Nessus Version 2 Schema
   module Version1
-
     # File to parse
     attr_reader :file
 
     class XML
-
       include Enumerable
 
       #
@@ -30,7 +27,7 @@ module RubyNessus
       #
       def initialize(xml)
         @xml = xml
-        raise "Error: Not A Version 1.0 .Nessus file." unless @xml.at('NessusClientData')
+        raise 'Error: Not A Version 1.0 .Nessus file.' unless @xml.at('NessusClientData')
       end
 
       def version
@@ -47,7 +44,7 @@ module RubyNessus
       #   scan.report_name #=> "My Super Cool Nessus Report"
       #
       def title
-        @report_name ||= @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').last
+        @report_name ||= @xml.xpath('//NessusClientData//Report//ReportName').inner_text.split(' - ').last
       end
 
       #
@@ -60,8 +57,8 @@ module RubyNessus
       #   scan.report_time #=> "09/11/08 02:21:22 AM"
       #
       def time
-        datetime = @xml.xpath("//NessusClientData//Report//ReportName").inner_text.split(' - ').first
-        @report_time ||= DateTime.strptime(datetime, fmt='%y/%m/%d %I:%M:%S %p')
+        datetime = @xml.xpath('//NessusClientData//Report//ReportName').inner_text.split(' - ').first
+        @report_time ||= DateTime.strptime(datetime, fmt = '%y/%m/%d %I:%M:%S %p')
       end
 
       #
@@ -74,7 +71,7 @@ module RubyNessus
       #   scan.start_time #=> 'Fri Nov 11 23:36:54 1985'
       #
       def start_time
-        @start_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StartTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
+        @start_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StartTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
       end
 
       #
@@ -87,7 +84,7 @@ module RubyNessus
       #   scan.stop_time #=> 'Mon Nov 11 23:36:54 1985'
       #
       def stop_time
-        @stop_time = DateTime.strptime(@xml.xpath("//NessusClientData//Report//StopTime").inner_text, fmt='%a %b %d %H:%M:%S %Y')
+        @stop_time = DateTime.strptime(@xml.xpath('//NessusClientData//Report//StopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
       end
 
       #
@@ -100,9 +97,9 @@ module RubyNessus
       #   scan.runtime #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-        m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-        s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+        h = "#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+        m = "#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+        s = "#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}".gsub('-', '')
         return "#{h} hours #{m} minutes and #{s} seconds"
       end
 
@@ -113,7 +110,7 @@ module RubyNessus
       #   The Nessus Scan Policy Name
       #
       def policy_title
-        @policy_name ||= @xml.xpath("//NessusClientData//Report//policyName").inner_text
+        @policy_name ||= @xml.xpath('//NessusClientData//Report//policyName').inner_text
       end
 
       #
@@ -123,7 +120,7 @@ module RubyNessus
       #   The Nessus Scan Policy Comments
       #
       def policy_notes
-        @policy_comments ||= @xml.xpath("//NessusClientData//Report//policyComments").inner_text
+        @policy_comments ||= @xml.xpath('//NessusClientData//Report//policyComments').inner_text
       end
 
       #
@@ -154,7 +151,7 @@ module RubyNessus
         unless @plugin_ids
           @plugin_ids = []
 
-          @xml.xpath("//PluginSelection").last.text.split(';').each do |id|
+          @xml.xpath('//PluginSelection').last.text.split(';').each do |id|
             @plugin_ids << id
           end
         end
@@ -176,7 +173,7 @@ module RubyNessus
           # get elements with attribute:
           @plugins = []
 
-          @xml.xpath("//pluginName").each do |x|
+          @xml.xpath('//pluginName').each do |x|
             @plugins << x.inner_text unless x.inner_text.empty?
           end
 
@@ -202,7 +199,7 @@ module RubyNessus
       #
       def each_host(&block)
         hosts = []
-        @xml.xpath("//ReportHost").each do |host|
+        @xml.xpath('//ReportHost').each do |host|
           hosts << host.at('HostName').inner_text if host.at('HostName').inner_text
           block.call(Host.new(host)) if block
         end
@@ -243,7 +240,7 @@ module RubyNessus
       def unique_ports
         unless @unique_ports
           @unique_ports = []
-          @xml.xpath("//ReportItem//port").each do |port|
+          @xml.xpath('//ReportItem//port').each do |port|
             @unique_ports << port.inner_text
           end
           @unique_ports.uniq!
@@ -331,7 +328,7 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage=false)
+      def event_percentage_for(type, round_percentage = false)
         @sc ||= count_severity
         if %W(high medium low all).include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
@@ -384,7 +381,7 @@ module RubyNessus
             @medium = 0
             @high = 0
 
-            @xml.xpath("//ReportHost").each do |s|
+            @xml.xpath('//ReportHost').each do |s|
               @open_ports += s.at('num_ports').inner_text.to_i
               @low += s.at('num_lo').inner_text.to_i
               @medium += s.at('num_med').inner_text.to_i
@@ -400,10 +397,6 @@ module RubyNessus
 
           return @count
         end
-
     end
-
-
   end
-
 end

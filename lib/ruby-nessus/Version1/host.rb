@@ -1,6 +1,5 @@
 module RubyNessus
   module Version1
-
     class Host
       include Enumerable
 
@@ -35,7 +34,7 @@ module RubyNessus
         if @host.at('startTime').inner_text.blank?
           return false
         else
-          @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          @host_scan_time = DateTime.strptime(@host.at('startTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         end
       end
 
@@ -48,7 +47,7 @@ module RubyNessus
         if @host.at('stopTime').inner_text.blank?
           return false
         else
-          @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          @host_scan_time = DateTime.strptime(@host.at('stopTime').inner_text, fmt = '%a %b %d %H:%M:%S %Y')
         end
       end
 
@@ -125,7 +124,7 @@ module RubyNessus
           @informational_events = []
           @informational_event_count = 0
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 0
             @informational_events << Event.new(event)
             @informational_event_count += 1
@@ -148,13 +147,12 @@ module RubyNessus
       #     puts low.name if low.name
       #   end
       def low_severity_events(&block)
-
         @low_severity_count = @host.at('num_lo').inner_text.to_i
 
         unless @low_severity_events
           @low_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 1
             @low_severity_events << Event.new(event)
           end
@@ -176,13 +174,12 @@ module RubyNessus
       #     puts medium.name if medium.name
       #   end
       def medium_severity_events(&block)
-
         @high_severity_count = @host.at('num_med').inner_text.to_i
 
         unless @medium_severity_events
           @medium_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 2
             @medium_severity_events << Event.new(event)
           end
@@ -204,13 +201,12 @@ module RubyNessus
       #     puts high.name if high.name
       #   end
       def high_severity_events(&block)
-
         @high_severity_count = @host.at('num_hi').inner_text.to_i
 
         unless @high_severity_events
           @high_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 3
             @high_severity_events << Event.new(event)
           end
@@ -227,7 +223,7 @@ module RubyNessus
       # @example
       #   host.event_count #=> 3456
       def event_count
-        ((low_severity_events.to_i) + (medium_severity_events.to_i) + (high_severity_events.to_i)).to_i
+        (low_severity_events.to_i + medium_severity_events.to_i + high_severity_events.to_i).to_i
       end
 
       # Creates a new Event object to be parser
@@ -240,7 +236,7 @@ module RubyNessus
       #     puts event.port
       #   end
       def each_event(&block)
-        @host.xpath("ReportItem").each do |event|
+        @host.xpath('ReportItem').each do |event|
           block.call(Event.new(event)) if block
         end
       end
@@ -252,22 +248,18 @@ module RubyNessus
         self.to_enum(:each_event).to_a
       end
 
-
       private
 
         def get_runtime
           if scan_start_time && scan_stop_time
-            h = ("#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-            m = ("#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-            s = ("#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}").gsub('-', '')
+            h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+            m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+            s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
             return "#{h} hours #{m} minutes and #{s} seconds"
           else
             false
           end
         end
-
     end
-
   end
-
 end

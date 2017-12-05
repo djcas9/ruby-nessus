@@ -2,9 +2,7 @@ require 'ruby-nessus/Version2/port'
 
 module RubyNessus
   module Version2
-
     class Event
-
       def initialize(event)
         @event = event
       end
@@ -56,7 +54,7 @@ module RubyNessus
       #
       # @return [Boolean]
       #   Return true if the event is low severity.
-      # 
+      #
       def low?
         severity == 1
       end
@@ -90,7 +88,7 @@ module RubyNessus
       def critical?
         severity == 4
       end
-      
+
       #
       # Return the event object nessus plugin id
       #
@@ -238,7 +236,7 @@ module RubyNessus
       def see_also
         unless @see_also
           @see_also = []
-          @event.xpath("see_also").each do |see_also|
+          @event.xpath('see_also').each do |see_also|
             @see_also << see_also.inner_text
           end
         end
@@ -256,7 +254,7 @@ module RubyNessus
       #
       def patch_publication_date
         @patch_publication_date ||= if @event.at('patch_publication_date')
-          DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt='%Y/%m/%d')
+          DateTime.strptime(@event.at('patch_publication_date').inner_text, fmt = '%Y/%m/%d')
         else
           false
         end
@@ -275,7 +273,7 @@ module RubyNessus
           false
         end
       end
-      
+
       #
       # Return the event cve.
       #
@@ -285,7 +283,7 @@ module RubyNessus
       def cve
         unless @cve
           @cve = []
-          @event.xpath("cve").each do |cve|
+          @event.xpath('cve').each do |cve|
             @cve << cve.inner_text
           end
           @cve = false if @cve.empty?
@@ -302,7 +300,7 @@ module RubyNessus
       def bid
         unless @bid
           @bid = []
-          @event.xpath("bid").each do |bid|
+          @event.xpath('bid').each do |bid|
             @bid << bid.inner_text
           end
           @bid = false if @bid.empty?
@@ -319,7 +317,7 @@ module RubyNessus
       def xref
         unless @xref
           @xref = []
-          @event.xpath("xref").each do |xref|
+          @event.xpath('xref').each do |xref|
             @xref << xref.inner_text
           end
         end
@@ -339,7 +337,7 @@ module RubyNessus
           false
         end
       end
-      
+
       #
       # Return the event cpe.
       #
@@ -349,15 +347,12 @@ module RubyNessus
       def cpe
         unless @cpe
           @cpe = []
-          @event.xpath("cpe").each do |cpe|
+          @event.xpath('cpe').each do |cpe|
             @cpe << cpe.inner_text
           end
         end
         @cpe
       end
-
     end
-
   end
-
 end
