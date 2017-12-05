@@ -250,16 +250,16 @@ module RubyNessus
 
       private
 
-        def get_runtime
-          if scan_start_time && scan_stop_time
-            h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
-            m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
-            s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
-            return "#{h} hours #{m} minutes and #{s} seconds"
-          else
-            false
-          end
+      def get_runtime
+        if scan_start_time && scan_stop_time
+          h = "#{Time.parse(scan_stop_time.to_s).strftime('%H').to_i - Time.parse(scan_start_time.to_s).strftime('%H').to_i}".gsub('-', '')
+          m = "#{Time.parse(scan_stop_time.to_s).strftime('%M').to_i - Time.parse(scan_start_time.to_s).strftime('%M').to_i}".gsub('-', '')
+          s = "#{Time.parse(scan_stop_time.to_s).strftime('%S').to_i - Time.parse(scan_start_time.to_s).strftime('%S').to_i}".gsub('-', '')
+          return "#{h} hours #{m} minutes and #{s} seconds"
+        else
+          false
         end
+      end
     end
   end
 end
