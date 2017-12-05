@@ -2,9 +2,7 @@ require 'ruby-nessus/Version2/port'
 
 module RubyNessus
   module Version2
-
     class Event
-
       def initialize(event)
         @event = event
       end
@@ -355,9 +353,6 @@ module RubyNessus
         end
         @cpe
       end
-
     end
-
   end
-
 end

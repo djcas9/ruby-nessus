@@ -5,12 +5,10 @@ module RubyNessus
   
   # .Nessus Version 2 Schema
   module Version2
-
     # File to parse
     attr_reader :file
 
     class XML
-
       include Enumerable
 
       #
@@ -30,8 +28,7 @@ module RubyNessus
       def initialize(xml)
         @xml = xml
         raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
-      end
-      
+      end      
       
       def version
         2
@@ -386,9 +383,6 @@ module RubyNessus
 
           return @count
         end
-
     end
-
-
   end
 end

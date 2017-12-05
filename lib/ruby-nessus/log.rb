@@ -67,12 +67,15 @@ module RubyNessus
     def self.informational(title, msg=nil)
       STDERR.puts "\t#{title}: ".foreground(:magenta).bright + "#{msg}"
     end
+
     def self.low(title, msg=nil)
       STDERR.puts "\t#{title}: ".foreground(:green) + "#{msg}"
     end
+
     def self.medium(title, msg=nil)
       STDERR.puts "\t#{title}: ".foreground(:yellow).bright + "#{msg}"
     end
+
     def self.high(title, msg=nil)
       STDERR.puts "\t#{title}: ".foreground(:red).bright + "#{msg}"
     end

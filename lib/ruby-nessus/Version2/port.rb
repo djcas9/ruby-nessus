@@ -2,7 +2,6 @@ module RubyNessus
   module Version2
     
     class Port
-
       # Port Service
       attr_reader :service
       # Port number
@@ -70,10 +69,7 @@ module RubyNessus
       def to_s
         "#{@service} (#{@number}/#{@protocol})"
       end
-
-
     end
     
   end
-
 end

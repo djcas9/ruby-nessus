@@ -2,7 +2,6 @@ module RubyNessus
   module Version1
     
     class Port
-
       # Port Service
       attr_reader :service
       # Port number
@@ -41,9 +40,7 @@ module RubyNessus
           else
             return Port.new(false, false, false, str)
           end
-
         end
-
       end
 
       # Return true iF port protocol Ii tcp.
@@ -83,9 +80,7 @@ module RubyNessus
           false
         end
       end
-
     end
     
   end
-
 end
