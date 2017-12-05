@@ -13,7 +13,7 @@ module RubyNessus
       @args = []
     end
 
-    def CLI.run
+    def self.run
       new.run(*ARGV)
     end
 
@@ -95,16 +95,16 @@ module RubyNessus
         @file = file
       end
 
-      opts.on('-h', '--help', 'This help summary page.') do |help|
+      opts.on('-h', '--help', 'This help summary page.') do |_help|
         Log.it opts
         Log.it
-        exit -1
+        exit(-1)
       end
 
-      opts.on('-v', '--version', 'Recess Version.') do |version|
+      opts.on('-v', '--version', 'Recess Version.') do |_version|
         Log.it RubyNessus::VERSION
         Log.it
-        exit -1
+        exit(-1)
       end
 
       begin
@@ -113,13 +113,13 @@ module RubyNessus
         if @file.nil?
           Log.it opts
           Log.it
-          exit -1
+          exit(-1)
         end
       rescue => e
         Log.error e.message
         Log.it opts
         Log.it
-        exit -1
+        exit(-1)
       end
     end
   end
