@@ -7,9 +7,6 @@ Gem::Specification.new do |gem|
 
   gem.name    = gemspec.fetch('name')
   gem.version = gemspec.fetch('version')
-
-  p gem.version 
-
   gem.summary     = gemspec['summary']
   gem.description = gemspec['description']
   gem.licenses    = Array(gemspec['license'])
