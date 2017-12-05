@@ -54,7 +54,7 @@ module RubyNessus
         s = @event.at('pluginName').inner_text
 
         @plugin_name ||= unless s.empty?
-                           @event.at('pluginName').inner_text || "N/A"
+                           @event.at('pluginName').inner_text || 'N/A'
                          else
                            false
                          end
@@ -70,10 +70,10 @@ module RubyNessus
       #   event.output        #=> "..."
       #   event.data          #=> "..."
       def data
-        d = "#{@event.at('data')}" || ""
+        d = "#{@event.at('data')}" || ''
 
         @data ||= unless d.empty?
-                           @event.at('data').inner_text || "N/A"
+                           @event.at('data').inner_text || 'N/A'
                          else
                            false
                          end

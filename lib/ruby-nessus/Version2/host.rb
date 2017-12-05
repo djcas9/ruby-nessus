@@ -182,7 +182,7 @@ module RubyNessus
         unless @informational_events
           @informational_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 0
             @informational_events << Event.new(event)
           end
@@ -212,7 +212,7 @@ module RubyNessus
         unless @low_severity_events
           @low_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 1
             @low_severity_events << Event.new(event)
           end
@@ -241,7 +241,7 @@ module RubyNessus
         unless @medium_severity_events
           @medium_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 2
             @medium_severity_events << Event.new(event)
           end
@@ -275,7 +275,7 @@ module RubyNessus
         unless @high_severity_events
           @high_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 3
             @high_severity_events << Event.new(event)
           end
@@ -305,7 +305,7 @@ module RubyNessus
         unless @critical_severity_events
           @critical_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 4
             @critical_severity_events << Event.new(event)
           end
@@ -342,7 +342,7 @@ module RubyNessus
       #   end
       #
       def each_event(&block)
-        @host.xpath("ReportItem").each do |event|
+        @host.xpath('ReportItem').each do |event|
           block.call(Event.new(event)) if block
         end
       end
@@ -369,7 +369,7 @@ module RubyNessus
       def ports
         unless @ports
           @ports = []
-          @host.xpath("ReportItem").each do |port|
+          @host.xpath('ReportItem').each do |port|
             @ports << port['port']
           end
           @ports.uniq!
@@ -546,7 +546,7 @@ module RubyNessus
             @host_stats = {}
             @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
 
-            @host.xpath("ReportItem").each do |s|
+            @host.xpath('ReportItem').each do |s|
               case s['severity'].to_i
                 when 0
                   @informational += 1

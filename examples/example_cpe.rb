@@ -18,7 +18,7 @@ def print_info(host)
   end
 end
 
-Nessus::Parse.new("example_v3.nessus", :version => 2) do |scan|
+Nessus::Parse.new('example_v3.nessus', :version => 2) do |scan|
   scan.each_host do |host|
     host.each_event do |event|
       puts "CPE value: #{event.cpe}"

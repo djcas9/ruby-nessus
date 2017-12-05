@@ -10,7 +10,7 @@ begin
   Gem::Tasks.new
 rescue LoadError => e
   warn e.message
-  warn "Run `gem install rubygems-tasks` to install Gem::Tasks."
+  warn 'Run `gem install rubygems-tasks` to install Gem::Tasks.'
 end
 
 begin
@@ -20,7 +20,7 @@ begin
   RSpec::Core::RakeTask.new
 rescue LoadError => e
   task :spec do
-    abort "Please run `gem install rspec` to install RSpec."
+    abort 'Please run `gem install rspec` to install RSpec.'
   end
 end
 
@@ -34,7 +34,7 @@ begin
   YARD::Rake::YardocTask.new
 rescue LoadError => e
   task :yard do
-    abort "Please run `gem install yard` to install YARD."
+    abort 'Please run `gem install yard` to install YARD.'
   end
 end
 task :doc => :yard
