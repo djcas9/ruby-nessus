@@ -136,7 +136,7 @@ module RubyNessus
                            @event.at('@pluginName').inner_text
                          end
 
-        return @plugin_name
+        @plugin_name
       end
       alias name plugin_name
 
