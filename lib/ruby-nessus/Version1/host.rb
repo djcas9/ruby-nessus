@@ -124,7 +124,7 @@ module RubyNessus
           @informational_events = []
           @informational_event_count = 0
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 0
             @informational_events << Event.new(event)
             @informational_event_count += 1
@@ -152,7 +152,7 @@ module RubyNessus
         unless @low_severity_events
           @low_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 1
             @low_severity_events << Event.new(event)
           end
@@ -179,7 +179,7 @@ module RubyNessus
         unless @medium_severity_events
           @medium_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 2
             @medium_severity_events << Event.new(event)
           end
@@ -206,7 +206,7 @@ module RubyNessus
         unless @high_severity_events
           @high_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 3
             @high_severity_events << Event.new(event)
           end
@@ -236,7 +236,7 @@ module RubyNessus
       #     puts event.port
       #   end
       def each_event(&block)
-        @host.xpath("ReportItem").each do |event|
+        @host.xpath('ReportItem').each do |event|
           block.call(Event.new(event)) if block
         end
       end

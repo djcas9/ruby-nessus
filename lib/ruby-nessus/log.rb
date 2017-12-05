@@ -14,7 +14,7 @@ module RubyNessus
 
     def self.break
       STDERR.puts "\t"
-      STDERR.puts ""
+      STDERR.puts ''
     end
 
     def self.end
@@ -48,15 +48,15 @@ module RubyNessus
     # Errors
     #
     def self.error(msg=nil)
-      STDERR.puts "ERROR: ".foreground(:red).bright + "#{msg}"
+      STDERR.puts 'ERROR: '.foreground(:red).bright + "#{msg}"
     end
 
     def self.warn(msg=nil)
-      STDERR.puts "WARNING: ".foreground(:yellow).bright + "#{msg}"
+      STDERR.puts 'WARNING: '.foreground(:yellow).bright + "#{msg}"
     end
 
     def self.info(msg=nil)
-      STDERR.puts "INFO: ".foreground(:green).bright + "#{msg}"
+      STDERR.puts 'INFO: '.foreground(:green).bright + "#{msg}"
     end
 
     #

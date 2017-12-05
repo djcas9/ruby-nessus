@@ -26,7 +26,7 @@ module RubyNessus
       #
       def initialize(xml)
         @xml = xml
-        raise "Error: Not A Version 2.0 .Nessus file." unless @xml.at('NessusClientData_v2')
+        raise 'Error: Not A Version 2.0 .Nessus file.' unless @xml.at('NessusClientData_v2')
       end
 
       def version
@@ -53,7 +53,7 @@ module RubyNessus
       #   The Nessus Scan Policy Name
       #
       def policy_title
-        @policy_name ||= @xml.at("//Policy/policyName").inner_text
+        @policy_name ||= @xml.at('//Policy/policyName').inner_text
       end
 
       #
@@ -63,7 +63,7 @@ module RubyNessus
       #   The Nessus Scan Policy Comments
       #
       def policy_notes
-        @policy_notes ||= @xml.at("//Policy/policyComments").inner_text
+        @policy_notes ||= @xml.at('//Policy/policyComments').inner_text
       end
 
       #
@@ -95,7 +95,7 @@ module RubyNessus
       #
       def each_host(&block)
         hosts = []
-        @xml.xpath("//ReportHost").each do |host|
+        @xml.xpath('//ReportHost').each do |host|
           hosts << host['name'] if host['name']
           block.call(Host.new(host)) if block
         end
@@ -136,7 +136,7 @@ module RubyNessus
       def unique_ports
         unless @unique_ports
           @unique_ports = []
-          @xml.xpath("//ReportItem").each do |port|
+          @xml.xpath('//ReportItem').each do |port|
             @unique_ports << port['port']
           end
           @unique_ports.uniq!
@@ -345,7 +345,7 @@ module RubyNessus
             @count = {}
             @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
 
-            @xml.xpath("//ReportItem").each do |s|
+            @xml.xpath('//ReportItem').each do |s|
               case s['severity'].to_i
                 when 0
                   @informational += 1

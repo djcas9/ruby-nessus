@@ -20,7 +20,7 @@ module RubyNessus
                     when 2
                       Version2::XML.new(@xml)
                     else
-                      raise "Error: Supported .Nessus Version are 1 and 2."
+                      raise 'Error: Supported .Nessus Version are 1 and 2.'
                     end
 
       if block
@@ -40,7 +40,7 @@ module RubyNessus
       elsif @xml.at('NessusClientData_v2')
         2
       else
-        raise "Error: Supported .Nessus Version are 1 and 2."
+        raise 'Error: Supported .Nessus Version are 1 and 2.'
       end
     end
   end
