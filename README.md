@@ -38,7 +38,7 @@ The below example illustrates how easy it really is to iterate over result data.
         next if event.severity.medium?  # Next Event Is The Event Severity Is Low. (supports high? medium? low?)
         puts event.name if event.name   # The Event Name If Not Blank.
         puts event.port                 # The Event Port. (supports .number, .protocol and .service)
-        puts event.severity.in_words    # The Current Event Severity In Words. i.e "High Severity"
+        puts event.severity             # The Event Severity (0->Informational, 1->low, 2->medium, 3->high, 4->critical)
         puts event.plugin_id            # The Nessus Plugin ID.
         puts event.data if event.data   # Raw Nessus Plugin Output Data.
       end
@@ -55,7 +55,7 @@ You also have the ability to search for particular hostnames. In the near future
     puts host.scan_runtime
 
     host.high_severity_events do |event|
-      puts event.severity.in_words
+      puts event.severity
       puts event.port
       puts event.data if event.data
     end
@@ -86,7 +86,7 @@ There are a bunch of convenient methods (maybe more then needed) added to make r
       host.each_event do |event|
         next if event.informational?
         
-        puts event.severity.in_words
+        puts event.severity
         puts event.synopsis
         puts event.description
         puts event.solution
