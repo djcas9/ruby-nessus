@@ -7,6 +7,7 @@ describe 'Nessus Version 1: Event' do
     @host = @xml.hosts.first
     @bad_event = @host.events.first
     @good_event = @host.events.last
+    @bad_port_event = @host.events[25]
   end
 
   it 'should parse the event name' do
@@ -42,12 +43,25 @@ describe 'Nessus Version 1: Event' do
   end
 
   it 'should return the event plugin output' do
-    @good_event.data.should_not be_nil
+    expect(@good_event.data).not_to be nil
+  end
+
+  it 'should return falsey if not data' do
+    expect(@bad_event.data).to be_falsey
+  end
+
+  it 'should have a plugin_id' do
+    expect(@good_event.plugin_id).to eq 39_521
   end
 
   # Bad Event
 
   it 'should return false if the event name is nil' do
     @bad_event.name.should == false
+  end
+
+  it 'should use raw_string' do
+    expect(@bad_port_event.port.service).to be_falsey
+    @bad_port_event.port.to_s.should == 'general/tcp'
   end
 end

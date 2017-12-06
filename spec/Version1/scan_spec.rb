@@ -67,4 +67,30 @@ describe 'Nessus Version 1: Scan' do
   it 'should calculate the total for all severity events' do
     @xml.total_event_count.should == 22
   end
+
+  it 'should target_hosts list the target' do
+    expect(@xml.target_hosts).to eq ['scanme.insecure.org']
+  end
+
+  it 'should be version 1' do
+    expect(@xml.version).to eq 1
+  end
+
+  it 'should return the plugin ids' do
+    expect(@xml.plugin_ids.length).to eq 31_507
+  end
+
+  it 'should return the plugins' do
+    expect(@xml.plugins).to be_kind_of(Array)
+    expect(@xml.plugins).not_to be_blank
+  end
+
+  it 'should parse the unique ports' do
+    expect(@xml.unique_ports).to eq ['arcp (7070/tcp)', 'domain (53/tcp)', 'domain (53/udp)', 'ftp (21/tcp)', 'general/tcp', 'general/udp', 'http (80/tcp)', 'rtsp (554/tcp)']
+  end
+
+  it 'should find_by_hotsname' do
+    @xml.find_by_hostname('scanme.insecure.org') { |host| expect(host.hostname).to eq 'scanme.insecure.org' }
+  end
+
 end
