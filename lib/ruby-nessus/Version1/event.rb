@@ -29,8 +29,6 @@ module RubyNessus
       #    Return the event severity.
       # @example
       #   event.severity          #=> 3
-      #   event.severity.in_words #=> "High Severity"
-      # @see String#in_words
       def severity
         @severity ||= @event.at('severity').inner_text.to_i
       end
