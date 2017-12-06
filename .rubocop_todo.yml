@@ -92,7 +92,6 @@ Style/Documentation:
     - 'lib/ruby-nessus/Version2/port.rb'
     - 'lib/ruby-nessus/Version2/version2.rb'
     - 'lib/ruby-nessus/cli.rb'
-    - 'lib/ruby-nessus/core_ext/helpers.rb'
     - 'lib/ruby-nessus/log.rb'
     - 'lib/ruby-nessus/parse.rb'
     - 'lib/ruby-nessus/ruby-nessus.rb'
