@@ -1,15 +1,12 @@
 require 'spec_helper'
 require 'helpers/xml'
 
-describe 'Nessus Version 2: Event' do
+describe 'Nessus Version 2: Event port' do
   before(:all) do
     @xml = RubyNessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
     @host = @xml.hosts.first
-    @bad_event = @host.events.first
     @good_event = @host.events.last
-    @medium_event = @host.medium_severity_events.first
   end
-
   it 'should parse the event name' do
     @good_event.name.should == 'ICMP Timestamp Request Remote Date Disclosure'
   end
@@ -36,6 +33,21 @@ describe 'Nessus Version 2: Event' do
 
   it 'should return false if the event port protocol is not udp' do
     @good_event.port.udp?.should == false
+  end
+
+  it 'should return false if the event port protocol is not tcp' do
+    expect(@good_event.port.tcp?).to be_falsey
+  end
+end
+
+describe 'Nessus Version 2: Event' do
+  before(:all) do
+    @xml = RubyNessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
+    @host = @xml.hosts.first
+    @good_event = @host.events.last
+    @bad_event = @host.events.first
+    @medium_event = @host.medium_severity_events.first
+    @rich_event = @host.events[22]
   end
 
   it 'should parse the event severity' do
@@ -79,6 +91,10 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the patch publication date' do
+    expect(@rich_event.patch_publication_date).to be_kind_of(DateTime)
+  end
+
+  it 'should return false if there is no patch publication date' do
     expect(@medium_event.patch_publication_date).to be_falsey
   end
 
@@ -87,24 +103,81 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the cve score' do
-    @medium_event.cve.should == false
+    expect(@rich_event.cve.first).to be_kind_of(String)
+    expect(@rich_event.cve.first).not_to be_blank
+  end
+
+  it 'should return falsey if no cve' do
+    expect(@medium_event.cve).to be_falsey
+  end
+
+  it 'should not return bid if its not here' do
+    expect(@medium_event.bid).to be_falsey
   end
 
   it 'should return the bid' do
-    @medium_event.bid.should == false
+    expect(@rich_event.bid.first).to eq '36935'
+  end
+
+  it 'should retun an empty tab if there is not other ref' do
+    expect(@medium_event.xref).to be_empty
   end
 
   it 'should return other related references' do
-    @medium_event.xref.should == []
+    expect(@rich_event.xref.first).to eq 'OSVDB:59968'
   end
 
   it 'should return cvss_vector' do
     @medium_event.cvss_vector.should == 'CVSS2#AV:N/AC:L/Au:N/C:P/I:N/A:N'
   end
 
+  it 'should have a plugin_id' do
+    expect(@good_event.plugin_id).to be_kind_of(Integer)
+  end
+
+  it 'should have a plugin_id' do
+    expect(@good_event.plugin_family).to be_kind_of(String)
+    expect(@good_event.plugin_family).not_to be_blank
+  end
+
+  it 'should have a cpe Array (empty if no cpe)' do
+    expect(@good_event.cpe).to be_kind_of(Array)
+  end
+
   # Bad Event
 
   it 'should return false if the event name is nil' do
     @bad_event.name.should == false
+  end
+end
+describe 'Nessus Version 2: Event severity' do
+  before(:all) do
+    @xml = RubyNessus::Version2::XML.new(Helpers::DOT_NESSUS_V2)
+    @host = @xml.hosts.first
+    @medium_event = @host.medium_severity_events.first
+  end
+
+  it 'should not have a informational severity' do
+    expect(@medium_event.informational?).to be false
+  end
+
+  it 'should not have a low severity' do
+    expect(@medium_event.low?).to be false
+  end
+
+  it 'should have a medium severity' do
+    expect(@medium_event.medium?).to be true
+  end
+
+  it 'should have not have a high severity' do
+    expect(@medium_event.high?).to be false
+  end
+
+  it 'should have not have a high severity' do
+    expect(@medium_event.critical?).to be false
+  end
+
+  it 'should have not have a high severity' do
+    expect(@medium_event.critical?).to be false
   end
 end
