@@ -41,10 +41,6 @@ describe 'Nessus Version 1: Event' do
     @good_event.severity.should == 1
   end
 
-  it 'should return the event severity in words' do
-    @good_event.severity.in_words.should == 'Low Severity'
-  end
-
   it 'should return the event plugin output' do
     @good_event.data.should_not be_nil
   end
