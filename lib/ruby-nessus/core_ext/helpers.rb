@@ -1,23 +1,4 @@
 class Integer
-  # Return a severity integer in words.
-  # @return [String]
-  #   Return a severity integer in words.
-  # @example
-  #   event.severity.in_words #=> "High Severity"
-  def in_words
-    case self
-    when 0
-      'Informational Severity'
-    when 1
-      'Low Severity'
-    when 2
-      'Medium Severity'
-    when 3
-      'High Severity'
-    when 4
-      'Critical Severity'
-    end
-  end
 
   # Return True if the given severity is high
   # @return [Boolean]
