@@ -11,35 +11,35 @@ describe 'Nessus Version 1: Event' do
   end
 
   it 'should parse the event name' do
-    @good_event.name.should == 'Backported Security Patch Detection (WWW)'
+    expect(@good_event.name).to eq 'Backported Security Patch Detection (WWW)'
   end
 
   it 'should parse the event port' do
-    @good_event.port.to_s.should == 'http (80/tcp)'
+    expect(@good_event.port.to_s).to eq 'http (80/tcp)'
   end
 
   it 'should parse the event port number' do
-    @good_event.port.number.should == '80'
+    expect(@good_event.port.number).to eq '80'
   end
 
   it 'should parse the event port service' do
-    @good_event.port.service.should == 'http'
+    expect(@good_event.port.service).to eq 'http'
   end
 
   it 'should parse the event port protocol' do
-    @good_event.port.protocol.should == 'tcp'
+    expect(@good_event.port.protocol).to eq 'tcp'
   end
 
   it 'should return true if the event port protocol is tcp' do
-    @good_event.port.tcp?.should == true
+    expect(@good_event.port.tcp?).to eq true
   end
 
   it 'should return false if the event port protocol is not udp' do
-    @good_event.port.udp?.should == false
+    expect(@good_event.port.udp?).to eq false
   end
 
   it 'should parse the event severity' do
-    @good_event.severity.should == 1
+    expect(@good_event.severity).to eq 1
   end
 
   it 'should return the event plugin output' do
@@ -57,11 +57,11 @@ describe 'Nessus Version 1: Event' do
   # Bad Event
 
   it 'should return false if the event name is nil' do
-    @bad_event.name.should == false
+    expect(@bad_event.name).to eq false
   end
 
   it 'should use raw_string' do
     expect(@bad_port_event.port.service).to be_falsey
-    @bad_port_event.port.to_s.should == 'general/tcp'
+    expect(@bad_port_event.port.to_s).to eq 'general/tcp'
   end
 end
