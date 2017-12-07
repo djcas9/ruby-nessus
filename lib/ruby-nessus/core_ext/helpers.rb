@@ -1,4 +1,4 @@
-class Fixnum
+class Integer
 
   # Return a severity integer in words.
   # @return [String]
