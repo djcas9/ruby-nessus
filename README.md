@@ -29,12 +29,12 @@ The below example illustrates how easy it really is to iterate over result data.
     puts scan.host_count                # Host Count.
     puts scan.unique_ports              # All Unique Ports Seen.
 
-    scan.each_host do |host|
+    scan.hosts.each do |host|
       next if host.event_count.zero?    # Next Host If Event Count Is Zero.
       puts host.hostname                # The HostName For The Current Host.
       puts host.event_count             # The Event Count For The Current Host.
 
-      host.each_event do |event|
+      host.events.each do |event|
         next if event.severity.medium?  # Next Event Is The Event Severity Is Low. (supports high? medium? low?)
         puts event.name if event.name   # The Event Name If Not Blank.
         puts event.port                 # The Event Port. (supports .number, .protocol and .service)
@@ -78,12 +78,12 @@ There are a bunch of convenient methods (maybe more then needed) added to make r
     puts scan.hosts.count #=> 12
 
     
-    scan.each_host do |host|
+    scan.host.each do |host|
       puts host.hostname
       puts host.event_percentage_for('low', true)
       puts host.tcp_count #=> tcp, icmp, udp supported.
     
-      host.each_event do |event|
+      host.events.each do |event|
         next if event.informational?
         
         puts event.severity
