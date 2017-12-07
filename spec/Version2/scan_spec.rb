@@ -24,6 +24,26 @@ describe 'Nessus Version 2: Scan' do
     expect(@xml.policy_notes).to be_eql('This is the ruby-nessus example scan using the .nessus version 2 schema.')
   end
 
+  it 'should parse the unique ports' do
+    expect(@xml.unique_ports).to be_eql(%w[0 123 21 22 25 443 53 554 7070 80 9090])
+  end
+
+  it 'should parse the open ports count' do
+    expect(@xml.open_ports_count).to eq 51
+  end
+
+  it 'should parse the tcp ports count' do
+    expect(@xml.tcp_count).to eq 38
+  end
+
+  it 'should parse the udp ports count' do
+    expect(@xml.udp_count).to eq 11
+  end
+
+  it 'should parse the icmp ports count' do
+    expect(@xml.icmp_count).to eq 1
+  end
+
   it 'should parse the scan total host count' do
     expect(@xml.host_count).to be_eql(2)
   end
@@ -66,5 +86,9 @@ describe 'Nessus Version 2: Scan' do
 
   it 'should target_hosts list the target' do
     expect(@xml.target_hosts).to be_eql(['scanme.insecure.org', 'snorby.org'])
+  end
+
+  it 'should find_by_hotsname' do
+    @xml.find_by_hostname('scanme.insecure.org') { |host| expect(host.hostname).to eq 'scanme.insecure.org' }
   end
 end
