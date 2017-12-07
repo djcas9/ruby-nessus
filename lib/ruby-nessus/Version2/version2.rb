@@ -95,12 +95,7 @@ module RubyNessus
       #   end
       #
       def each_host(&block)
-        hosts = []
-        @xml.xpath('//ReportHost').each do |host|
-          hosts << host['name'] if host['name']
-          yield(Host.new(host)) if block
-        end
-        hosts
+        hosts.each(&block)
       end
 
       #
@@ -110,7 +105,9 @@ module RubyNessus
       #   The Hosts of the scan.
       #
       def hosts
-        to_enum(:each_host).to_a
+        @xml.xpath('//ReportHost').map do |host|
+          Host.new(host)
+        end
       end
 
       #
@@ -273,7 +270,7 @@ module RubyNessus
       # @example
       #   scan.total_event_count #=> 1561
       #
-      def total_event_count(count_informational = false)
+      def total_event_count(count_informational = nil)
         if count_informational
           count_stats[:all].to_i + informational_severity_count
         else
@@ -296,7 +293,7 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage = false)
+      def event_percentage_for(type, round_percentage = nil)
         @sc ||= count_stats
         if %w[critical high medium low tcp udp icmp all].include?(type)
           calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)

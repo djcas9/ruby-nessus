@@ -143,7 +143,7 @@ describe 'Nessus Version 2: Event' do
   # Bad Event
 
   it 'should return false if the event name is nil' do
-    expect(@bad_event.name).to eq false
+    expect(@bad_event.name).to be_falsey
   end
 end
 describe 'Nessus Version 2: Event severity' do
