@@ -8,31 +8,31 @@ describe 'Nessus Version 2: Event port' do
     @good_event = @host.events.last
   end
   it 'should parse the event name' do
-    @good_event.name.should == 'ICMP Timestamp Request Remote Date Disclosure'
+    expect(@good_event.name).to eq 'ICMP Timestamp Request Remote Date Disclosure'
   end
 
   it 'should parse the event port' do
-    @good_event.port.to_s.should == 'unknown (0/icmp)'
+    expect(@good_event.port.to_s).to eq 'unknown (0/icmp)'
   end
 
   it 'should parse the event port number' do
-    @good_event.port.number.to_s.should == '0'
+    expect(@good_event.port.number.to_s).to eq '0'
   end
 
   it 'should parse the event port service' do
-    @good_event.port.service.to_s.should == 'unknown'
+    expect(@good_event.port.service.to_s).to eq 'unknown'
   end
 
   it 'should parse the event port protocol' do
-    @good_event.port.protocol.to_s.should == 'icmp'
+    expect(@good_event.port.protocol.to_s).to eq 'icmp'
   end
 
   it 'should return true if the event port protocol is icmp' do
-    @good_event.port.icmp?.should == true
+    expect(@good_event.port.icmp?).to eq true
   end
 
   it 'should return false if the event port protocol is not udp' do
-    @good_event.port.udp?.should == false
+    expect(@good_event.port.udp?).to eq false
   end
 
   it 'should return false if the event port protocol is not tcp' do
@@ -50,32 +50,28 @@ describe 'Nessus Version 2: Event' do
     @rich_event = @host.events[22]
   end
 
-  it 'should parse the event severity' do
-    @good_event.severity.should == 1
-  end
-
   it 'should return the event plugin output' do
-    @good_event.data.should_not be_nil
+    expect(@good_event.data).not_to be_nil
   end
 
   it 'should return the event synopsis' do
-    @medium_event.synopsis.should == 'The remote web server encrypts traffic using an obsolete protocol.'
+    expect(@medium_event.synopsis).to eq 'The remote web server encrypts traffic using an obsolete protocol.'
   end
 
   it 'should return the event description' do
-    @medium_event.description.should == "The remote web server accepts connections encrypted using Secure\nHyperText Transfer Protocol (S-HTTP), a cryptographic layer that was\ndefined in 1999 by RFC 2660 and never widely implemented."
+    expect(@medium_event.description).to start_with 'The remote web server accepts connections encrypted using Secure'
   end
 
   it 'should return the event solution' do
-    @medium_event.solution.should == "Rare or obsolete code is often poorly tested. Thus, it would be\nsafer to disable support for S-HTTP and use HTTPS instead."
+    expect(@medium_event.solution).to eq "Rare or obsolete code is often poorly tested. Thus, it would be\nsafer to disable support for S-HTTP and use HTTPS instead."
   end
 
   it 'should return the event risk' do
-    @medium_event.risk.should == 'Medium'
+    expect(@medium_event.risk).to eq 'Medium'
   end
 
   it 'should return the event output' do
-    @good_event.output.should == "The difference between the local and remote clocks is 1 second.\n"
+    expect(@good_event.output).to eq "The difference between the local and remote clocks is 1 second.\n"
   end
 
   it 'should return false for the event output' do
@@ -83,11 +79,11 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return false for the event plugin version' do
-    @medium_event.version.should == '$Revision: 1.9 $'
+    expect(@medium_event.version).to eq '$Revision: 1.9 $'
   end
 
   it 'should return the see_also information for the event' do
-    @medium_event.see_also.should == ['http://tools.ietf.org/html/rfc2660']
+    expect(@medium_event.see_also).to eq ['http://tools.ietf.org/html/rfc2660']
   end
 
   it 'should return the patch publication date' do
@@ -99,7 +95,7 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the cvss base score' do
-    @medium_event.cvss_base_score.should == 5.0
+    expect(@medium_event.cvss_base_score).to eq 5.0
   end
 
   it 'should return the cve score' do
@@ -128,7 +124,7 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return cvss_vector' do
-    @medium_event.cvss_vector.should == 'CVSS2#AV:N/AC:L/Au:N/C:P/I:N/A:N'
+    expect(@medium_event.cvss_vector).to eq 'CVSS2#AV:N/AC:L/Au:N/C:P/I:N/A:N'
   end
 
   it 'should have a plugin_id' do
@@ -147,7 +143,7 @@ describe 'Nessus Version 2: Event' do
   # Bad Event
 
   it 'should return false if the event name is nil' do
-    @bad_event.name.should == false
+    expect(@bad_event.name).to eq false
   end
 end
 describe 'Nessus Version 2: Event severity' do
@@ -179,5 +175,9 @@ describe 'Nessus Version 2: Event severity' do
 
   it 'should have not have a high severity' do
     expect(@medium_event.critical?).to be false
+  end
+
+  it 'should parse the event severity' do
+    expect(@medium_event.severity).to eq 2
   end
 end
