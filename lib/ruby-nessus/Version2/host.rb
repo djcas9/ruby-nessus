@@ -63,9 +63,7 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, '%a %b %d %H:%M:%S %Y')
-        else
-          false
+          Time.parse(start_time.inner_text + ' UTC')
         end
       end
 
@@ -80,9 +78,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, '%a %b %d %H:%M:%S %Y')
-        else
-          false
+          Time.parse(stop_time.inner_text + ' UTC')
         end
       end
 
@@ -96,9 +92,11 @@ module RubyNessus
       #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        get_runtime
+        return unless stop_time && start_time
+        Time.at(stop_time - start_time).utc.strftime('%H hours %M minutes and %S seconds')
       end
       alias scan_runtime runtime
+      alias get_runtime runtime
 
       #
       # Return the Host Netbios Name.
@@ -529,17 +527,6 @@ module RubyNessus
       end
 
       private
-
-      def get_runtime
-        if stop_time && start_time
-          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.delete('-')
-          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.delete('-')
-          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.delete('-')
-          "#{h} hours #{m} minutes and #{s} seconds"
-        else
-          false
-        end
-      end
 
       def host_stats
         unless @host_stats

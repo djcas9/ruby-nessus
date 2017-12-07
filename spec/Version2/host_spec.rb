@@ -12,15 +12,15 @@ describe 'Nessus Version 2: Host' do
   end
 
   it 'should parse the host start time' do
-    expect(@host.start_time.to_s).to be_eql('2009-12-11T02:57:52+00:00')
+    expect(@host.start_time).to eq Time.parse('2009-12-11 02:57:52')
   end
 
   it 'should parse the host stop time' do
-    expect(@host.stop_time.to_s).to be_eql('2009-12-11T03:25:29+00:00')
+    expect(@host.stop_time).to eq Time.parse('2009-12-11 03:25:29')
   end
 
   it 'should parse the host runtime' do
-    expect(@host.runtime).to be_eql('1 hours 32 minutes and 23 seconds')
+    expect(@host.runtime).to eq '00 hours 27 minutes and 37 seconds'
   end
 
   it 'should parse the hosts open ports' do
