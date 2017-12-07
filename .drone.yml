@@ -1,0 +1,41 @@
+clone:
+  git:
+    image: plugins/git
+    branch: master
+    depth: 32767
+
+workspace:
+  base: /build
+  path: src/github.com/mephux/ruby-nessus
+
+pipeline:
+  normal:
+    image: mephux/docker-golang
+    environment:
+      - GO15VENDOREXPERIMENT=1
+    commands:
+      - export GEM_HOME=$HOME/.gem
+      - export GEM_PATH=$HOME/.gem
+      - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
+      - gem install yard bundler rdoc rubygems-tasks rake rspec --no-rdoc --no-ri
+      - rake yard
+    when:
+      event: [push]
+  dist:
+    image: mephux/docker-golang
+    environment:
+      - GO15VENDOREXPERIMENT=1
+    commands:
+      - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
+      - gem install yard bundler rdoc rubygems-tasks fpm rake rspec --no-rdoc --no-ri
+      - rake dist
+    when:
+      event: [tag]
+publish:
+  github_release:
+    api_key: $$GITHUB
+    files: dist/*xz
+    file_exists: fail
+    # draft: true
+    when:
+      event: tag

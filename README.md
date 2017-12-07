@@ -1,3 +1,5 @@
+[![Build Status](http://komanda.io:8080/api/badges/mephux/ruby-nessus/status.svg)](http://komanda.io:8080/mephux/ruby-nessus)
+
 # Ruby-Nessus
 
 ## Description
