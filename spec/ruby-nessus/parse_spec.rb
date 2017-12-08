@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../helpers/xml'
+require_relative '../spec_fixtures/xml'
 
 describe 'RubyNessus::Parse' do
   it 'should parse a valid v1 .nessus file' do
