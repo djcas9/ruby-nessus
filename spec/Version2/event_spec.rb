@@ -87,7 +87,7 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the patch publication date' do
-    expect(@rich_event.patch_publication_date).to be_kind_of(DateTime)
+    expect(@rich_event.patch_publication_date).to eq Time.parse('2009-11-05')
   end
 
   it 'should return false if there is no patch publication date' do
