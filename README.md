@@ -1,9 +1,7 @@
 [![Build Status](http://komanda.io:8080/api/badges/mephux/ruby-nessus/status.svg)](http://komanda.io:8080/mephux/ruby-nessus)
+[![Coverage Status](https://coveralls.io/repos/github/mephux/ruby-nessus/badge.svg?branch=master)](https://coveralls.io/github/mephux/ruby-nessus?branch=master)
 
 # Ruby-Nessus
-
-[![Build Status](https://travis-ci.org/Cyberwatch/ruby-nessus.svg?branch=master)](https://travis-ci.org/Cyberwatch/ruby-nessus)
-[![Coverage Status](https://coveralls.io/repos/github/Cyberwatch/ruby-nessus/badge.svg?branch=master)](https://coveralls.io/github/Cyberwatch/ruby-nessus?branch=master)
 
 ## Description
 
