@@ -9,7 +9,7 @@
 # Offense count: 1
 Lint/DuplicateMethods:
   Exclude:
-    - 'lib/ruby-nessus/Version1/port.rb'
+    - 'lib/ruby-nessus/version1/port.rb'
 
 # Offense count: 1
 Lint/RescueWithoutErrorClass:
@@ -58,8 +58,8 @@ Metrics/PerceivedComplexity:
 # Offense count: 2
 Naming/AccessorMethodName:
   Exclude:
-    - 'lib/ruby-nessus/Version1/host.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
+    - 'lib/ruby-nessus/version1/host.rb'
+    - 'lib/ruby-nessus/version2/host.rb'
 
 # Offense count: 3
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
@@ -68,29 +68,29 @@ Naming/FileName:
   Exclude:
     - 'lib/ruby-nessus.rb'
     - 'lib/ruby-nessus/ruby-nessus.rb'
-    - 'spec/ruby-nessus_spec.rb'
+    - 'spec/version_spec.rb'
 
 # Offense count: 8
 Style/DateTime:
   Exclude:
-    - 'lib/ruby-nessus/Version1/host.rb'
-    - 'lib/ruby-nessus/Version1/version1.rb'
-    - 'lib/ruby-nessus/Version2/event.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
+    - 'lib/ruby-nessus/version1/host.rb'
+    - 'lib/ruby-nessus/version1/scan.rb'
+    - 'lib/ruby-nessus/version2/event.rb'
+    - 'lib/ruby-nessus/version2/host.rb'
 
 # Offense count: 15
 Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-    - 'lib/ruby-nessus/Version1/event.rb'
-    - 'lib/ruby-nessus/Version1/host.rb'
-    - 'lib/ruby-nessus/Version1/port.rb'
-    - 'lib/ruby-nessus/Version1/version1.rb'
-    - 'lib/ruby-nessus/Version2/event.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
-    - 'lib/ruby-nessus/Version2/port.rb'
-    - 'lib/ruby-nessus/Version2/version2.rb'
+    - 'lib/ruby-nessus/version1/event.rb'
+    - 'lib/ruby-nessus/version1/host.rb'
+    - 'lib/ruby-nessus/version1/port.rb'
+    - 'lib/ruby-nessus/version1/scan.rb'
+    - 'lib/ruby-nessus/version2/event.rb'
+    - 'lib/ruby-nessus/version2/host.rb'
+    - 'lib/ruby-nessus/version2/port.rb'
+    - 'lib/ruby-nessus/version2/scan.rb'
     - 'lib/ruby-nessus/cli.rb'
     - 'lib/ruby-nessus/log.rb'
     - 'lib/ruby-nessus/parse.rb'
@@ -107,10 +107,10 @@ Style/FrozenStringLiteralComment:
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Exclude:
-    - 'lib/ruby-nessus/Version1/port.rb'
-    - 'lib/ruby-nessus/Version1/version1.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
-    - 'lib/ruby-nessus/Version2/version2.rb'
+    - 'lib/ruby-nessus/version1/port.rb'
+    - 'lib/ruby-nessus/version1/scan.rb'
+    - 'lib/ruby-nessus/version2/host.rb'
+    - 'lib/ruby-nessus/version2/scan.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -119,9 +119,9 @@ Style/GuardClause:
 Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
-    - 'lib/ruby-nessus/Version2/event.rb'
-    - 'lib/ruby-nessus/Version2/host.rb'
-    - 'lib/ruby-nessus/Version2/version2.rb'
+    - 'lib/ruby-nessus/version2/event.rb'
+    - 'lib/ruby-nessus/version2/host.rb'
+    - 'lib/ruby-nessus/version2/scan.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -129,4 +129,4 @@ Style/NumericPredicate:
 # SupportedStyles: slashes, percent_r, mixed
 Style/RegexpLiteral:
   Exclude:
-    - 'lib/ruby-nessus/Version1/port.rb'
+    - 'lib/ruby-nessus/version1/port.rb'

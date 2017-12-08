@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'helpers/xml'
+require 'spec_fixtures/xml'
 
 describe 'Nessus Version 1: Scan' do
   include Helpers
