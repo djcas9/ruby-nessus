@@ -51,7 +51,7 @@ module RubyNessus
       #
       # Return the host scan start time.
       #
-      # @return [DateTime]
+      # @return [Time]
       #   The Host Scan Start Time
       #
       # @example
@@ -66,7 +66,7 @@ module RubyNessus
       #
       # Return the host scan stop time.
       #
-      # @return [DateTime]
+      # @return [Time]
       #   The Host Scan Stop Time
       #
       # @example

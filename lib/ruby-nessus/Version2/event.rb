@@ -218,9 +218,7 @@ module RubyNessus
       #    Return the event patch publication date.
       #
       def patch_publication_date
-        @patch_publication_date ||= if @event.at('patch_publication_date')
-                                      DateTime.strptime(@event.at('patch_publication_date').inner_text, '%Y/%m/%d')
-                                    end
+        @patch_publication_date ||= Time.parse(@event.at('patch_publication_date').inner_text + ' UTC') if @event.at('patch_publication_date')
       end
 
       #
