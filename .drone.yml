@@ -17,8 +17,10 @@ pipeline:
       - export GEM_HOME=$HOME/.gem
       - export GEM_PATH=$HOME/.gem
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
-      - gem install yard bundler rdoc rubygems-tasks rake rspec --no-rdoc --no-ri
+      - gem install yard bundler rdoc rubygems-tasks rake rspec coveralls --no-rdoc --no-ri
       - rake yard
+      - rubocop -F --fail-level C -f s
+      - rspec spec/
     when:
       event: [push]
   dist:
