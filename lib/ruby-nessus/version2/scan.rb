@@ -1,5 +1,5 @@
-require 'ruby-nessus/Version2/host'
-require 'ruby-nessus/Version2/event'
+require 'ruby-nessus/version2/host'
+require 'ruby-nessus/version2/event'
 
 module RubyNessus
   # .Nessus Version 2 Schema

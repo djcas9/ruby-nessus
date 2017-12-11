@@ -1,6 +1,6 @@
 require 'ruby-nessus/log'
-require 'ruby-nessus/Version1/version1'
-require 'ruby-nessus/Version2/version2'
+require 'ruby-nessus/version1/scan'
+require 'ruby-nessus/version2/scan'
 
 require 'nokogiri'
 require 'date'
