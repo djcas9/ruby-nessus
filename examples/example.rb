@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require 'rubygems'
-require 'nessus'
+require 'ruby-nessus'
 
 # Ruby-Nessus Example
 #
@@ -17,7 +16,7 @@ def print_info(host)
   # puts host.event_percentage_for('icmp', true)
   # puts host.ports.inspect
 
-  host.each_event do |event|
+  host.events.each do |event|
     puts "=> #{event.name}" if event.name
     # puts event.synopsis if event.synopsis
     # puts "\n"
@@ -32,14 +31,14 @@ end
 
 # From a file:
 puts '+ Using a Nessus XML file:'
-Nessus::Parse.new('example_v1.nessus') do |scan|
-  scan.each_host(&method(:print_info))
+RubyNessus::Parse.new('example_v1.nessus') do |scan|
+  scan.hosts.each(&method(:print_info))
 end
 
 puts
 
 # From a string:
 puts '+ Using an XML string:'
-Nessus::Parse.new(nil, xml: File.read('example_v1.nessus')) do |scan|
-  scan.each_host(&method(:print_info))
+RubyNessus::Parse.new(nil, xml: File.read('example_v1.nessus')) do |scan|
+  scan.hosts.each(&method(:print_info))
 end
