@@ -117,7 +117,7 @@ module RubyNessus
       #
       # Return the event name (plugin_name)
       #
-      # @return [String, false]
+      # @return [String, nil]
       #    Return the event name (plugin_name)
       #
       # @example
@@ -125,15 +125,7 @@ module RubyNessus
       #   event.name          #=> "PHP < 5.2.4 Multiple Vulnerabilities"
       #
       def plugin_name
-        s = @event.at('@pluginName').inner_text
-
-        @plugin_name ||= if s.empty?
-                           false
-                         else
-                           @event.at('@pluginName').inner_text
-                         end
-
-        @plugin_name
+        @plugin_name ||= @event.at('@pluginName')&.inner_text unless @event.at('@pluginName').inner_text.empty?
       end
       alias name plugin_name
 
@@ -203,7 +195,7 @@ module RubyNessus
       #
       # Return the event reference links.
       #
-      # @return [String, false]
+      # @return [Array<String>]
       #    Return the event reference links.
       #
       def see_also
@@ -226,9 +218,7 @@ module RubyNessus
       #    Return the event patch publication date.
       #
       def patch_publication_date
-        @patch_publication_date ||= if @event.at('patch_publication_date')
-                                      DateTime.strptime(@event.at('patch_publication_date').inner_text, '%Y/%m/%d')
-                                    end
+        @patch_publication_date ||= Time.parse(@event.at('patch_publication_date').inner_text + ' UTC') if @event.at('patch_publication_date')
       end
 
       #
@@ -244,7 +234,7 @@ module RubyNessus
       #
       # Return the event cve.
       #
-      # @return [String, false]
+      # @return [Array<String>, nil]
       #    Return the event cvss base score.
       #
       def cve
@@ -253,7 +243,7 @@ module RubyNessus
           @event.xpath('cve').each do |cve|
             @cve << cve.inner_text
           end
-          @cve = false if @cve.empty?
+          @cve = nil if @cve.empty?
         end
         @cve
       end
@@ -261,7 +251,7 @@ module RubyNessus
       #
       # Return the event bid.
       #
-      # @return [String, false]
+      # @return [Array<String>, nil]
       #    Return the event bid.
       #
       def bid
@@ -270,7 +260,7 @@ module RubyNessus
           @event.xpath('bid').each do |bid|
             @bid << bid.inner_text
           end
-          @bid = false if @bid.empty?
+          @bid = nil if @bid.empty?
         end
         @bid
       end
@@ -278,7 +268,7 @@ module RubyNessus
       #
       # Return other event related references.
       #
-      # @return [String, false]
+      # @return [Array<String>]
       #    Return the event related references.
       #
       def xref
@@ -304,7 +294,7 @@ module RubyNessus
       #
       # Return the event cpe.
       #
-      # @return [String, false]
+      # @return [Array<String>]
       #    Return the event cpe.
       #
       def cpe
