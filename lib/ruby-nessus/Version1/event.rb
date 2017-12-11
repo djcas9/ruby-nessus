@@ -2,9 +2,7 @@ require 'ruby-nessus/Version1/port'
 
 module RubyNessus
   module Version1
-    
     class Event
-
       # Return the total event count for a given host.
       # @return [Integer]
       #   Return the total event count for a given host.
@@ -31,8 +29,6 @@ module RubyNessus
       #    Return the event severity.
       # @example
       #   event.severity          #=> 3
-      #   event.severity.in_words #=> "High Severity"
-      # @see String#in_words
       def severity
         @severity ||= @event.at('severity').inner_text.to_i
       end
@@ -55,13 +51,13 @@ module RubyNessus
       def plugin_name
         s = @event.at('pluginName').inner_text
 
-        @plugin_name ||= unless s.empty?
-                           @event.at('pluginName').inner_text || "N/A"
-                         else
+        @plugin_name ||= if s.empty?
                            false
+                         else
+                           @event.at('pluginName').inner_text || 'N/A'
                          end
 
-        return @plugin_name
+        @plugin_name
       end
       alias name plugin_name
 
@@ -72,19 +68,16 @@ module RubyNessus
       #   event.output        #=> "..."
       #   event.data          #=> "..."
       def data
-        d = "#{@event.at('data')}" || ""
+        d = @event.at('data').to_s || ''
 
-        @data ||= unless d.empty?
-                           @event.at('data').inner_text || "N/A"
-                         else
-                           false
-                         end
-        return @data
+        @data ||= if d.empty?
+                    false
+                  else
+                    @event.at('data').inner_text || 'N/A'
+                  end
+        @data
       end
       alias output data
-
     end
-    
   end
-  
 end

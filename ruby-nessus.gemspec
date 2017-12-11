@@ -1,53 +1,26 @@
-# encoding: utf-8
-
-require 'yaml'
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |gem|
-  gemspec = YAML.load_file('gemspec.yml')
+  gem.name        = 'ruby-nessus'
+  gem.version     = '2.0.beta'
+  gem.summary     = 'Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner.'
+  gem.description = 'Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations.'
+  gem.licenses    = ['MIT']
+  gem.authors     = ['Dustin Willis Webber', 'Florian Wininger']
+  gem.email       = 'dustin.webber@gmail.com'
+  gem.homepage    = 'https://github.com/Cyberwatch/ruby-nessus'
 
-  gem.name    = gemspec.fetch('name')
-  gem.version = gemspec.fetch('version')
-  gem.summary     = gemspec['summary']
-  gem.description = gemspec['description']
-  gem.licenses    = Array(gemspec['license'])
-  gem.authors     = Array(gemspec['authors'])
-  gem.email       = gemspec['email']
-  gem.homepage    = gemspec['homepage']
+  gem.files            = `git ls-files`.split("\n")
+  gem.executables      = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  gem.test_files       = `git ls-files -- {test,spec,features}/*`.split("\n")
+  gem.require_paths = ['lib']
+  gem.required_ruby_version = '>= 2.3'
 
-  glob = lambda { |patterns| gem.files & Dir[*patterns] }
+  gem.add_dependency 'nokogiri', '~> 1.4'
+  gem.add_dependency 'rainbow', '~> 2.0'
 
-  gem.files = `git ls-files`.split($/)
-  gem.files = glob[gemspec['files']] if gemspec['files']
-
-  gem.executables = gemspec.fetch('executables') do
-    glob['bin/*'].map { |path| File.basename(path) }
-  end
-  gem.default_executable = gem.executables.first if Gem::VERSION < '1.7.'
-
-  gem.extensions       = glob[gemspec['extensions'] || 'ext/**/extconf.rb']
-  gem.test_files       = glob[gemspec['test_files'] || '{test/{**/}*_test.rb']
-  gem.extra_rdoc_files = glob[gemspec['extra_doc_files'] || '*.{txt,md}']
-
-  gem.require_paths = Array(gemspec.fetch('require_paths') {
-    %w[ext lib].select { |dir| File.directory?(dir) }
-  })
-
-  gem.requirements              = gemspec['requirements']
-  gem.required_ruby_version     = gemspec['required_ruby_version']
-  gem.required_rubygems_version = gemspec['required_rubygems_version']
-  gem.post_install_message      = gemspec['post_install_message']
-
-  split = lambda { |string| string.split(/,\s*/) }
-
-  if gemspec['dependencies']
-    gemspec['dependencies'].each do |name,versions|
-      gem.add_dependency(name,split[versions])
-    end
-  end
-
-  if gemspec['development_dependencies']
-    gemspec['development_dependencies'].each do |name,versions|
-      gem.add_development_dependency(name,split[versions])
-    end
-  end
+  gem.add_development_dependency 'rspec', '~> 3.7'
+  gem.add_development_dependency 'rubocop', '~> 0.51'
+  gem.add_development_dependency 'rubygems-tasks', '~> 0.1'
+  gem.add_development_dependency 'yard', '~> 0.7'
 end
