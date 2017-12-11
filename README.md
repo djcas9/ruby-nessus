@@ -11,7 +11,6 @@ Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner. Ru
 
 More Information:
 * Documentation: http://rdoc.info/projects/mephux/ruby-nessus
-* More: http://www.packetport.net
 
 ## Install
 
