@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '>= 2.3'
 
   gem.add_dependency 'nokogiri', '~> 1.4'
-  gem.add_dependency 'rainbow', '~> 2.0'
+  gem.add_dependency 'rainbow', '>= 2.0'
 
   gem.add_development_dependency 'rspec', '~> 3.7'
   gem.add_development_dependency 'rubocop', '~> 0.51'
