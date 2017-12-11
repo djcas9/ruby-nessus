@@ -1,4 +1,4 @@
-require 'ruby-nessus/Version1/port'
+require 'ruby-nessus/version1/port'
 
 module RubyNessus
   module Version1
