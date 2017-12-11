@@ -29,9 +29,7 @@ module RubyNessus
       #   host.hostname #=> "example.com"
       #
       def hostname
-        if (host = @host.at('tag[name=host-fqdn]'))
-          host.inner_text
-        end
+        @host.at('tag[name=host-fqdn]')&.inner_text
       end
       alias name hostname
       alias fqdn hostname
@@ -47,15 +45,13 @@ module RubyNessus
       #   host.ip #=> "127.0.0.1"
       #
       def ip
-        if (ip = @host.at('tag[name=host-ip]'))
-          ip.inner_text
-        end
+        @host.at('tag[name=host-ip]')&.inner_text
       end
 
       #
       # Return the host scan start time.
       #
-      # @return [DateTime]
+      # @return [Time]
       #   The Host Scan Start Time
       #
       # @example
@@ -63,16 +59,14 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, '%a %b %d %H:%M:%S %Y')
-        else
-          false
+          Time.parse(start_time.inner_text + ' UTC')
         end
       end
 
       #
       # Return the host scan stop time.
       #
-      # @return [DateTime]
+      # @return [Time]
       #   The Host Scan Stop Time
       #
       # @example
@@ -80,9 +74,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, '%a %b %d %H:%M:%S %Y')
-        else
-          false
+          Time.parse(stop_time.inner_text + ' UTC')
         end
       end
 
@@ -96,23 +88,23 @@ module RubyNessus
       #   scan.scan_run_time #=> '2 hours 5 minutes and 16 seconds'
       #
       def runtime
-        get_runtime
+        return unless stop_time && start_time
+        Time.at(stop_time - start_time).utc.strftime('%H hours %M minutes and %S seconds')
       end
       alias scan_runtime runtime
+      alias get_runtime runtime
 
       #
       # Return the Host Netbios Name.
       #
-      # @return [String]
+      # @return [String, nil]
       #   The Host Netbios Name
       #
       # @example
       #   host.netbios_name #=> "SOMENAME4243"
       #
       def netbios_name
-        if (netbios = @host.at('tag[name=netbios-name]'))
-          netbios.inner_text
-        end
+        @host.at('tag[name=netbios-name]')&.inner_text
       end
 
       #
@@ -125,9 +117,7 @@ module RubyNessus
       #   host.mac_addr #=> "00:11:22:33:44:55"
       #
       def mac_addr
-        if (mac_addr = @host.at('tag[name=mac-address]'))
-          mac_addr.inner_text
-        end
+        @host.at('tag[name=mac-address]')&.inner_text
       end
       alias mac_address mac_addr
 
@@ -141,9 +131,7 @@ module RubyNessus
       #   host.dns_name #=> "Microsoft Windows 2000, Microsoft Windows Server 2003"
       #
       def os_name
-        if (os_name = @host.at('tag[name=operating-system]'))
-          os_name.inner_text
-        end
+        @host.at('tag[name=operating-system]')&.inner_text
       end
       alias os os_name
       alias operating_system os_name
@@ -164,155 +152,106 @@ module RubyNessus
       #
       # Returns All Informational Event Objects For A Given Host.
       #
-      # @yield [prog] If a block is given, it will be passed the newly
-      #               created Event object.
       #
-      # @yieldparam [EVENT] prog The newly created Event object.
-      #
-      # @return [Integer]
-      #   Return The Informational Event Count For A Given Host.
+      # @return [Event]
+      #   Return The Informational Event For A Given Host.
       #
       # @example
-      #   host.informational_severity_events do |info|
+      #   host.informational_severity_events.each do |info|
       #     puts info.port
       #     puts info.data if info.data
       #   end
       #
-      def informational_severity_events(&block)
-        unless @informational_events
-          @informational_events = []
-
-          @host.xpath('ReportItem').each do |event|
-            next if event['severity'].to_i != 0
-            @informational_events << Event.new(event)
-          end
-
+      def informational_severity_events
+        return if @informational_events
+        @informational_events = @host.xpath('ReportItem').select { |event| event['severity'].to_i.zero? }.map do |event|
+          Event.new(event)
         end
-
-        @informational_events.each(&block)
+        @informational_events
       end
 
       #
-      # Returns All Low Event Objects For A Given Host.
+      # Returns All low_severity Event Objects For A Given Host.
       #
-      # @yield [prog] If a block is given, it will be passed the newly
-      #               created Event object.
       #
-      # @yieldparam [EVENT] prog The newly created Event object.
-      #
-      # @return [Integer]
-      #   Return The Low Event Count For A Given Host.
+      # @return [Event]
+      #   Return The low_severity Event For A Given Host.
       #
       # @example
-      #   host.low_severity_events do |low|
-      #     puts low.name if low.name
+      #   host.low_severity_events.each do |low|
+      #     puts low.port
+      #     puts low.data if low.data
       #   end
       #
-      def low_severity_events(&block)
-        unless @low_severity_events
-          @low_severity_events = []
-
-          @host.xpath('ReportItem').each do |event|
-            next if event['severity'].to_i != 1
-            @low_severity_events << Event.new(event)
-          end
-
+      def low_severity_events
+        return if @low_severity_events
+        @low_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 1) }.map do |event|
+          Event.new(event)
         end
-
-        @low_severity_events.each(&block)
+        @low_severity_events
       end
 
       #
-      # Returns All Medium Event Objects For A Given Host.
+      # Returns All medium severity Event Objects For A Given Host.
       #
-      # @yield [prog] If a block is given, it will be passed the newly
-      #               created Event object.
-      # @yieldparam [EVENT] prog The newly created Event object.
       #
-      # @return [Integer]
-      #   Return The Medium Event Count For A Given Host.
+      # @return [Event]
+      #   Return The medium severity Event For A Given Host.
       #
       # @example
-      #   host.medium_severity_events do |medium|
-      #     puts medium.name if medium.name
+      #   host.medium_severity_events.each do |medium|
+      #     puts medium.port
+      #     puts medium.data if medium.data
       #   end
       #
-      def medium_severity_events(&block)
-        unless @medium_severity_events
-          @medium_severity_events = []
-
-          @host.xpath('ReportItem').each do |event|
-            next if event['severity'].to_i != 2
-            @medium_severity_events << Event.new(event)
-          end
-
+      def medium_severity_events
+        return if @medium_severity_events
+        @medium_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 2) }.map do |event|
+          Event.new(event)
         end
-
-        @medium_severity_events.each(&block)
-      end
-
-      def medium_severity
-        to_enum(:medium_severity_events).to_a
+        @medium_severity_events
       end
 
       #
-      # Returns All High Event Objects For A Given Host.
+      # Returns All high severity Event Objects For A Given Host.
       #
-      # @yield [prog] If a block is given, it will be passed the newly
-      #               created Event object.
       #
-      # @yieldparam [EVENT] prog The newly created Event object.
-      #
-      # @return [Integer]
-      #   Return The High Event Count For A Given Host.
+      # @return [Event]
+      #   Return The high severity Event For A Given Host.
       #
       # @example
-      #   host.high_severity_events do |high|
-      #     puts high.name if high.name
+      #   host.high_severity_events.each do |high|
+      #     puts high.port
+      #     puts high.data if high.data
       #   end
       #
-      def high_severity_events(&block)
-        unless @high_severity_events
-          @high_severity_events = []
-
-          @host.xpath('ReportItem').each do |event|
-            next if event['severity'].to_i != 3
-            @high_severity_events << Event.new(event)
-          end
-
+      def high_severity_events
+        return if @high_severity_events
+        @high_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 3) }.map do |event|
+          Event.new(event)
         end
-
-        @high_severity_events.each(&block)
+        @high_severity_events
       end
 
       #
-      # Returns All Critical Event Objects For A Given Host.
+      # Returns All critical severity Event Objects For A Given Host.
       #
-      # @yield [prog] If a block is given, it will be passed the newly
-      #               created Event object.
       #
-      # @yieldparam [EVENT] prog The newly created Event object.
-      #
-      # @return [Integer]
-      #   Return The Critical Event Count For A Given Host.
+      # @return [Event]
+      #   Return The critical For A Given Host.
       #
       # @example
-      #   host.critical_severity_events do |critical|
-      #     puts critical.name if critical.name
+      #   host.critical_severity_events.each do |critical|
+      #     puts critical.port
+      #     puts critical.data if info.data
       #   end
       #
-      def critical_severity_events(&block)
-        unless @critical_severity_events
-          @critical_severity_events = []
-
-          @host.xpath('ReportItem').each do |event|
-            next if event['severity'].to_i != 4
-            @critical_severity_events << Event.new(event)
-          end
-
+      def critical_severity_events
+        return if @critical_events
+        @critical_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 4) }.map do |event|
+          Event.new(event)
         end
-
-        @critical_severity_events.each(&block)
+        @critical_events
       end
 
       #
@@ -325,7 +264,7 @@ module RubyNessus
       #   host.event_count #=> 3456
       #
       def event_count
-        (low_severity_events.count + medium_severity_events.count + high_severity_events.count + critical_severity_events.count).to_i
+        low_severity_events.count + medium_severity_events.count + high_severity_events.count + critical_severity_events.count
       end
 
       #
@@ -342,9 +281,7 @@ module RubyNessus
       #   end
       #
       def each_event(&block)
-        @host.xpath('ReportItem').each do |event|
-          yield(Event.new(event)) if block
-        end
+        events.each(&block)
       end
 
       #
@@ -354,7 +291,9 @@ module RubyNessus
       #   The events of the host.
       #
       def events
-        to_enum(:each_event).to_a
+        @host.xpath('ReportItem').map do |event|
+          Event.new(event)
+        end
       end
 
       #
@@ -367,15 +306,8 @@ module RubyNessus
       #   scan.ports #=> ['22', '80', '443']
       #
       def ports
-        unless @ports
-          @ports = []
-          @host.xpath('ReportItem').each do |port|
-            @ports << port['port']
-          end
-          @ports.uniq!
-          @ports.sort!
-        end
-        @ports
+        return if @ports
+        @ports = @host.xpath('ReportItem').map { |port| port['port'] }.uniq.sort
       end
 
       #
@@ -491,7 +423,7 @@ module RubyNessus
       # @example
       #   scan.total_event_count #=> 1561
       #
-      def total_event_count(count_informational = false)
+      def total_event_count(count_informational = nil)
         if count_informational
           host_stats[:all].to_i + informational_severity_count
         else
@@ -529,17 +461,6 @@ module RubyNessus
       end
 
       private
-
-      def get_runtime
-        if stop_time && start_time
-          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.delete('-')
-          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.delete('-')
-          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.delete('-')
-          "#{h} hours #{m} minutes and #{s} seconds"
-        else
-          false
-        end
-      end
 
       def host_stats
         unless @host_stats
