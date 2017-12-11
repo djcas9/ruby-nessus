@@ -4,7 +4,6 @@ require 'ruby-nessus/version2/scan'
 
 require 'nokogiri'
 require 'date'
-require 'enumerator'
 require 'time'
 
 module RubyNessus
