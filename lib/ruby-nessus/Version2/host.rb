@@ -1,6 +1,5 @@
 module RubyNessus
   module Version2
-
     class Host
       include Enumerable
 
@@ -17,7 +16,7 @@ module RubyNessus
       end
 
       def to_s
-        "#{ip}"
+        ip.to_s
       end
 
       #
@@ -64,7 +63,7 @@ module RubyNessus
       #
       def start_time
         if (start_time = @host.at('tag[name=HOST_START]'))
-          DateTime.strptime(start_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(start_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -81,7 +80,7 @@ module RubyNessus
       #
       def stop_time
         if (stop_time = @host.at('tag[name=HOST_END]'))
-          DateTime.strptime(stop_time.inner_text, fmt='%a %b %d %H:%M:%S %Y')
+          DateTime.strptime(stop_time.inner_text, '%a %b %d %H:%M:%S %Y')
         else
           false
         end
@@ -183,7 +182,7 @@ module RubyNessus
         unless @informational_events
           @informational_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 0
             @informational_events << Event.new(event)
           end
@@ -210,11 +209,10 @@ module RubyNessus
       #   end
       #
       def low_severity_events(&block)
-
         unless @low_severity_events
           @low_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 1
             @low_severity_events << Event.new(event)
           end
@@ -240,11 +238,10 @@ module RubyNessus
       #   end
       #
       def medium_severity_events(&block)
-
         unless @medium_severity_events
           @medium_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 2
             @medium_severity_events << Event.new(event)
           end
@@ -255,7 +252,7 @@ module RubyNessus
       end
 
       def medium_severity
-        self.to_enum(:medium_severity_events).to_a
+        to_enum(:medium_severity_events).to_a
       end
 
       #
@@ -275,11 +272,10 @@ module RubyNessus
       #   end
       #
       def high_severity_events(&block)
-
         unless @high_severity_events
           @high_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 3
             @high_severity_events << Event.new(event)
           end
@@ -306,11 +302,10 @@ module RubyNessus
       #   end
       #
       def critical_severity_events(&block)
-
         unless @critical_severity_events
           @critical_severity_events = []
 
-          @host.xpath("ReportItem").each do |event|
+          @host.xpath('ReportItem').each do |event|
             next if event['severity'].to_i != 4
             @critical_severity_events << Event.new(event)
           end
@@ -330,7 +325,7 @@ module RubyNessus
       #   host.event_count #=> 3456
       #
       def event_count
-        ((low_severity_events.count) + (medium_severity_events.count) + (high_severity_events.count) + (critical_severity_events.count)).to_i
+        (low_severity_events.count + medium_severity_events.count + high_severity_events.count + critical_severity_events.count).to_i
       end
 
       #
@@ -347,8 +342,8 @@ module RubyNessus
       #   end
       #
       def each_event(&block)
-        @host.xpath("ReportItem").each do |event|
-          block.call(Event.new(event)) if block
+        @host.xpath('ReportItem').each do |event|
+          yield(Event.new(event)) if block
         end
       end
 
@@ -359,11 +354,11 @@ module RubyNessus
       #   The events of the host.
       #
       def events
-        self.to_enum(:each_event).to_a
+        to_enum(:each_event).to_a
       end
 
       #
-      # Return an Array of open ports. 
+      # Return an Array of open ports.
       #
       # @return [Array]
       #   The open ports
@@ -374,7 +369,7 @@ module RubyNessus
       def ports
         unless @ports
           @ports = []
-          @host.xpath("ReportItem").each do |port|
+          @host.xpath('ReportItem').each do |port|
             @ports << port['port']
           end
           @ports.uniq!
@@ -519,14 +514,14 @@ module RubyNessus
       # @example
       #   scan.event_percentage_for("low", true) #=> 11%
       #
-      def event_percentage_for(type, round_percentage=false)
+      def event_percentage_for(type, round_percentage = false)
         @sc ||= host_stats
-        if %W(high medium low tcp udp icmp all).include?(type)
-          calc = ((@sc[:"#{type}"].to_f / (@sc[:all].to_f)) * 100)
+        if %w[high medium low tcp udp icmp all].include?(type)
+          calc = ((@sc[:"#{type}"].to_f / @sc[:all].to_f) * 100)
           if round_percentage
-            return "#{calc.round}"
+            return calc.round.to_s
           else
-            return "#{calc}"
+            return calc.to_s
           end
         else
           raise "Error: #{type} is not an acceptable severity. Possible options include: all, tdp, udp, icmp, high, medium and low."
@@ -535,61 +530,67 @@ module RubyNessus
 
       private
 
-        def get_runtime
-          if stop_time && start_time
-            h = ("#{Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i}").gsub('-', '')
-            m = ("#{Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i}").gsub('-', '')
-            s = ("#{Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i}").gsub('-', '')
-            return "#{h} hours #{m} minutes and #{s} seconds"
-          else
-            false
-          end
+      def get_runtime
+        if stop_time && start_time
+          h = (Time.parse(stop_time.to_s).strftime('%H').to_i - Time.parse(start_time.to_s).strftime('%H').to_i).to_s.delete('-')
+          m = (Time.parse(stop_time.to_s).strftime('%M').to_i - Time.parse(start_time.to_s).strftime('%M').to_i).to_s.delete('-')
+          s = (Time.parse(stop_time.to_s).strftime('%S').to_i - Time.parse(start_time.to_s).strftime('%S').to_i).to_s.delete('-')
+          "#{h} hours #{m} minutes and #{s} seconds"
+        else
+          false
         end
+      end
 
-        def host_stats
+      def host_stats
+        unless @host_stats
+          @host_stats = {}
+          @open_ports = 0
+          @tcp = 0
+          @udp = 0
+          @icmp = 0
+          @informational = 0
+          @low = 0
+          @medium = 0
+          @high = 0
+          @critical = 0
 
-          unless @host_stats
-            @host_stats = {}
-            @open_ports, @tcp, @udp, @icmp, @informational, @low, @medium, @high, @critical = 0,0,0,0,0,0,0,0,0
-
-            @host.xpath("ReportItem").each do |s|
-              case s['severity'].to_i
-                when 0
-                  @informational += 1
-                when 1
-                  @low += 1
-                when 2
-                  @medium += 1
-                when 3
-                  @high += 1
-                when 4
-                  @critical += 1
-              end
-
-              unless s['severity'].to_i == 0
-                @tcp += 1 if s['protocol'] == 'tcp'
-                @udp += 1 if s['protocol'] == 'udp'
-                @icmp += 1 if s['protocol'] == 'icmp'
-              end
-
-              @open_ports += 1 if s['port'].to_i != 0
+          @host.xpath('ReportItem').each do |s|
+            case s['severity'].to_i
+            when 0
+              @informational += 1
+            when 1
+              @low += 1
+            when 2
+              @medium += 1
+            when 3
+              @high += 1
+            when 4
+              @critical += 1
             end
 
-            @host_stats = {:open_ports => @open_ports,
-                           :tcp => @tcp,
-                           :udp => @udp,
-                           :icmp => @icmp,
-                           :informational => @informational,
-                           :low => @low,
-                           :medium => @medium,
-                           :high => @high,
-                           :critical => @critical,
-                           :all => (@low + @medium + @high + @critical)}
+            unless s['severity'].to_i == 0
+              @tcp += 1 if s['protocol'] == 'tcp'
+              @udp += 1 if s['protocol'] == 'udp'
+              @icmp += 1 if s['protocol'] == 'icmp'
+            end
 
+            @open_ports += 1 if s['port'].to_i != 0
           end
-          @host_stats
-        end
 
+          @host_stats = { open_ports: @open_ports,
+                          tcp: @tcp,
+                          udp: @udp,
+                          icmp: @icmp,
+                          informational: @informational,
+                          low: @low,
+                          medium: @medium,
+                          high: @high,
+                          critical: @critical,
+                          all: (@low + @medium + @high + @critical) }
+
+        end
+        @host_stats
+      end
     end
   end
 end
