@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby-nessus/version1/host'
 require 'ruby-nessus/version1/event'
 

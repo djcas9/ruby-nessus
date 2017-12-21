@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubygems'
 require 'ruby-nessus/ruby-nessus'
 require 'ruby-nessus/log'
@@ -45,9 +47,7 @@ module RubyNessus
         Log.h1 'EVENT Statistics'
         Log.it
 
-        unless scan.version == 1
-          Log.informational 'Informational Severity Count', scan.informational_severity_count
-        end
+        Log.informational 'Informational Severity Count', scan.informational_severity_count unless scan.version == 1
 
         Log.low 'Low Severity Count', scan.low_severity_count
         Log.medium 'Medium Severity Count', scan.medium_severity_count

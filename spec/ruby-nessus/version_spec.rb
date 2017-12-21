@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby-nessus/version'
 
 require 'spec_helper'

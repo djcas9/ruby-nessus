@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RubyNessus
   module Version2
     class Host

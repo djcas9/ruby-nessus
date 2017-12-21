@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby-nessus/version2/host'
 require 'ruby-nessus/version2/event'
 
@@ -75,9 +77,7 @@ module RubyNessus
       #
       def target_hosts
         @xml.xpath('//Preferences/ServerPreferences/preference').each do |element|
-          if element.children[1].inner_text == 'TARGET'
-            return element.children[3].inner_text.split(',')
-          end
+          return element.children[3].inner_text.split(',') if element.children[1].inner_text == 'TARGET'
         end
         nil
       end
