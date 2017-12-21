@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby-nessus/version2/port'
 
 module RubyNessus

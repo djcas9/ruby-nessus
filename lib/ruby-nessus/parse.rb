@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby-nessus/log'
 require 'ruby-nessus/version1/scan'
 require 'ruby-nessus/version2/scan'
