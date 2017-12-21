@@ -22,5 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec', '~> 3.7'
   gem.add_development_dependency 'rubocop', '~> 0.51'
   gem.add_development_dependency 'rubygems-tasks', '~> 0.1'
-  gem.add_development_dependency 'yard', '~> 0.7'
+  gem.add_development_dependency 'yard', '~> 0.9.11'
 end
