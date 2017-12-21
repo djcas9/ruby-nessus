@@ -3,7 +3,7 @@ PATH
   specs:
     ruby-nessus (2.0.beta)
       nokogiri (~> 1.4)
-      rainbow (~> 2.0)
+      rainbow (>= 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -71,7 +71,7 @@ DEPENDENCIES
   rubocop (~> 0.51)
   ruby-nessus!
   rubygems-tasks (~> 0.1)
-  yard (~> 0.7)
+  yard (~> 0.9.11)
 
 BUNDLED WITH
    1.16.0
