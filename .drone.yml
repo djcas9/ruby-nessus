@@ -19,11 +19,11 @@ pipeline:
       - export PATH=$PATH:$GEM_PATH/bin
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
       - gem install bundler --no-rdoc --no-ri --no-document
-      - bundle install
+      - bundle install --jobs=3 --retry=3
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
-      - gem build
-      - gem push
+      - gem build ruby-nessus.gem
+      - gem push ruby-nessus.gem
     when:
       event: [push]
   dist:
