@@ -22,8 +22,8 @@ pipeline:
       - bundle install
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
-      - bundle gem ruby-nessus
-      - bundle gem push
+      - gem build
+      - gem push
     when:
       event: [push]
   dist:
