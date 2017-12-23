@@ -16,11 +16,10 @@ pipeline:
     commands:
       - export GEM_HOME=$HOME/.gem
       - export GEM_PATH=$HOME/.gem
+      - export PATH=$PATH:$GEM_PATH
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
-      - gem install yard bundler rdoc rubygems-tasks rake rspec coveralls rainbow rubocop nokogiri tins --no-rdoc --no-ri
-      - ls -alh /usr/lib/ruby/2.4.0/
-      - ls -alh /usr/lib/ruby/2.4.0/bin/
-      - /usr/lib/ruby/2.4.0/bin/bundle exec rubocop -F --fail-level C -f s
+      - gem install yard bundler rdoc rubygems-tasks rake rspec coveralls rainbow rubocop nokogiri tins --no-rdoc --no-ri --no-document
+      - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
     when:
       event: [push]
@@ -30,7 +29,7 @@ pipeline:
       - GO15VENDOREXPERIMENT=1
     commands:
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
-      - gem install yard bundler rdoc rubygems-tasks fpm rake rspec rainbow nokogiri tins --no-rdoc --no-ri
+      - gem install yard bundler rdoc rubygems-tasks fpm rake rspec rainbow nokogiri tins --no-rdoc --no-ri --no-document
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
     when:
