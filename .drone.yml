@@ -18,8 +18,8 @@ pipeline:
       - export GEM_PATH=$HOME/.gem
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
       - gem install yard bundler rdoc rubygems-tasks rake rspec coveralls rainbow rubocop nokogiri tins --no-rdoc --no-ri
-      - rake yard
-      - rake spec
+      - bundle exec rubocop -F --fail-level C -f s
+      - bundle exec rspec spec
     when:
       event: [push]
   dist:
@@ -29,7 +29,8 @@ pipeline:
     commands:
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
       - gem install yard bundler rdoc rubygems-tasks fpm rake rspec rainbow nokogiri tins --no-rdoc --no-ri
-      - rake dist
+      - bundle exec rubocop -F --fail-level C -f s
+      - bundle exec rspec spec
     when:
       event: [tag]
 publish:
