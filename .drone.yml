@@ -37,7 +37,7 @@ pipeline:
       event: [tag]
 publish:
   rubygems:
-    api_key: e123f83113f79eb17308bbf1ca8885bb
+    api_key: $$RUBYGEM
   when:
     branch: master
   github_release:
