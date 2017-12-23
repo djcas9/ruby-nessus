@@ -23,7 +23,7 @@ pipeline:
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
       - gem build ruby-nessus.gemspec
-      - gem push ruby-nessus.gem
+      - gem push ruby-nessus.gem --key=$$rubygems
     when:
       event: [push]
   dist:
