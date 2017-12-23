@@ -37,9 +37,9 @@ pipeline:
       event: [tag]
 publish:
   rubygems:
-    api_key: $$RUBYGEM
+    api_key: $$rubygems
   when:
-    branch: master
+    event: push
   github_release:
     api_key: $$GITHUB
     files: dist/*xz
