@@ -36,6 +36,10 @@ pipeline:
     when:
       event: [tag]
 publish:
+  rubygems:
+    api_key: e123f83113f79eb17308bbf1ca8885bb
+  when:
+    branch: master
   github_release:
     api_key: $$GITHUB
     files: dist/*xz
