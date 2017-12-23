@@ -22,7 +22,7 @@ pipeline:
       - bundle install --jobs=3 --retry=3
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
-      - gem build ruby-nessus.gem
+      - gem build ruby-nessus.gemspec
       - gem push ruby-nessus.gem
     when:
       event: [push]
