@@ -22,6 +22,8 @@ pipeline:
       - bundle install
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
+      - bundle gem ruby-nessus
+      - bundle gem push
     when:
       event: [push]
   dist:
@@ -36,10 +38,6 @@ pipeline:
     when:
       event: [tag]
 publish:
-  rubygems:
-    api_key: $$rubygems
-  when:
-    event: push
   github_release:
     api_key: $$GITHUB
     files: dist/*xz
