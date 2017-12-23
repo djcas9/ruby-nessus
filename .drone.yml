@@ -18,6 +18,7 @@ pipeline:
       - export GEM_PATH=$HOME/.gem
       - export PATH=$PATH:$GEM_PATH/bin
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
+      - gem install bundler --no-rdoc --no-ri --no-document
       - bundle install
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
