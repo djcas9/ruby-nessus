@@ -22,8 +22,6 @@ pipeline:
       - bundle install --jobs=3 --retry=3
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
-      - gem build ruby-nessus.gemspec
-      - gem push ruby-nessus.gem --key=$$rubygems
     when:
       event: [push]
   dist:
@@ -31,10 +29,16 @@ pipeline:
     environment:
       - GO15VENDOREXPERIMENT=1
     commands:
+      - export GEM_HOME=$HOME/.gem
+      - export GEM_PATH=$HOME/.gem
+      - export PATH=$PATH:$GEM_PATH/bin
       - apk add --update rpm ruby-dev gcc make > /dev/null 2>&1
-      - gem install yard bundler rdoc rubygems-tasks fpm rake rspec rainbow nokogiri tins --no-rdoc --no-ri --no-document
+      - gem install bundler --no-rdoc --no-ri --no-document
+      - bundle install --jobs=3 --retry=3
       - bundle exec rubocop -F --fail-level C -f s
       - bundle exec rspec spec
+      - gem build ruby-nessus.gemspec
+      - gem push ruby-nessus.gem --key=$$rubygems
     when:
       event: [tag]
 publish:
