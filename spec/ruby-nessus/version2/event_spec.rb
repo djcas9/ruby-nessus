@@ -56,6 +56,10 @@ describe 'Nessus Version 2: Event' do
     expect(@good_event.data).not_to be_nil
   end
 
+  it 'should return the event plugin type' do
+    expect(@good_event.plugin_type).to be_kind_of(String)
+  end
+
   it 'should return the event synopsis' do
     expect(@medium_event.synopsis).to eq 'The remote web server encrypts traffic using an obsolete protocol.'
   end
@@ -85,7 +89,11 @@ describe 'Nessus Version 2: Event' do
   end
 
   it 'should return the see_also information for the event' do
-    expect(@medium_event.see_also).to eq ['http://tools.ietf.org/html/rfc2660']
+    expect(@medium_event.see_also).to eq ['http://tools.ietf.org/html/rfc2660', 'http://cpe.mitre.org/']
+  end
+
+  it 'should return the vulnerability publication date' do
+    expect(@rich_event.vuln_publication_date).to eq Time.parse('2009-11-04')
   end
 
   it 'should return the patch publication date' do
@@ -98,6 +106,10 @@ describe 'Nessus Version 2: Event' do
 
   it 'should return the cvss base score' do
     expect(@medium_event.cvss_base_score).to eq 5.0
+  end
+
+  it 'should return the cvss temporal score' do
+    expect(@medium_event.cvss_temporal_score).to eq 5.0
   end
 
   it 'should return the cve score' do
@@ -140,6 +152,34 @@ describe 'Nessus Version 2: Event' do
 
   it 'should have a cpe Array (empty if no cpe)' do
     expect(@good_event.cpe).to be_kind_of(Array)
+  end
+
+  it 'should have a exploitability_ease' do
+    expect(@good_event.exploitability_ease).to be_kind_of(String)
+  end
+
+  it 'should have a exploit_available' do
+    expect(@good_event.exploit_available).to be_falsey
+  end
+
+  it 'should have a exploit_framework_canvas' do
+    expect(@good_event.exploit_framework_canvas).to be_blank
+  end
+
+  it 'should have a canvas_package' do
+    expect(@good_event.canvas_package).to be_blank
+  end
+
+  it 'should have a exploit_framework_metasploit' do
+    expect(@good_event.exploit_framework_metasploit).to be_blank
+  end
+
+  it 'should have a metasploit_name' do
+    expect(@good_event.metasploit_name).to be_blank
+  end
+
+  it 'should have a exploit_framework_core' do
+    expect(@good_event.exploit_framework_core).to be_blank
   end
 
   # Bad Event
