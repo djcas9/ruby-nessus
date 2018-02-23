@@ -28,7 +28,7 @@ module RubyNessus
       #
       # Return the event severity.
       #
-      # @return [String]
+      # @return [Integer]
       #    Return the event severity.
       #
       # @example
@@ -91,7 +91,7 @@ module RubyNessus
       #
       # Return the event object nessus plugin id
       #
-      # @return [String]
+      # @return [Integer]
       #    Return the event object nessus plugin id
       #
       # @example
@@ -130,6 +130,19 @@ module RubyNessus
         @plugin_name ||= @event.at('@pluginName')&.inner_text unless @event.at('@pluginName').inner_text.empty?
       end
       alias name plugin_name
+
+      #
+      # Return the event object plugin type (plugin_type)
+      #
+      # @return [String, nil]
+      #    Return the event object plugin type (plugin_type)
+      #
+      # @example
+      #   event.plugin_type   #=> "remote"
+      #
+      def plugin_type
+        @plugin_type ||= @event.at('plugin_type')&.inner_text
+      end
 
       #
       # Return the event synopsis.
@@ -201,22 +214,26 @@ module RubyNessus
       #    Return the event reference links.
       #
       def see_also
-        unless @see_also
-          @see_also = []
-          @event.xpath('see_also').each do |see_also|
-            @see_also << see_also.inner_text
-          end
-        end
-        @see_also
+        @see_also ||= @event.at('see_also')&.inner_text&.split("\n")
       end
       alias links see_also
       alias more see_also
       alias references see_also
 
       #
+      # Return the event vulnerability publication date.
+      #
+      # @return [Time, nil]
+      #    Return the event vulnerability publication date.
+      #
+      def vuln_publication_date
+        @vuln_publication_date ||= Time.parse(@event.at('vuln_publication_date').inner_text + ' UTC') if @event.at('vuln_publication_date')
+      end
+
+      #
       # Return the event patch publication date.
       #
-      # @return [String, nil]
+      # @return [Time, nil]
       #    Return the event patch publication date.
       #
       def patch_publication_date
@@ -226,11 +243,21 @@ module RubyNessus
       #
       # Return the event cvss base score.
       #
-      # @return [String, nil]
+      # @return [float, nil]
       #    Return the event cvss base score.
       #
       def cvss_base_score
         @cvss_base_score ||= @event.at('cvss_base_score')&.inner_text.to_f
+      end
+
+      #
+      # Return the event cvss temporal score.
+      #
+      # @return [float, nil]
+      #    Return the event cvss temporal score.
+      #
+      def cvss_temporal_score
+        @cvss_temporal_score ||= @event.at('cvss_temporal_score')&.inner_text.to_f
       end
 
       #
@@ -307,6 +334,76 @@ module RubyNessus
           end
         end
         @cpe
+      end
+
+      #
+      # Return event exploitability ease.
+      #
+      # @return [String, nil]
+      #    Return the event exploitability ease.
+      #
+      def exploitability_ease
+        @exploitability_ease ||= @event.at('exploitability_ease')&.inner_text
+      end
+
+      #
+      # Return event exploit available.
+      #
+      # @return [Boolean]
+      #    Return the event exploit available.
+      #
+      def exploit_available
+        @exploit_available ||= @event.at('exploit_available')&.inner_text == "true"
+      end
+
+      #
+      # Return if an exploit exists in the Immunity CANVAS framework.
+      #
+      # @return [Boolean]
+      #    Return the event exploit framework canvas.
+      #
+      def exploit_framework_canvas
+        @exploit_framework_canvas ||= @event.at('exploit_framework_canvas')&.inner_text == "true"
+      end
+
+      #
+      # Return the name of the CANVAS exploit package
+      #
+      # @return [String, nil]
+      #    Return the canvas_package.
+      #
+      def canvas_package
+        @canvas_package ||= @event.at('canvas_package')&.inner_text
+      end
+
+      #
+      # Return if an exploit exploit exists in the Metasploit framework
+      #
+      # @return [Boolean]
+      #    Return the event exploit framework metasploit.
+      #
+      def exploit_framework_metasploit
+        @exploit_framework_metasploit ||= @event.at('exploit_framework_metasploit')&.inner_text == "true"
+      end
+
+      #
+      # Return name of the Metasploit exploit module.
+      #
+      # @return [String, nil]
+      #    Return the metasploit_name.
+      #
+      def metasploit_name
+        @metasploit_name ||= @event.at('metasploit_name')&.inner_text
+      end
+
+      #
+      # Return if an exploit exploit exists in the CORE Impact framework
+      #
+      # @return [Boolean]
+      #    Return the event exploit framework core.
+      #
+      def exploit_framework_core
+        @exploit_framework_core ||= @event.at('exploit_framework_core')&.inner_text == "true"
       end
     end
   end
