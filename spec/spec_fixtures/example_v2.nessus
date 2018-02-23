@@ -1453,7 +1453,8 @@ security standards
 <solution>Rare or obsolete code is often poorly tested. Thus, it would be
 safer to disable support for S-HTTP and use HTTPS instead.</solution><risk_factor>Medium</risk_factor><description>The remote web server accepts connections encrypted using Secure
 HyperText Transfer Protocol (S-HTTP), a cryptographic layer that was
-defined in 1999 by RFC 2660 and never widely implemented.</description><cvss_vector>CVSS2#AV:N/AC:L/Au:N/C:P/I:N/A:N</cvss_vector><synopsis>The remote web server encrypts traffic using an obsolete protocol.</synopsis><see_also>http://tools.ietf.org/html/rfc2660</see_also><cvss_base_score>5.0</cvss_base_score><plugin_version>$Revision: 1.9 $</plugin_version></ReportItem>
+defined in 1999 by RFC 2660 and never widely implemented.</description><cvss_vector>CVSS2#AV:N/AC:L/Au:N/C:P/I:N/A:N</cvss_vector><synopsis>The remote web server encrypts traffic using an obsolete protocol.</synopsis><see_also>http://tools.ietf.org/html/rfc2660
+http://cpe.mitre.org/</see_also><cvss_base_score>5.0</cvss_base_score><cvss_temporal_score>5.0</cvss_temporal_score><plugin_version>$Revision: 1.9 $</plugin_version></ReportItem>
 <ReportItem port="9090" svc_name="www" protocol="tcp" severity="1" pluginID="22964" pluginName="Service Detection" pluginFamily="Service detection">
 <description>A web server is running on this port.</description><plugin_version>$Revision: 1.57 $</plugin_version></ReportItem>
 <ReportItem port="7070" svc_name="arcp?" protocol="tcp" severity="1" pluginID="22964" pluginName="Service Detection" pluginFamily="Service detection">
@@ -1484,7 +1485,7 @@ inject an arbitrary amount of plaintext into the beginning of the
 application protocol stream, which could facilitate man-in-the-middle
 attacks if the service assumes that the sessions before and after
 renegotiation are from the same &apos;client&apos; and merges them at the 
-application layer.</description><plugin_publication_date>2009/11/24</plugin_publication_date><cvss_vector>CVSS2#AV:N/AC:H/Au:N/C:N/I:P/A:N</cvss_vector><synopsis>The remote service allows renegotiation of TLS / SSL connections.</synopsis><patch_publication_date>2009/11/05</patch_publication_date><see_also>http://extendedsubset.com/?p=8</see_also><see_also>http://www.ietf.org/mail-archive/web/tls/current/msg03948.html</see_also><see_also>http://www.kb.cert.org/vuls/id/120541</see_also><see_also>http://www.g-sec.lu/practicaltls.pdf</see_also><see_also>https://svn.resiprocate.org/rep/ietf-drafts/ekr/draft-rescorla-tls-renegotiate.txt</see_also><cvss_base_score>2.6</cvss_base_score><cve>CVE-2009-3555</cve>
+application layer.</description><<plugin_publication_date>2009/11/24</plugin_publication_date><cvss_vector>CVSS2#AV:N/AC:H/Au:N/C:N/I:P/A:N</cvss_vector><synopsis>The remote service allows renegotiation of TLS / SSL connections.</synopsis><patch_publication_date>2009/11/05</patch_publication_date><see_also>http://extendedsubset.com/?p=8</see_also><see_also>http://www.ietf.org/mail-archive/web/tls/current/msg03948.html</see_also><see_also>http://www.kb.cert.org/vuls/id/120541</see_also><see_also>http://www.g-sec.lu/practicaltls.pdf</see_also><see_also>https://svn.resiprocate.org/rep/ietf-drafts/ekr/draft-rescorla-tls-renegotiate.txt</see_also><cvss_base_score>2.6</cvss_base_score><cve>CVE-2009-3555</cve>
 <bid>36935</bid>
 <xref>OSVDB:59968</xref>
 <xref>OSVDB:59969</xref>
@@ -1868,6 +1869,9 @@ protocols.</description><synopsis>It is possible to determine the exact time set
 <xref>OSVDB:94</xref>
 <plugin_output>The difference between the local and remote clocks is 1 second.
 </plugin_output>
+<exploitability_ease>No known exploits are available</exploitability_ease>
+<exploit_available>false</exploit_available>
+<plugin_type>remote</plugin_type>
 <plugin_version>$Revision: 1.38 $</plugin_version></ReportItem>
 </ReportHost>
 <ReportHost name="scanme.insecure.org">
