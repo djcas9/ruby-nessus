@@ -21,6 +21,10 @@ module RubyNessus
         ip.to_s
       end
 
+      def name
+        @host["name"]
+      end
+
       #
       # Return the Host Object hostname.
       #
@@ -33,7 +37,6 @@ module RubyNessus
       def hostname
         @host.at('tag[name=host-fqdn]')&.inner_text
       end
-      alias name hostname
       alias fqdn hostname
       alias dns_name hostname
 
