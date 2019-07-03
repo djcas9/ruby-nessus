@@ -361,8 +361,10 @@ module RubyNessus
       #
       def find_by_hostname(hostname, &block)
         raise "Error: hostname can't be blank." if hostname.nil? || hostname.empty?
+
         @xml.xpath('//ReportHost[HostName]').each do |host|
           next unless host.inner_text.match(hostname)
+
           yield(Host.new(host)) if block
         end
       end

@@ -8,77 +8,77 @@ module RubyNessus
     # Formatting
     #
     def self.it(msg = nil)
-      STDERR.puts msg.to_s
+      warn msg.to_s
     end
 
     def self.it!(msg = nil)
-      STDERR.puts "\t#{msg}"
+      warn "\t#{msg}"
     end
 
     def self.break
-      STDERR.puts "\t"
-      STDERR.puts ''
+      warn "\t"
+      warn ''
     end
 
     def self.end
-      STDERR.puts "\n\n"
+      warn "\n\n"
     end
 
     #
     # Headers
     #
     def self.h1(title, msg = nil)
-      STDERR.puts Rainbow("-> #{title}: ").foreground(:green).bright + msg.to_s
+      warn Rainbow("-> #{title}: ").foreground(:green).bright + msg.to_s
     end
 
     def self.h2(title, msg = nil)
-      STDERR.puts Rainbow("\t#{title}: ").foreground(:blue).bright + msg.to_s
+      warn Rainbow("\t#{title}: ").foreground(:blue).bright + msg.to_s
     end
 
     def self.h3(title, msg = nil)
-      STDERR.puts "\t#{title}: " + Rainbow(msg.to_s).foreground(:blue).underline
+      warn "\t#{title}: " + Rainbow(msg.to_s).foreground(:blue).underline
     end
 
     def self.h4(msg = nil)
-      STDERR.puts "\t\t- #{msg}"
+      warn "\t\t- #{msg}"
     end
 
     def self.h5(title, msg = nil)
-      STDERR.puts "\t\t- #{title}: #{msg}"
+      warn "\t\t- #{title}: #{msg}"
     end
 
     #
     # Errors
     #
     def self.error(msg = nil)
-      STDERR.puts Rainbow('ERROR: ').foreground(:red).bright + msg.to_s
+      warn Rainbow('ERROR: ').foreground(:red).bright + msg.to_s
     end
 
     def self.warn(msg = nil)
-      STDERR.puts Rainbow('WARNING: ').foreground(:yellow).bright + msg.to_s
+      warn Rainbow('WARNING: ').foreground(:yellow).bright + msg.to_s
     end
 
     def self.info(msg = nil)
-      STDERR.puts Rainbow('INFO: ').foreground(:green).bright + msg.to_s
+      warn Rainbow('INFO: ').foreground(:green).bright + msg.to_s
     end
 
     #
     # Event Severities
     #
     def self.informational(title, msg = nil)
-      STDERR.puts Rainbow("\t#{title}: ").foreground(:magenta).bright + msg.to_s
+      warn Rainbow("\t#{title}: ").foreground(:magenta).bright + msg.to_s
     end
 
     def self.low(title, msg = nil)
-      STDERR.puts Rainbow("\t#{title}: ").foreground(:green) + msg.to_s
+      warn Rainbow("\t#{title}: ").foreground(:green) + msg.to_s
     end
 
     def self.medium(title, msg = nil)
-      STDERR.puts Rainbow("\t#{title}: ").foreground(:yellow).bright + msg.to_s
+      warn Rainbow("\t#{title}: ").foreground(:yellow).bright + msg.to_s
     end
 
     def self.high(title, msg = nil)
-      STDERR.puts Rainbow("\t#{title}: ").foreground(:red).bright + msg.to_s
+      warn Rainbow("\t#{title}: ").foreground(:red).bright + msg.to_s
     end
   end
 end
