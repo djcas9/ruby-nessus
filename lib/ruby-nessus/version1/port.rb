@@ -33,7 +33,7 @@ module RubyNessus
       #   Port.parse(port)
       def self.parse(str)
         @full_port = str
-        components = str.match(/^([^\(]+)\((\d+)\/([^\)]+)\)/)
+        components = str.match(%r{^([^\(]+)\((\d+)/([^\)]+)\)})
 
         if components
           return Port.new(components[1].strip, components[2].strip, components[3].strip, str)
@@ -73,11 +73,7 @@ module RubyNessus
       # @return [Boolean]
       #   Return false if the port object number is nil
       def number
-        if @number
-          @number
-        else
-          false
-        end
+        @number || false
       end
     end
   end

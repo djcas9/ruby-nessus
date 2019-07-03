@@ -22,7 +22,7 @@ module RubyNessus
       end
 
       def name
-        @host["name"]
+        @host['name']
       end
 
       #
@@ -94,6 +94,7 @@ module RubyNessus
       #
       def runtime
         return unless stop_time && start_time
+
         Time.at(stop_time - start_time).utc.strftime('%H hours %M minutes and %S seconds')
       end
       alias scan_runtime runtime
@@ -169,6 +170,7 @@ module RubyNessus
       #
       def informational_severity_events
         return if @informational_events
+
         @informational_events = @host.xpath('ReportItem').select { |event| event['severity'].to_i.zero? }.map do |event|
           Event.new(event)
         end
@@ -190,6 +192,7 @@ module RubyNessus
       #
       def low_severity_events
         return if @low_severity_events
+
         @low_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 1) }.map do |event|
           Event.new(event)
         end
@@ -211,6 +214,7 @@ module RubyNessus
       #
       def medium_severity_events
         return if @medium_severity_events
+
         @medium_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 2) }.map do |event|
           Event.new(event)
         end
@@ -232,6 +236,7 @@ module RubyNessus
       #
       def high_severity_events
         return if @high_severity_events
+
         @high_severity_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 3) }.map do |event|
           Event.new(event)
         end
@@ -253,6 +258,7 @@ module RubyNessus
       #
       def critical_severity_events
         return if @critical_events
+
         @critical_events = @host.xpath('ReportItem').select { |event| (event['severity'].to_i == 4) }.map do |event|
           Event.new(event)
         end
@@ -312,6 +318,7 @@ module RubyNessus
       #
       def ports
         return if @ports
+
         @ports = @host.xpath('ReportItem').map { |port| port['port'] }.uniq.sort
       end
 

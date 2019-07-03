@@ -128,6 +128,7 @@ module RubyNessus
 
           @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 0
+
             @informational_events << Event.new(event)
             @informational_event_count += 1
           end
@@ -156,6 +157,7 @@ module RubyNessus
 
           @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 1
+
             @low_severity_events << Event.new(event)
           end
 
@@ -183,6 +185,7 @@ module RubyNessus
 
           @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 2
+
             @medium_severity_events << Event.new(event)
           end
 
@@ -210,6 +213,7 @@ module RubyNessus
 
           @host.xpath('ReportItem').each do |event|
             next if event.at('severity').inner_text.to_i != 3
+
             @high_severity_events << Event.new(event)
           end
 

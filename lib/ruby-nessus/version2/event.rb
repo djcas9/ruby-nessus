@@ -353,7 +353,7 @@ module RubyNessus
       #    Return the event exploit available.
       #
       def exploit_available
-        @exploit_available ||= @event.at('exploit_available')&.inner_text == "true"
+        @exploit_available ||= @event.at('exploit_available')&.inner_text == 'true'
       end
 
       #
@@ -363,7 +363,7 @@ module RubyNessus
       #    Return the event exploit framework canvas.
       #
       def exploit_framework_canvas
-        @exploit_framework_canvas ||= @event.at('exploit_framework_canvas')&.inner_text == "true"
+        @exploit_framework_canvas ||= @event.at('exploit_framework_canvas')&.inner_text == 'true'
       end
 
       #
@@ -383,7 +383,7 @@ module RubyNessus
       #    Return the event exploit framework metasploit.
       #
       def exploit_framework_metasploit
-        @exploit_framework_metasploit ||= @event.at('exploit_framework_metasploit')&.inner_text == "true"
+        @exploit_framework_metasploit ||= @event.at('exploit_framework_metasploit')&.inner_text == 'true'
       end
 
       #
@@ -403,7 +403,7 @@ module RubyNessus
       #    Return the event exploit framework core.
       #
       def exploit_framework_core
-        @exploit_framework_core ||= @event.at('exploit_framework_core')&.inner_text == "true"
+        @exploit_framework_core ||= @event.at('exploit_framework_core')&.inner_text == 'true'
       end
     end
   end

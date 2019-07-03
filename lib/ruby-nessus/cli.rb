@@ -115,7 +115,7 @@ module RubyNessus
           Log.it
           exit(-1)
         end
-      rescue => e
+      rescue StandardError => e
         Log.error e.message
         Log.it opts
         Log.it
