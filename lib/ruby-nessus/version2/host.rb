@@ -151,6 +151,11 @@ module RubyNessus
       # @example
       #   host.open_ports #=> 213
       #
+
+      def missing_patches
+        @host.css("ReportItem[pluginID=38153]").xpath('.//plugin_output').inner_text.split(" - ")
+      end
+
       def open_ports
         @scanned_ports ||= host_stats[:open_ports].to_i
       end
