@@ -261,6 +261,26 @@ module RubyNessus
       end
 
       #
+      # Return the event cvss3 base score.
+      #
+      # @return [float, nil]
+      #    Return the event cvss3 base score.
+      #
+      def cvss3_base_score
+        @cvss3_base_score ||= @event.at('cvss3_base_score')&.inner_text.to_f
+      end
+
+      #
+      # Return the event cvss3 temporal score.
+      #
+      # @return [float, nil]
+      #    Return the event cvss3 temporal score.
+      #
+      def cvss3_temporal_score
+        @cvss3_temporal_score ||= @event.at('cvss3_temporal_score')&.inner_text.to_f
+      end
+
+      #
       # Return the event cve.
       #
       # @return [Array<String>, nil]
@@ -318,6 +338,16 @@ module RubyNessus
       #
       def cvss_vector
         @cvss_vector ||= @event.at('cvss_vector')&.inner_text
+      end
+
+      #
+      # Return other event cvss3 vector.
+      #
+      # @return [String, nil]
+      #    Return the event cvss3 vector.
+      #
+      def cvss3_vector
+        @cvss3_vector ||= @event.at('cvss3_vector')&.inner_text
       end
 
       #
