@@ -316,6 +316,10 @@ module RubyNessus
         @cvss_temporal_score ||= @event.at('cvss_temporal_score')&.inner_text.to_f
       end
 
+      def cvss3_temporal_score
+        @cvss_temporal_score ||= @event.at('cvss3_temporal_score')&.inner_text.to_f
+      end
+
       #
       # Return the event cve.
       #
@@ -378,6 +382,14 @@ module RubyNessus
 
       def cvss3_vector
         @cvss3_vector ||= @event.at('cvss3_vector')&.inner_text#.gsub("CVSS:3.0/","")
+      end
+
+      def cvss_temporal_vector
+        @cvss_vector ||= @event.at('cvss_temporal_vector')&.inner_text
+      end
+
+      def cvss3_temporal_vector
+        @cvss3_vector ||= @event.at('cvss3_temporal_vector')&.inner_text#.gsub("CVSS:3.0/","")
       end
 
       #
