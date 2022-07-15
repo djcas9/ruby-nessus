@@ -38,48 +38,6 @@ module RubyNessus
         @severity ||= @event.at('@severity').inner_text.to_i
       end
       # New matches for Baseline
-<<<<<<< HEAD
-      def item_id
-        @item_id ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).captures.first
-      end
-
-      def baseline
-        @baseline ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).captures.first
-      end
-
-      def item_description
-        @item_description ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).captures.first
-      end
-
-      def threats
-        @threats ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).captures.first
-      end
-
-      def impacts
-        @impacts ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).captures.first
-      end
-
-      def manual_setup
-        @manual_setup ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*)/).captures.first
-      end
-
-      def threat_level
-        @threat_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).captures.first
-      end
-
-      def impact_level
-        @impact_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).captures.first
-      end
-
-      def expected_value
-        @expected_value ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/)
-      end
-      
-      def check_type
-        @check_type ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).captures.first
-      end
-
-=======
 
       def compliance_info
         @event.xpath('.//*[name()="cm:compliance-info"]')
@@ -111,16 +69,10 @@ module RubyNessus
       def check_type
         @check_type ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).captures.first
       end
->>>>>>> develop
       def compliance_uname
         @compliance_uname ||= @event.xpath('.//*[name()="cm:compliance-uname"]').children.text
       end
 
-<<<<<<< HEAD
-      def compliance_result
-        @compliance_result ||= @event.xpath('.//*[name()="cm:compliance-result"]').children.text
-      end
-=======
       def compliance_check_name
         @compliance_check_name ||= @event.xpath('.//*[name()="cm:compliance-check-name"]').children.text
       end
@@ -136,7 +88,6 @@ module RubyNessus
       def policy_value
         @policy_value ||= @event.xpath('.//*[name()="cm:compliance-policy-value"]').children.text
       end
->>>>>>> develop
       
       def check_name
         @check_name ||= @event.xpath('.//*[name()="cm:compliance-check-name"]').children.text
