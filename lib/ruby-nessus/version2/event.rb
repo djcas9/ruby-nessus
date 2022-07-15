@@ -385,11 +385,11 @@ module RubyNessus
       end
 
       def cvss_temporal_vector
-        @cvss_vector ||= @event.at('cvss_temporal_vector')&.inner_text
+        @cvss_temporal_vector ||= @event.at('cvss_temporal_vector')&.inner_text
       end
 
       def cvss3_temporal_vector
-        @cvss3_vector ||= @event.at('cvss3_temporal_vector')&.inner_text#.gsub("CVSS:3.0/","")
+        @cvss3_temporal_vector ||= @event.at('cvss3_temporal_vector')&.inner_text#.gsub("CVSS:3.0/","")
       end
 
       #
