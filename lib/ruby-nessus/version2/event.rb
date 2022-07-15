@@ -303,12 +303,9 @@ module RubyNessus
         @cvss_base_score ||= @event.at('cvss_base_score')&.inner_text.to_f
       end
 
-<<<<<<< HEAD
-=======
       def cvss3_base_score
         @cvss3_base_score ||= @event.at('cvss3_base_score')&.inner_text.to_f
       end
->>>>>>> develop
       #
       # Return the event cvss temporal score.
       #
@@ -379,13 +376,10 @@ module RubyNessus
         @cvss_vector ||= @event.at('cvss_vector')&.inner_text
       end
 
-<<<<<<< HEAD
-=======
       def cvss3_vector
         @cvss3_vector ||= @event.at('cvss3_vector')&.inner_text#.gsub("CVSS:3.0/","")
       end
 
->>>>>>> develop
       #
       # Return the event cpe.
       #
