@@ -1,9 +1,4 @@
 # frozen_string_literal: true
-<<<<<<< HEAD
-
-=======
-require 'pry'
->>>>>>> develop
 module RubyNessus
   module Version2
     class Host
@@ -39,13 +34,9 @@ module RubyNessus
       #   host.hostname #=> "example.com"
       #
       def hostname
-<<<<<<< HEAD
-        @host.at('tag[name=host-fqdn]')&.inner_text
-=======
         hostname ||= @host.at('tag[name=host-fqdn]')&.inner_text
         hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1]
         return hostname
->>>>>>> develop
       end
       alias fqdn hostname
       alias dns_name hostname
