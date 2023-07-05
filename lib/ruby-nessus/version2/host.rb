@@ -35,7 +35,7 @@ module RubyNessus
       #
       def hostname
         hostname ||= @host.at('tag[name=host-fqdn]')&.inner_text
-        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1]
+        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1] unless @host.css("ReportItem[pluginID=55472]").nil?
         return hostname
       end
       alias fqdn hostname
@@ -154,7 +154,7 @@ module RubyNessus
       #
       #57033
       def patch_checked?
-        if @host.css("ReportItem[pluginID=57033]").empty?
+        if @host.css("ReportItem[pluginID=57033]").empty? and @host.css("ReportItem[pluginID=97993]").empty?
           return false
         else
           return true
@@ -174,6 +174,7 @@ module RubyNessus
         count = 0
         @rhel_missing_patches = @host.css("ReportItem[pluginFamily='Red Hat Local Security Checks']").map do |event|
           plugin_name ||= event.at('@pluginName')&.inner_text unless event.at('@pluginName').inner_text.empty?
+          puts plugin_name
           if event['severity'] != 0 and !(plugin_name.match(/(RHEL \d) : (.*) (\(RHSA-\d{4}:\d{1,4}\))/)).nil?
             count +=1
             Event.new(event) 
