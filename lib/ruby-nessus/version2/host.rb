@@ -207,6 +207,10 @@ module RubyNessus
         @host.css("ReportItem[pluginID=21157]").size
       end
 
+      def vcenter_compliance_itens_total
+        @host.css("ReportItem[pluginID=64455]").size
+      end
+
       def open_ports
         @scanned_ports ||= host_stats[:open_ports].to_i
       end
@@ -497,6 +501,25 @@ module RubyNessus
           host_stats[:all].to_i + informational_severity_count
         else
           host_stats[:all].to_i
+        end
+      end
+
+
+      #
+      # Return the List of ESXi hosts that were scanned
+      #
+      # @return [Integer]
+      #   The Total Severity Count
+      #
+      # @example
+      #   scan.total_event_count #=> 1561
+      #
+      def esxi_scanned_hosts
+        report_items = @host.css("ReportItem[pluginID=12053]")
+        unless report_items.nil?
+          reportItem.each do |report_item|
+            report_item.xpath("./plugin_output").text.strip.gsub(" resolves as ",",")[0..-2].split(",")
+          end
         end
       end
 
