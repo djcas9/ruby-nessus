@@ -43,31 +43,34 @@ module RubyNessus
         @event.xpath('.//*[name()="cm:compliance-info"]')
       end
       def item_id
-        @item_id ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).captures.first
+        @item_id ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).nil?
       end
       def baseline
-        @baseline ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).captures.first
+        @baseline ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).nil?
       end
       def item_description
-        @item_description ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).captures.first
+        @item_description ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).nil?
       end
       def threats
-        @threats ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).captures.first
+        @threats ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).nil?
       end
       def impacts
-        @impacts ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).captures.first
+        @impacts ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).nil?
+      end
+      def session
+        @session ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/session: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/session: (.*)/).nil?
       end
       def manual_setup
-        @manual_setup ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*)/).captures.first
+        @manual_setup ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*\n)*/).to_s.gsub("manual_setup: ","") unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*)/).nil?
       end
       def threat_level
-        @threat_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).captures.first
+        @threat_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).nil?
       end
       def impact_level
-        @impact_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).captures.first
+        @impact_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).nil?
       end
       def check_type
-        @check_type ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).captures.first
+        @check_type ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).nil?
       end
       def compliance_uname
         @compliance_uname ||= @event.xpath('.//*[name()="cm:compliance-uname"]').children.text
@@ -92,6 +95,16 @@ module RubyNessus
       def check_name
         @check_name ||= @event.xpath('.//*[name()="cm:compliance-check-name"]').children.text
       end
+
+      def compliance_solution
+        @compliance_solution ||= @event.xpath('.//*[name()="cm:compliance-solution"]').children.text
+      end
+
+      def compliance_benchmark_name
+        @compliance_benchmark_name ||= @event.xpath('.//*[name()="cm:compliance-benchmark-name"]').children.text
+      end
+
+      
       #
       # Return true if event is of informational severity.
       #

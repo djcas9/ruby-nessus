@@ -35,7 +35,7 @@ module RubyNessus
       #
       def hostname
         hostname ||= @host.at('tag[name=host-fqdn]')&.inner_text
-        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1] unless @host.css("ReportItem[pluginID=55472]").nil?
+        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1]
         return hostname
       end
       alias fqdn hostname
@@ -154,7 +154,7 @@ module RubyNessus
       #
       #57033
       def patch_checked?
-        if @host.css("ReportItem[pluginID=57033]").empty? and @host.css("ReportItem[pluginID=97993]").empty?
+        if @host.css("ReportItem[pluginID=57033]").empty?
           return false
         else
           return true
@@ -174,7 +174,6 @@ module RubyNessus
         count = 0
         @rhel_missing_patches = @host.css("ReportItem[pluginFamily='Red Hat Local Security Checks']").map do |event|
           plugin_name ||= event.at('@pluginName')&.inner_text unless event.at('@pluginName').inner_text.empty?
-          puts plugin_name
           if event['severity'] != 0 and !(plugin_name.match(/(RHEL \d) : (.*) (\(RHSA-\d{4}:\d{1,4}\))/)).nil?
             count +=1
             Event.new(event) 
@@ -206,6 +205,10 @@ module RubyNessus
 
       def unix_compliance_itens_total
         @host.css("ReportItem[pluginID=21157]").size
+      end
+
+      def vcenter_compliance_itens_total
+        @host.css("ReportItem[pluginID=64455]").size
       end
 
       def open_ports
@@ -498,6 +501,25 @@ module RubyNessus
           host_stats[:all].to_i + informational_severity_count
         else
           host_stats[:all].to_i
+        end
+      end
+
+
+      #
+      # Return the List of ESXi hosts that were scanned
+      #
+      # @return [Integer]
+      #   The Total Severity Count
+      #
+      # @example
+      #   scan.total_event_count #=> 1561
+      #
+      def esxi_scanned_hosts
+        report_items = @host.css("ReportItem[pluginID=12053]")
+        unless report_items.nil?
+          reportItem.each do |report_item|
+            report_item.xpath("./plugin_output").text.strip.gsub(" resolves as ",",")[0..-2].split(",")
+          end
         end
       end
 
