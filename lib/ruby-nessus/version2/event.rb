@@ -37,7 +37,74 @@ module RubyNessus
       def severity
         @severity ||= @event.at('@severity').inner_text.to_i
       end
+      # New matches for Baseline
 
+      def compliance_info
+        @event.xpath('.//*[name()="cm:compliance-info"]')
+      end
+      def item_id
+        @item_id ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_id: (.*)/).nil?
+      end
+      def baseline
+        @baseline ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/baseline: (.*)/).nil?
+      end
+      def item_description
+        @item_description ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/item_description: (.*)/).nil?
+      end
+      def threats
+        @threats ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threats: (.*)/).nil?
+      end
+      def impacts
+        @impacts ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impacts: (.*)/).nil?
+      end
+      def session
+        @session ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/session: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/session: (.*)/).nil?
+      end
+      def manual_setup
+        @manual_setup ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*\n)*/).to_s.gsub("manual_setup: ","") unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/manual_setup: (.*)/).nil?
+      end
+      def threat_level
+        @threat_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/threat_level: (.*)/).nil?
+      end
+      def impact_level
+        @impact_level ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/impact_level: (.*)/).nil?
+      end
+      def check_type
+        @check_type ||= @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).captures.first unless @event.xpath('.//*[name()="cm:compliance-info"]').text.match(/expected_value: (.*)/).nil?
+      end
+      def compliance_uname
+        @compliance_uname ||= @event.xpath('.//*[name()="cm:compliance-uname"]').children.text
+      end
+
+      def compliance_check_name
+        @compliance_check_name ||= @event.xpath('.//*[name()="cm:compliance-check-name"]').children.text
+      end
+
+      def compliance_result
+        @compliance_result ||= @event.xpath('.//*[name()="cm:compliance-result"]').children.text
+      end
+
+      def remote_value
+        @remote_value ||= @event.xpath('.//*[name()="cm:compliance-actual-value"]').children.text
+      end
+      
+      def policy_value
+        @policy_value ||= @event.xpath('.//*[name()="cm:compliance-policy-value"]').children.text
+      end
+      
+      def check_name
+        @check_name ||= @event.xpath('.//*[name()="cm:compliance-check-name"]').children.text
+      end
+
+      def compliance_solution
+        @compliance_solution ||= @event.xpath('.//*[name()="cm:compliance-solution"]').children.text
+      end
+
+      def compliance_benchmark_name
+        @compliance_benchmark_name ||= @event.xpath('.//*[name()="cm:compliance-benchmark-name"]').children.text
+      end
+
+      
       #
       # Return true if event is of informational severity.
       #
@@ -130,7 +197,6 @@ module RubyNessus
         @plugin_name ||= @event.at('@pluginName')&.inner_text unless @event.at('@pluginName').inner_text.empty?
       end
       alias name plugin_name
-
       #
       # Return the event object plugin type (plugin_type)
       #
@@ -250,6 +316,9 @@ module RubyNessus
         @cvss_base_score ||= @event.at('cvss_base_score')&.inner_text.to_f
       end
 
+      def cvss3_base_score
+        @cvss3_base_score ||= @event.at('cvss3_base_score')&.inner_text.to_f
+      end
       #
       # Return the event cvss temporal score.
       #
@@ -258,6 +327,10 @@ module RubyNessus
       #
       def cvss_temporal_score
         @cvss_temporal_score ||= @event.at('cvss_temporal_score')&.inner_text.to_f
+      end
+
+      def cvss3_temporal_score
+        @cvss_temporal_score ||= @event.at('cvss3_temporal_score')&.inner_text.to_f
       end
 
       #
@@ -320,17 +393,29 @@ module RubyNessus
         @cvss_vector ||= @event.at('cvss_vector')&.inner_text
       end
 
+      def cvss3_vector
+        @cvss3_vector ||= @event.at('cvss3_vector')&.inner_text#.gsub("CVSS:3.0/","")
+      end
+
+      def cvss_temporal_vector
+        @cvss_temporal_vector ||= @event.at('cvss_temporal_vector')&.inner_text
+      end
+
+      def cvss3_temporal_vector
+        @cvss3_temporal_vector ||= @event.at('cvss3_temporal_vector')&.inner_text#.gsub("CVSS:3.0/","")
+      end
+
       #
       # Return the event cpe.
       #
       # @return [Array<String>]
       #    Return the event cpe.
-      #
+      # 
       def cpe
         unless @cpe
           @cpe = []
           @event.xpath('cpe').each do |cpe|
-            @cpe << cpe.inner_text
+            @cpe |= cpe.inner_text.split("\n")
           end
         end
         @cpe

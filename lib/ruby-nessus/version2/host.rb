@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module RubyNessus
   module Version2
     class Host
@@ -35,7 +34,9 @@ module RubyNessus
       #   host.hostname #=> "example.com"
       #
       def hostname
-        @host.at('tag[name=host-fqdn]')&.inner_text
+        hostname ||= @host.at('tag[name=host-fqdn]')&.inner_text
+        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1]
+        return hostname
       end
       alias fqdn hostname
       alias dns_name hostname
@@ -151,6 +152,65 @@ module RubyNessus
       # @example
       #   host.open_ports #=> 213
       #
+      #57033
+      def patch_checked?
+        if @host.css("ReportItem[pluginID=57033]").empty?
+          return false
+        else
+          return true
+        end#.xpath('.//plugin_output').inner_text.split(" - ")
+      end
+      #TODO
+      #Add more OS
+      def os_unsupported?
+        if @host.css("ReportItem[pluginID=33850]").empty?
+          return false
+        else
+          return true
+        end#.xpath('.//plugin_output').inner_text.split(" - ")
+      end
+
+      def rhel_missing_patchs
+        count = 0
+        @rhel_missing_patches = @host.css("ReportItem[pluginFamily='Red Hat Local Security Checks']").map do |event|
+          plugin_name ||= event.at('@pluginName')&.inner_text unless event.at('@pluginName').inner_text.empty?
+          if event['severity'] != 0 and !(plugin_name.match(/(RHEL \d) : (.*) (\(RHSA-\d{4}:\d{1,4}\))/)).nil?
+            count +=1
+            Event.new(event) 
+          end
+        end
+        @rhel_missing_patches.compact
+      end
+
+      #TODO
+      def win_missing_patches
+        count = 0
+        @missing_patches = @host.css("ReportItem[pluginFamily='Windows : Microsoft Bulletins']").map do |event|
+          if event['severity'] != 0
+            count +=1
+            Event.new(event) 
+          end
+        end
+        @missing_patches#.xpath('.//plugin_output').inner_text.split(" - ")
+      end
+
+      def trd_party_software
+        @host.css("ReportItem[pluginID=38153]").xpath('.//plugin_output').inner_text.split(" - ")
+      end
+
+      def ms_compliance_itens_total
+        #" asdf"
+        pp @host.css("ReportItem[pluginID=21156]")#.size
+      end
+
+      def unix_compliance_itens_total
+        @host.css("ReportItem[pluginID=21157]").size
+      end
+
+      def vcenter_compliance_itens_total
+        @host.css("ReportItem[pluginID=64455]").size
+      end
+
       def open_ports
         @scanned_ports ||= host_stats[:open_ports].to_i
       end
@@ -264,6 +324,7 @@ module RubyNessus
         end
         @critical_events
       end
+      
 
       #
       # Return the total event count for a given host.
@@ -440,6 +501,25 @@ module RubyNessus
           host_stats[:all].to_i + informational_severity_count
         else
           host_stats[:all].to_i
+        end
+      end
+
+
+      #
+      # Return the List of ESXi hosts that were scanned
+      #
+      # @return [Integer]
+      #   The Total Severity Count
+      #
+      # @example
+      #   scan.total_event_count #=> 1561
+      #
+      def esxi_scanned_hosts
+        report_items = @host.css("ReportItem[pluginID=12053]")
+        unless report_items.nil?
+          reportItem.each do |report_item|
+            report_item.xpath("./plugin_output").text.strip.gsub(" resolves as ",",")[0..-2].split(",")
+          end
         end
       end
 

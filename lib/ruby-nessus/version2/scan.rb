@@ -83,6 +83,33 @@ module RubyNessus
       end
 
       #
+      # Return the hosts the were targeted for the initial scan.
+      # These are the hosts that were inputed when creating the scan.
+      #
+      # @return [Array<String>]
+      #   Array of hosts
+      #
+      def report_hosts
+        hosts = Hash.new()
+        @xml.xpath('//ReportHost').each do |report_host|
+          #binding.pry
+          ip_address = ""
+          asset_name = ""
+          operating_system = ""
+          unless  report_host.nil?
+            report_host.xpath('.//tag').each do |tag|
+              ip_address = tag.text if tag.attribute_nodes.first.value == "host-ip"
+              asset_name = tag.text if tag.attribute_nodes.first.value == "host-fqdn"
+              operating_system = tag.text if tag.attribute_nodes.first.value == "operating-system"
+            end
+            #binding.pry
+            hosts[ip_address] = {"asset_name"=> "#{asset_name}", "operating_system" => operating_system}
+          end
+        end
+        return hosts
+      end
+
+      #
       # Creates a new Host object to be parser
       #
       # @yield [prog] If a block is given, it will be passed the newly

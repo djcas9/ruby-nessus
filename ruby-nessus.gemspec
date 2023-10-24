@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 
 Gem::Specification.new do |gem|
   gem.name        = 'ruby-nessus'
-  gem.version     = '2.0.beta'
+  gem.version     = '2.0.1'
   gem.summary     = 'Ruby-Nessus is a ruby interface for the popular Nessus vulnerability scanner.'
   gem.description = 'Ruby-Nessus aims to deliver an easy yet powerful interface for interacting and manipulating Nessus scan results and configurations.'
   gem.licenses    = ['MIT']
@@ -18,8 +18,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.required_ruby_version = '>= 2.3'
 
-  gem.add_dependency 'nokogiri', '~> 1.4'
-  gem.add_dependency 'rainbow', '>= 2.0'
+  gem.add_dependency 'nokogiri', '>= 1.10.10'
+  gem.add_dependency 'rainbow', '>= 3.0'
 
   gem.add_development_dependency 'rspec', '~> 3.7'
   gem.add_development_dependency 'rubocop', '~> 0.51'
