@@ -35,7 +35,7 @@ module RubyNessus
       #
       def hostname
         hostname ||= @host.at('tag[name=host-fqdn]')&.inner_text
-        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1]
+        hostname ||=  @host.css("ReportItem[pluginID=55472]").xpath("./plugin_output").text.match(/Hostname : (.*)/)[1] unless @host.css("ReportItem[pluginID=55472]").nil?
         return hostname
       end
       alias fqdn hostname
@@ -154,7 +154,7 @@ module RubyNessus
       #
       #57033
       def patch_checked?
-        if @host.css("ReportItem[pluginID=57033]").empty?
+        if @host.css("ReportItem[pluginID=57033]").empty? and @host.css("ReportItem[pluginID=97993]").empty?
           return false
         else
           return true
